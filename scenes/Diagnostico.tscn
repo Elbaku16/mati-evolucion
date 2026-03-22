@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://b8fopmnyc1sbt"]
+
+[ext_resource type="Script" uid="uid://ca6bo20scx7s6" path="res://scripts/diagnostico_scene.gd" id="1_dfhri"]
+[ext_resource type="Texture2D" uid="uid://d2o18yppmaib6" path="res://assets/fondos/Fondo.png" id="2_3pvql"]
+
+[node name="Diagnostico" type="Control" unique_id=613063047]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.0206361, 0.9796413)
+script = ExtResource("1_dfhri")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=964018332]
+layout_mode = 0
+offset_left = -22.534966
+offset_top = -23.47798
+offset_right = 4073.465
+offset_bottom = 1690.522
+scale = Vector2(0.31343535, 0.44829205)
+texture = ExtResource("2_3pvql")
+
+[node name="Label" type="Label" parent="." unique_id=320367389]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LineEdit" type="LineEdit" parent="." unique_id=150159986]
+layout_mode = 0
+offset_left = 218.49121
+offset_top = 108.20288
+offset_right = 286.9912
+offset_bottom = 139.20288
+
+[node name="Button" type="Button" parent="." unique_id=90976139]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Label2" type="Label" parent="." unique_id=1697106039]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
