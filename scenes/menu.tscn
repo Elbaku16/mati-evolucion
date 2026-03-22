@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://2aivjdf6ifxe"]
 
+[ext_resource type="Texture2D" uid="uid://d2o18yppmaib6" path="res://assets/fondos/Fondo.png" id="1_yqeox"]
+
 [node name="Menu" type="Control" unique_id=775083905]
 layout_mode = 3
 anchors_preset = 15
@@ -7,3 +9,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=803891159]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(13.43646, 18.14169)
+texture = ExtResource("1_yqeox")
+expand_mode = 3
