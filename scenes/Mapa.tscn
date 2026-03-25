@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://dy7emumrw7cod"]
+
+[ext_resource type="Texture2D" uid="uid://d2o18yppmaib6" path="res://assets/fondos/Fondo.png" id="1_bsqx6"]
+[ext_resource type="Texture2D" uid="uid://biwvyaxn5yfdm" path="res://assets/ui/Niveles.png" id="2_q4vu4"]
+[ext_resource type="Texture2D" uid="uid://cxap5fqmybhwt" path="res://assets/personajes/Planeta_1.png" id="3_iieyv"]
+[ext_resource type="Texture2D" uid="uid://8arf32wy63kp" path="res://assets/personajes/Planeta_2.png" id="4_q3rki"]
+[ext_resource type="Texture2D" uid="uid://7p6vsyiyljjl" path="res://assets/personajes/Planeta_3.png" id="5_q7hep"]
+
+[node name="Mapa" type="Control" unique_id=899684467]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=568632898]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_bsqx6")
+
+[node name="Niveles" type="TextureRect" parent="." unique_id=1045775305]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_q4vu4")
+
+[node name="Planeta1" type="TextureButton" parent="." unique_id=2087798135]
+layout_mode = 0
+offset_left = 461.0
+offset_top = 497.0
+offset_right = 2461.0
+offset_bottom = 1333.0
+texture_normal = ExtResource("3_iieyv")
+
+[node name="Planeta2" type="TextureButton" parent="." unique_id=28145125]
+layout_mode = 0
+offset_left = 1023.0
+offset_top = 505.0
+offset_right = 3023.0
+offset_bottom = 1341.0
+texture_normal = ExtResource("4_q3rki")
+
+[node name="Planeta3" type="TextureButton" parent="." unique_id=1654068227]
+layout_mode = 0
+offset_left = 1573.0
+offset_top = 542.0
+offset_right = 3573.0
+offset_bottom = 1378.0
+texture_normal = ExtResource("5_q7hep")

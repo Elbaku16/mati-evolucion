@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://ca6bo20scx7s6" path="res://scripts/diagnostico_scene.gd" id="1_dfhri"]
 [ext_resource type="Texture2D" uid="uid://d2o18yppmaib6" path="res://assets/fondos/Fondo.png" id="2_3pvql"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_dfhri"]
+font_size = 35
+
 [node name="Diagnostico" type="Control" unique_id=613063047]
 layout_mode = 3
 anchors_preset = 15
@@ -23,23 +26,36 @@ scale = Vector2(0.31343535, 0.44829205)
 texture = ExtResource("2_3pvql")
 
 [node name="Label" type="Label" parent="." unique_id=320367389]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.120000005
+anchor_bottom = 0.34600002
+offset_left = 542.79877
+offset_top = 153.11726
+offset_right = 585.155
+offset_bottom = -35.77664
+text = "5 + 3 = ?"
+label_settings = SubResource("LabelSettings_dfhri")
 
 [node name="LineEdit" type="LineEdit" parent="." unique_id=150159986]
 layout_mode = 0
-offset_left = 218.49121
-offset_top = 108.20288
-offset_right = 286.9912
-offset_bottom = 139.20288
+offset_left = 466.37585
+offset_top = 231.71745
+offset_right = 769.1283
+offset_bottom = 328.6917
 
 [node name="Button" type="Button" parent="." unique_id=90976139]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = 531.0414
+offset_top = 391.98022
+offset_right = 734.83594
+offset_bottom = 482.82983
+text = "Responder"
 
 [node name="Label2" type="Label" parent="." unique_id=1697106039]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 1079.7189
+offset_top = 24.498764
+offset_right = 1209.7189
+offset_bottom = 47.498764
+text = "Pregunta 1 de 10"

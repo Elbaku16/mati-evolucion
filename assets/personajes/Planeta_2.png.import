@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3j351fr4mugx"
-path="res://.godot/imported/Planeta 2.png-7cb48a9e0578711f38e99b7cdc8f7fe5.ctex"
+uid="uid://8arf32wy63kp"
+path="res://.godot/imported/Planeta_2.png-d90e2205413841701fc51c06a6443ad0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/personajes/Planeta 2.png"
-dest_files=["res://.godot/imported/Planeta 2.png-7cb48a9e0578711f38e99b7cdc8f7fe5.ctex"]
+source_file="res://assets/personajes/Planeta_2.png"
+dest_files=["res://.godot/imported/Planeta_2.png-d90e2205413841701fc51c06a6443ad0.ctex"]
 
 [params]
 
