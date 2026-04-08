@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtsu00m5krts3"
-path="res://.godot/imported/Titulo_Mati.png-4ae47f63d6ad31a301939ca8cc6397f4.ctex"
+uid="uid://bjjv8l5gp87td"
+path="res://.godot/imported/titulo_mati.png-3b0716d53a72b4fc2c00266b8f2ae4a7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Titulo_Mati.png"
-dest_files=["res://.godot/imported/Titulo_Mati.png-4ae47f63d6ad31a301939ca8cc6397f4.ctex"]
+source_file="res://assets/ui/titulo_mati.png"
+dest_files=["res://.godot/imported/titulo_mati.png-3b0716d53a72b4fc2c00266b8f2ae4a7.ctex"]
 
 [params]
 

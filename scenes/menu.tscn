@@ -1,42 +1,104 @@
 [gd_scene format=3 uid="uid://2aivjdf6ifxe"]
 
 [ext_resource type="Script" uid="uid://m6c3p8wtttob" path="res://scripts/menu.gd" id="1_vjb58"]
-[ext_resource type="Texture2D" uid="uid://btgplve83hg7u" path="res://assets/fondos/Pantalla Inicial.jpeg" id="2_mhnvy"]
-[ext_resource type="Texture2D" uid="uid://dtsu00m5krts3" path="res://assets/ui/Titulo_Mati.png" id="3_4ytvr"]
-[ext_resource type="Texture2D" uid="uid://dw0a8768m68u6" path="res://assets/ui/Boton_Jugar.png" id="4_g3eks"]
+[ext_resource type="Texture2D" uid="uid://bd7o06yqgg4eo" path="res://assets/fondos/IMG_0421.JPG" id="2_70i5f"]
+[ext_resource type="Texture2D" uid="uid://8arf32wy63kp" path="res://assets/personajes/Planeta_2.png" id="3_mj5lg"]
+[ext_resource type="Texture2D" uid="uid://7p6vsyiyljjl" path="res://assets/personajes/Planeta_3.png" id="4_ufwb2"]
+[ext_resource type="Texture2D" uid="uid://dpbey6dpbh7fn" path="res://assets/ui/cohete.png" id="5_6cdou"]
+[ext_resource type="Texture2D" uid="uid://bc73qko2lt73" path="res://assets/personajes/Alien Mati Sorprendido.PNG" id="6_i42df"]
+[ext_resource type="Texture2D" uid="uid://bjjv8l5gp87td" path="res://assets/ui/titulo_mati.png" id="7_7jp70"]
+[ext_resource type="Texture2D" uid="uid://dbom3dp2fwf2r" path="res://assets/ui/titulo_aprende.png" id="8_mxgkd"]
+[ext_resource type="Texture2D" uid="uid://dde65wibyldl6" path="res://assets/ui/boton_jugar.png" id="9_g6gyw"]
+[ext_resource type="Texture2D" uid="uid://bwim3tdjcv0ax" path="res://assets/ui/tuerca.png" id="10_3dmrc"]
 
 [node name="Menu" type="Control" unique_id=775083905]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -147.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vjb58")
 
-[node name="Fondo" type="TextureRect" parent="." unique_id=1752704713]
+[node name="Fondo" type="TextureRect" parent="." unique_id=27285109]
 layout_mode = 0
-offset_left = 3.0
-offset_top = 1.0
-offset_right = 1283.0
-offset_bottom = 537.0
-scale = Vector2(1.0012211, 1.0571266)
-texture = ExtResource("2_mhnvy")
+offset_left = 115.00001
+offset_top = -158.00002
+offset_right = 4211.0
+offset_bottom = 1556.0
+scale = Vector2(0.3130895, 0.42064685)
+pivot_offset = Vector2(-170, 262)
+texture = ExtResource("2_70i5f")
 
-[node name="Titulo" type="TextureRect" parent="." unique_id=1737859476]
+[node name="PlanetaHielo" type="TextureRect" parent="." unique_id=1732073373]
 layout_mode = 0
-offset_left = 612.0
-offset_top = 7.0
-offset_right = 1312.0
-offset_bottom = 287.0
-texture = ExtResource("3_4ytvr")
+offset_left = -8.999996
+offset_top = 22.000002
+offset_right = 1991.0
+offset_bottom = 858.0
+scale = Vector2(0.24770086, 0.26428708)
+texture = ExtResource("3_mj5lg")
 
-[node name="BtnJugar" type="TextureButton" parent="." unique_id=118220430]
+[node name="PlanetaMorado" type="TextureRect" parent="." unique_id=1792951429]
 layout_mode = 0
-offset_left = 822.0
-offset_top = 339.0
-offset_right = 1322.0
-offset_bottom = 479.0
-scale = Vector2(0.6604015, 0.64985573)
-texture_normal = ExtResource("4_g3eks")
+offset_left = 682.0
+offset_top = 98.0
+offset_right = 2682.0
+offset_bottom = 934.0
+scale = Vector2(0.16234288, 0.18320373)
+texture = ExtResource("4_ufwb2")
+
+[node name="Cohete" type="TextureRect" parent="." unique_id=4606395]
+layout_mode = 0
+offset_left = 709.0
+offset_top = -33.0
+offset_right = 2709.0
+offset_bottom = 1526.0
+rotation = 1.5613467
+scale = Vector2(0.10595304, 0.12888612)
+texture = ExtResource("5_6cdou")
+
+[node name="Mati" type="TextureRect" parent="." unique_id=1524453823]
+layout_mode = 0
+offset_left = 300.00003
+offset_top = 176.99998
+offset_right = 1204.0
+offset_bottom = 1178.0
+scale = Vector2(0.1928514, 0.19549748)
+texture = ExtResource("6_i42df")
+
+[node name="TituloMati" type="TextureRect" parent="." unique_id=487535962]
+layout_mode = 0
+offset_left = 354.0
+offset_top = 188.0
+offset_right = 954.0
+offset_bottom = 368.0
+texture = ExtResource("7_7jp70")
+
+[node name="TituloAprende" type="TextureRect" parent="." unique_id=1513961743]
+layout_mode = 0
+offset_left = 315.00003
+offset_top = 339.00003
+offset_right = 1115.0
+offset_bottom = 519.0
+scale = Vector2(0.8552174, 0.93270487)
+texture = ExtResource("8_mxgkd")
+
+[node name="BtnJugar" type="TextureButton" parent="." unique_id=1506096554]
+layout_mode = 0
+offset_left = 474.99997
+offset_top = 526.0
+offset_right = 895.0
+offset_bottom = 656.0
+scale = Vector2(0.80423856, 0.8746954)
+texture_normal = ExtResource("9_g6gyw")
+
+[node name="Tuerca" type="TextureButton" parent="." unique_id=1754775018]
+layout_mode = 0
+offset_left = 1097.0
+offset_top = 32.000004
+offset_right = 2599.0
+offset_bottom = 1569.5006
+scale = Vector2(0.059453078, 0.05701495)
+texture_normal = ExtResource("10_3dmrc")

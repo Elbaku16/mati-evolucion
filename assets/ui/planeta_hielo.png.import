@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://biwvyaxn5yfdm"
-path="res://.godot/imported/Niveles.png-4d87de115bc7ff0e727b224862843131.ctex"
+uid="uid://dsfjutt7c6gg6"
+path="res://.godot/imported/planeta_hielo.png-367b56f02efb4f7c04cf42ed269f8eed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Niveles.png"
-dest_files=["res://.godot/imported/Niveles.png-4d87de115bc7ff0e727b224862843131.ctex"]
+source_file="res://assets/ui/planeta_hielo.png"
+dest_files=["res://.godot/imported/planeta_hielo.png-367b56f02efb4f7c04cf42ed269f8eed.ctex"]
 
 [params]
 

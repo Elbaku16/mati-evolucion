@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dcte1moeb6fm7"
-path="res://.godot/imported/Mati_transparente.png-7773b932bb280ad1014f855237738e81.ctex"
+uid="uid://bc73qko2lt73"
+path="res://.godot/imported/Alien Mati Sorprendido.PNG-2fecca91e0b9fcb96aabc5121fdf9fe2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/personajes/Mati_transparente.png"
-dest_files=["res://.godot/imported/Mati_transparente.png-7773b932bb280ad1014f855237738e81.ctex"]
+source_file="res://assets/personajes/Alien Mati Sorprendido.PNG"
+dest_files=["res://.godot/imported/Alien Mati Sorprendido.PNG-2fecca91e0b9fcb96aabc5121fdf9fe2.ctex"]
 
 [params]
 
