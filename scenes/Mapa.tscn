@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dy7emumrw7cod"]
 
 [ext_resource type="Texture2D" uid="uid://d2o18yppmaib6" path="res://assets/fondos/Fondo.png" id="1_bsqx6"]
+[ext_resource type="Script" uid="uid://djc06ke8hvso0" path="res://scripts/mapa.gd" id="1_q4vu4"]
 [ext_resource type="Texture2D" uid="uid://biwvyaxn5yfdm" path="res://assets/ui/Niveles.png" id="2_q4vu4"]
 [ext_resource type="Texture2D" uid="uid://cxap5fqmybhwt" path="res://assets/personajes/Planeta_1.png" id="3_iieyv"]
 [ext_resource type="Texture2D" uid="uid://8arf32wy63kp" path="res://assets/personajes/Planeta_2.png" id="4_q3rki"]
@@ -13,39 +14,47 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_q4vu4")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=568632898]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 4096.0
+offset_bottom = 1714.0
+scale = Vector2(0.32115868, 0.43517187)
 texture = ExtResource("1_bsqx6")
 
 [node name="Niveles" type="TextureRect" parent="." unique_id=1045775305]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -9.000061
+offset_top = -4.0
+offset_right = 4087.0
+offset_bottom = 1710.0
+scale = Vector2(0.31285417, 0.45081612)
 texture = ExtResource("2_q4vu4")
 
 [node name="Planeta1" type="TextureButton" parent="." unique_id=2087798135]
 layout_mode = 0
-offset_left = 461.0
-offset_top = 497.0
-offset_right = 2461.0
-offset_bottom = 1333.0
+offset_left = 96.0
+offset_top = 246.0
+offset_right = 2096.0
+offset_bottom = 1082.0
+scale = Vector2(0.3988306, 0.41672763)
 texture_normal = ExtResource("3_iieyv")
 
 [node name="Planeta2" type="TextureButton" parent="." unique_id=28145125]
 layout_mode = 0
-offset_left = 1023.0
-offset_top = 505.0
-offset_right = 3023.0
-offset_bottom = 1341.0
+offset_left = 183.0
+offset_top = 238.0
+offset_right = 2183.0
+offset_bottom = 1074.0
+scale = Vector2(0.43895462, 0.41280013)
 texture_normal = ExtResource("4_q3rki")
 
 [node name="Planeta3" type="TextureButton" parent="." unique_id=1654068227]
 layout_mode = 0
-offset_left = 1573.0
-offset_top = 542.0
-offset_right = 3573.0
-offset_bottom = 1378.0
+offset_left = 254.99994
+offset_top = 233.0
+offset_right = 2255.0
+offset_bottom = 1069.0
+scale = Vector2(0.46030298, 0.47802648)
 texture_normal = ExtResource("5_q7hep")
