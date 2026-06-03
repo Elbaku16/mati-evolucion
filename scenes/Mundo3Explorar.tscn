@@ -1,0 +1,199 @@
+[gd_scene format=3 uid="uid://ctvu8bsc7ykp1"]
+
+[ext_resource type="Script" path="res://scripts/mundo3_explorar.gd" id="1_m3exp"]
+[ext_resource type="Texture2D" uid="uid://dja5fm04jxpn1" path="res://assets/fondos/fondo_mundo3.PNG" id="2_m3exp"]
+[ext_resource type="Texture2D" uid="uid://bwk8l42cxoj5r" path="res://assets/ui/IMG_0430.PNG" id="3_m3exp"]
+[ext_resource type="Texture2D" uid="uid://vq4gl8chax6s" path="res://assets/mundo2/portal_apagado.png" id="5_m3exp"]
+[ext_resource type="Texture2D" uid="uid://b05agwjsqkpf8" path="res://assets/ui/Exclamacion.png" id="6_m3exp"]
+[ext_resource type="Texture2D" uid="uid://b0n6a5168qpqn" path="res://assets/ui/Botones Vector/Arriba.png" id="7_m3exp"]
+[ext_resource type="Texture2D" uid="uid://v7esv4x3cubp" path="res://assets/ui/Botones Vector/Abajo.png" id="8_m3exp"]
+[ext_resource type="Texture2D" uid="uid://dua2n6gxlsy2t" path="res://assets/ui/Botones Vector/Izquierda.png" id="9_m3exp"]
+[ext_resource type="Texture2D" uid="uid://byyate37ux7ci" path="res://assets/ui/Botones Vector/Derecha.png" id="10_m3exp"]
+[ext_resource type="Texture2D" uid="uid://dn0exwj6dmgep" path="res://assets/ui/Botones Vector/Pausa.png" id="11_m3exp"]
+[ext_resource type="Texture2D" uid="uid://bwim3tdjcv0ax" path="res://assets/ui/tuerca.png" id="12_m3exp"]
+[ext_resource type="Texture2D" uid="uid://x3wp8pjq0xpn" path="res://assets/ui/Botones Vector/Continuar.png" id="13_m3exp"]
+[ext_resource type="Texture2D" uid="uid://bmwrxigfsn8dw" path="res://assets/ui/Botones Vector/Cerrar.png" id="14_m3exp"]
+[ext_resource type="Texture2D" uid="uid://dde65wibyldl6" path="res://assets/ui/boton_jugar.png" id="15_m3exp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m3exp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m3exp"]
+
+[node name="Mundo3Explorar" type="Node2D"]
+script = ExtResource("1_m3exp")
+
+[node name="Fondo" type="Sprite2D" parent="."]
+position = Vector2(325, 550)
+scale = Vector2(1.16, 1.16)
+texture = ExtResource("2_m3exp")
+
+[node name="Mati" type="CharacterBody2D" parent="."]
+position = Vector2(-1000, 760)
+
+[node name="Sprite2D" type="Sprite2D" parent="Mati"]
+position = Vector2(-74.000015, -33.000008)
+scale = Vector2(-0.21421655, 0.20117149)
+texture = ExtResource("3_m3exp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mati"]
+shape = SubResource("CapsuleShape2D_m3exp")
+
+[node name="Camera2D" type="Camera2D" parent="Mati"]
+zoom = Vector2(0.5, 0.5)
+limit_left = -1950
+limit_top = -100
+limit_right = 2600
+limit_bottom = 1544
+
+[node name="Monedas" type="Node2D" parent="."]
+
+[node name="SpritePortal" type="Sprite2D" parent="."]
+position = Vector2(534.00006, 760)
+scale = Vector2(0.30355582, 0.3096786)
+texture = ExtResource("5_m3exp")
+
+[node name="BtnInteractuar" type="TextureButton" parent="."]
+offset_left = 406.0
+offset_top = 197.0
+offset_right = 1908.0
+offset_bottom = 1699.0
+scale = Vector2(0.07508756, 0.06985476)
+texture_normal = ExtResource("6_m3exp")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="BtnArriba" type="TextureButton" parent="UI"]
+offset_left = 119.00001
+offset_top = 380.0
+offset_right = 1621.0
+offset_bottom = 1882.0
+scale = Vector2(0.05003396, 0.06134946)
+texture_normal = ExtResource("7_m3exp")
+
+[node name="BtnAbajo" type="TextureButton" parent="UI"]
+offset_left = 112.0
+offset_top = 546.0
+offset_right = 1614.0
+offset_bottom = 2048.0
+scale = Vector2(0.05678192, 0.060506616)
+texture_normal = ExtResource("8_m3exp")
+
+[node name="BtnIzquierda" type="TextureButton" parent="UI"]
+offset_left = 54.000004
+offset_top = 458.00003
+offset_right = 1556.0
+offset_bottom = 1960.0
+scale = Vector2(0.053897835, 0.06604504)
+texture_normal = ExtResource("9_m3exp")
+
+[node name="BtnDerecha" type="TextureButton" parent="UI"]
+offset_left = 177.0
+offset_top = 460.00003
+offset_right = 1679.0
+offset_bottom = 1962.0
+scale = Vector2(0.052283384, 0.06469509)
+texture_normal = ExtResource("10_m3exp")
+
+[node name="BtnPausa" type="TextureButton" parent="UI"]
+offset_left = 1065.0
+offset_top = 23.0
+offset_right = 2567.0
+offset_bottom = 1525.0
+scale = Vector2(0.052360184, 0.050820347)
+texture_normal = ExtResource("11_m3exp")
+
+[node name="BtnAjustes" type="TextureButton" parent="UI"]
+offset_left = 1169.0
+offset_top = 21.0
+offset_right = 2671.0
+offset_bottom = 1523.0
+scale = Vector2(0.04820133, 0.050993953)
+texture_normal = ExtResource("12_m3exp")
+
+[node name="LabelMonedas" type="Label" parent="UI"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="PanelPausa" type="Control" parent="UI"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BtnContinuar" type="TextureButton" parent="UI/PanelPausa"]
+process_mode = 3
+layout_mode = 0
+offset_left = 133.99997
+offset_top = 50.0
+offset_right = 1636.0
+offset_bottom = 1552.0
+scale = Vector2(0.04938427, 0.053371854)
+texture_normal = ExtResource("13_m3exp")
+
+[node name="BtnSalir" type="TextureButton" parent="UI/PanelPausa"]
+process_mode = 3
+layout_mode = 0
+offset_left = 38.0
+offset_top = 52.0
+offset_right = 1540.0
+offset_bottom = 1554.0
+scale = Vector2(0.052214153, 0.050264124)
+texture_normal = ExtResource("14_m3exp")
+
+[node name="PanelDialogo" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 480.0
+offset_right = -280.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/PanelDialogo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.20, 0.05, 0.30, 1)
+
+[node name="LabelNombre" type="Label" parent="UI/PanelDialogo"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 15.0
+offset_right = 148.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(0.85, 0.55, 1.0, 1)
+theme_override_font_sizes/font_size = 18
+text = "NPC"
+
+[node name="LabelTexto" type="Label" parent="UI/PanelDialogo"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 680.0
+offset_bottom = 200.0
+theme_override_font_sizes/font_size = 20
+autowrap_mode = 2
+
+[node name="BtnAyudar" type="TextureButton" parent="UI/PanelDialogo"]
+visible = false
+layout_mode = 0
+offset_left = 500.0
+offset_top = 130.0
+offset_right = 3500.0
+offset_bottom = 1528.0
+scale = Vector2(0.3, 0.3)
+texture_normal = ExtResource("15_m3exp")
+
+[node name="ZonaCohete" type="Area2D" parent="."]
+position = Vector2(522, 760)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaCohete"]
+shape = SubResource("RectangleShape2D_m3exp")

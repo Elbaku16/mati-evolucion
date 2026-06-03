@@ -2,9 +2,28 @@
 
 [ext_resource type="Script" uid="uid://ca6bo20scx7s6" path="res://scripts/diagnostico_scene.gd" id="1_dfhri"]
 [ext_resource type="Texture2D" uid="uid://d2o18yppmaib6" path="res://assets/fondos/Fondo.png" id="2_3pvql"]
+[ext_resource type="Texture2D" uid="uid://5qonk63lrjlk" path="res://assets/ui/tabla.png" id="3_lbswl"]
+[ext_resource type="Texture2D" uid="uid://biipnb6u5jbiv" path="res://assets/ui/mati_sorprendido.png" id="4_fkgiw"]
+[ext_resource type="Texture2D" uid="uid://bn7xe3oeipnmq" path="res://assets/ui/op_suma.png" id="5_xbhh7"]
+[ext_resource type="Texture2D" uid="uid://c166j3gpgjdy8" path="res://assets/ui/estrella_respuesta.png" id="6_rufe5"]
+[ext_resource type="Texture2D" uid="uid://cpv1lsalyv2tf" path="res://assets/ui/Signo = .PNG" id="7_k7avg"]
+[ext_resource type="Texture2D" uid="uid://dfm88q60h114l" path="res://assets/ui/pregunta_titulo.png" id="14_fkgiw"]
+[ext_resource type="Texture2D" uid="uid://bjwcrnq6b3xcd" path="res://assets/ui/progreso_0.png" id="15_xbhh7"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_dfhri"]
-font_size = 35
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0pwr3"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_du5q6"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_v4gbf"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0ppxb"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_e8rfx"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lbswl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_lbswl"]
+font_size = 200
 
 [node name="Diagnostico" type="Control" unique_id=613063047]
 layout_mode = 3
@@ -16,46 +35,224 @@ grow_vertical = 2
 scale = Vector2(1.0206361, 0.9796413)
 script = ExtResource("1_dfhri")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=964018332]
+[node name="Fondo" type="TextureRect" parent="." unique_id=1822691504]
 layout_mode = 0
-offset_left = -22.534966
-offset_top = -23.47798
-offset_right = 4073.465
-offset_bottom = 1690.522
-scale = Vector2(0.31343535, 0.44829205)
+offset_top = -8.166257
+offset_right = 4096.0
+offset_bottom = 1705.8337
+scale = Vector2(0.30643752, 0.4421891)
 texture = ExtResource("2_3pvql")
 
-[node name="Label" type="Label" parent="." unique_id=320367389]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.120000005
-anchor_bottom = 0.34600002
-offset_left = 542.79877
-offset_top = 153.11726
-offset_right = 585.155
-offset_bottom = -35.77664
-text = "5 + 3 = ?"
-label_settings = SubResource("LabelSettings_dfhri")
-
-[node name="LineEdit" type="LineEdit" parent="." unique_id=150159986]
+[node name="Tabla" type="TextureRect" parent="." unique_id=464859671]
 layout_mode = 0
-offset_left = 466.37585
-offset_top = 231.71745
-offset_right = 769.1283
-offset_bottom = 328.6917
+offset_left = 63.685776
+offset_top = 38.789703
+offset_right = 3059.6858
+offset_bottom = 1306.7897
+scale = Vector2(0.37903076, 0.5132876)
+texture = ExtResource("3_lbswl")
 
-[node name="Button" type="Button" parent="." unique_id=90976139]
+[node name="Mati" type="TextureRect" parent="." unique_id=1478749510]
 layout_mode = 0
-offset_left = 531.0414
-offset_top = 391.98022
-offset_right = 734.83594
-offset_bottom = 482.82983
-text = "Responder"
+offset_left = 6.858468
+offset_top = 414.4374
+offset_right = 878.85846
+offset_bottom = 1415.4374
+scale = Vector2(0.32261997, 0.30995333)
+texture = ExtResource("4_fkgiw")
 
-[node name="Label2" type="Label" parent="." unique_id=1697106039]
+[node name="Operador" type="TextureRect" parent="." unique_id=37374602]
 layout_mode = 0
-offset_left = 1079.7189
-offset_top = 24.498764
-offset_right = 1209.7189
-offset_bottom = 47.498764
-text = "Pregunta 1 de 10"
+offset_left = 435.02228
+offset_top = 125.55615
+offset_right = 1867.0222
+offset_bottom = 1505.5562
+scale = Vector2(0.07568138, 0.08303241)
+texture = ExtResource("5_xbhh7")
+
+[node name="NumFaltante1" type="TextureRect" parent="." unique_id=1714412749]
+layout_mode = 0
+offset_left = 309.611
+offset_top = 132.70163
+offset_right = 1741.611
+offset_bottom = 1512.7017
+scale = Vector2(0.073141195, 0.072942376)
+texture = ExtResource("6_rufe5")
+
+[node name="NumFaltante2" type="TextureRect" parent="." unique_id=1318901066]
+layout_mode = 0
+offset_left = 569.25275
+offset_top = 130.66008
+offset_right = 2001.2527
+offset_bottom = 1510.66
+scale = Vector2(0.070446864, 0.0739501)
+texture = ExtResource("6_rufe5")
+
+[node name="Igual" type="TextureRect" parent="." unique_id=836309195]
+layout_mode = 0
+offset_left = 661.3539
+offset_top = 65.36326
+offset_right = 1361.354
+offset_bottom = 765.3633
+rotation = 0.03914219
+scale = Vector2(0.25964954, 0.32561734)
+texture = ExtResource("7_k7avg")
+
+[node name="Respuesta" type="TextureRect" parent="." unique_id=1419405743]
+layout_mode = 0
+offset_left = 834.7739
+offset_top = 136.78476
+offset_right = 2266.7742
+offset_bottom = 1516.7848
+scale = Vector2(0.07022828, 0.07012002)
+texture = ExtResource("6_rufe5")
+
+[node name="Respuesta2" type="TextureRect" parent="." unique_id=674732326]
+layout_mode = 0
+offset_left = 939.6099
+offset_top = 159.242
+offset_right = 979.6099
+offset_bottom = 199.242
+scale = Vector2(1.6579821, 1.7387048)
+
+[node name="Btn0" type="TextureButton" parent="." unique_id=1051416916]
+layout_mode = 0
+offset_left = 486.95132
+offset_top = 490.99597
+offset_right = 1940.9513
+offset_bottom = 1888.996
+scale = Vector2(0.07535743, 0.07550953)
+texture_normal = SubResource("CompressedTexture2D_0pwr3")
+
+[node name="Btn0b" type="TextureButton" parent="." unique_id=244021885]
+layout_mode = 0
+offset_left = 618.24194
+offset_top = 531.82733
+offset_right = 658.24194
+offset_bottom = 571.82733
+scale = Vector2(1.206727, 1.5373014)
+
+[node name="Btn1" type="TextureButton" parent="." unique_id=468143159]
+layout_mode = 0
+offset_left = 606.4848
+offset_top = 361.35672
+offset_right = 2060.4849
+offset_bottom = 1759.3567
+scale = Vector2(0.07003864, 0.07567754)
+texture_normal = SubResource("CompressedTexture2D_du5q6")
+
+[node name="Btn1b" type="TextureButton" parent="." unique_id=42101198]
+layout_mode = 0
+offset_left = 721.11896
+offset_top = 401.16727
+offset_right = 761.11896
+offset_bottom = 441.16727
+
+[node name="Btn2" type="TextureButton" parent="." unique_id=1611485564]
+layout_mode = 0
+offset_left = 272.37915
+offset_top = 482.82977
+offset_right = 1726.3792
+offset_bottom = 1880.8298
+scale = Vector2(0.06987231, 0.080075815)
+texture_normal = SubResource("CompressedTexture2D_v4gbf")
+
+[node name="Btn3" type="TextureButton" parent="." unique_id=119163973]
+layout_mode = 0
+offset_left = 717.19977
+offset_top = 487.93365
+offset_right = 2171.1997
+offset_bottom = 1885.9336
+scale = Vector2(0.07577371, 0.07810244)
+texture_normal = SubResource("CompressedTexture2D_0ppxb")
+
+[node name="Btn3b" type="TextureButton" parent="." unique_id=679153727]
+layout_mode = 0
+offset_left = 1022.89154
+offset_top = 609.40674
+offset_right = 1062.8916
+offset_bottom = 649.40674
+
+[node name="Btn4" type="TextureButton" parent="." unique_id=946638253]
+layout_mode = 0
+offset_left = 394.85193
+offset_top = 364.41913
+offset_right = 1848.8522
+offset_bottom = 1762.4192
+scale = Vector2(0.06957652, 0.0749083)
+texture_normal = SubResource("CompressedTexture2D_e8rfx")
+
+[node name="Btn5" type="TextureButton" parent="." unique_id=1041630666]
+layout_mode = 0
+offset_left = 818.1172
+offset_top = 361.35675
+offset_right = 2272.1172
+offset_bottom = 1759.3567
+scale = Vector2(0.066104755, 0.07815522)
+texture_normal = SubResource("CompressedTexture2D_lbswl")
+
+[node name="LabelN1" type="Label" parent="." unique_id=678189384]
+layout_mode = 0
+offset_left = -101.89725
+offset_top = -13.270168
+offset_right = 1330.1028
+offset_bottom = 1366.7299
+label_settings = SubResource("LabelSettings_lbswl")
+
+[node name="LabelN2" type="Label" parent="." unique_id=601779876]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelRes" type="Label" parent="." unique_id=438200498]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelB0" type="Label" parent="." unique_id=1266384314]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelB1" type="Label" parent="." unique_id=353497882]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelB2" type="Label" parent="." unique_id=1143678344]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelB3" type="Label" parent="." unique_id=1669478514]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelB4" type="Label" parent="." unique_id=1244121996]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LabelB5" type="Label" parent="." unique_id=1339440902]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Titulo" type="TextureRect" parent="." unique_id=1085636526]
+layout_mode = 0
+offset_left = 256.70267
+offset_top = 622.6769
+offset_right = 1614.7026
+offset_bottom = 739.6769
+scale = Vector2(0.5486858, 0.561613)
+texture = ExtResource("14_fkgiw")
+
+[node name="BarraProgreso" type="TextureRect" parent="." unique_id=1975403824]
+layout_mode = 0
+offset_left = 325.28732
+offset_top = 39.81049
+offset_right = 1673.2874
+offset_bottom = 144.81049
+scale = Vector2(0.44768652, 0.560314)
+texture = ExtResource("15_xbhh7")

@@ -2,10 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://d2o18yppmaib6" path="res://assets/fondos/Fondo.png" id="1_bsqx6"]
 [ext_resource type="Script" uid="uid://djc06ke8hvso0" path="res://scripts/mapa.gd" id="1_q4vu4"]
-[ext_resource type="Texture2D" uid="uid://biwvyaxn5yfdm" path="res://assets/ui/Niveles.png" id="2_q4vu4"]
+[ext_resource type="Texture2D" uid="uid://d3dqlrkasm0fs" path="res://assets/ui/Niveles.png" id="2_q4vu4"]
 [ext_resource type="Texture2D" uid="uid://cxap5fqmybhwt" path="res://assets/personajes/Planeta_1.png" id="3_iieyv"]
 [ext_resource type="Texture2D" uid="uid://8arf32wy63kp" path="res://assets/personajes/Planeta_2.png" id="4_q3rki"]
 [ext_resource type="Texture2D" uid="uid://7p6vsyiyljjl" path="res://assets/personajes/Planeta_3.png" id="5_q7hep"]
+[ext_resource type="Texture2D" uid="uid://d18uqt80suq5m" path="res://assets/ui/IMG_0780.PNG" id="7_iieyv"]
 
 [node name="Mapa" type="Control" unique_id=899684467]
 layout_mode = 3
@@ -25,36 +26,68 @@ texture = ExtResource("1_bsqx6")
 
 [node name="Niveles" type="TextureRect" parent="." unique_id=1045775305]
 layout_mode = 0
-offset_left = -9.000061
-offset_top = -4.0
-offset_right = 4087.0
-offset_bottom = 1710.0
-scale = Vector2(0.31285417, 0.45081612)
+offset_left = -180.0
+offset_top = 26.0
+offset_right = 3916.0
+offset_bottom = 1740.0
+scale = Vector2(0.38739568, 0.42309973)
 texture = ExtResource("2_q4vu4")
 
 [node name="Planeta1" type="TextureButton" parent="." unique_id=2087798135]
 layout_mode = 0
-offset_left = 96.0
-offset_top = 246.0
-offset_right = 2096.0
-offset_bottom = 1082.0
+offset_left = 5.0
+offset_top = 271.0
+offset_right = 2005.0
+offset_bottom = 1107.0
 scale = Vector2(0.3988306, 0.41672763)
 texture_normal = ExtResource("3_iieyv")
 
 [node name="Planeta2" type="TextureButton" parent="." unique_id=28145125]
 layout_mode = 0
-offset_left = 183.0
-offset_top = 238.0
-offset_right = 2183.0
-offset_bottom = 1074.0
-scale = Vector2(0.43895462, 0.41280013)
+offset_left = 186.0
+offset_top = 237.00003
+offset_right = 2186.0
+offset_bottom = 1073.0
+scale = Vector2(0.42557183, 0.4273564)
 texture_normal = ExtResource("4_q3rki")
 
 [node name="Planeta3" type="TextureButton" parent="." unique_id=1654068227]
 layout_mode = 0
-offset_left = 254.99994
-offset_top = 233.0
-offset_right = 2255.0
+offset_left = 321.0
+offset_top = 233.00002
+offset_right = 2321.0
 offset_bottom = 1069.0
 scale = Vector2(0.46030298, 0.47802648)
 texture_normal = ExtResource("5_q7hep")
+
+[node name="LabelMonedas" type="Label" parent="." unique_id=1867335452]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="MatiMapa" type="TextureRect" parent="." unique_id=1240466839]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 182.0
+offset_right = 995.0
+offset_bottom = 1183.0
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("7_iieyv")
+
+[node name="CandadoPl2" type="TextureRect" parent="." unique_id=142809787]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CandadoPl3" type="TextureRect" parent="." unique_id=1368435388]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BtnTienda" type="Button" parent="." unique_id=9001000001]
+layout_mode = 0
+offset_left = 1090.0
+offset_top = 5.0
+offset_right = 1275.0
+offset_bottom = 55.0
+text = "🛒 Tienda"

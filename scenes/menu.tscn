@@ -6,10 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://7p6vsyiyljjl" path="res://assets/personajes/Planeta_3.png" id="4_ufwb2"]
 [ext_resource type="Texture2D" uid="uid://dpbey6dpbh7fn" path="res://assets/ui/cohete.png" id="5_6cdou"]
 [ext_resource type="Texture2D" uid="uid://bc73qko2lt73" path="res://assets/personajes/Alien Mati Sorprendido.PNG" id="6_i42df"]
-[ext_resource type="Texture2D" uid="uid://bjjv8l5gp87td" path="res://assets/ui/titulo_mati.png" id="7_7jp70"]
-[ext_resource type="Texture2D" uid="uid://dbom3dp2fwf2r" path="res://assets/ui/titulo_aprende.png" id="8_mxgkd"]
-[ext_resource type="Texture2D" uid="uid://dde65wibyldl6" path="res://assets/ui/boton_jugar.png" id="9_g6gyw"]
+[ext_resource type="Texture2D" uid="uid://cjd3snepwyt8x" path="res://assets/ui/Jugar.png" id="9_70i5f"]
+[ext_resource type="Texture2D" uid="uid://tiqwt423t4y3" path="res://assets/ui/titulo_oficial.png" id="9_i6lef"]
 [ext_resource type="Texture2D" uid="uid://bwim3tdjcv0ax" path="res://assets/ui/tuerca.png" id="10_3dmrc"]
+[ext_resource type="AudioStream" uid="uid://rfth3i7cr5u4" path="res://assets/sonidos/musica_fondo.mp3" id="10_70i5f"]
+[ext_resource type="Texture2D" uid="uid://5qonk63lrjlk" path="res://assets/ui/tabla.png" id="11_mj5lg"]
+[ext_resource type="Texture2D" uid="uid://cyjcmyfr77con" path="res://assets/ui/Botones Vector/volumen.png" id="12_6cdou"]
+[ext_resource type="Texture2D" uid="uid://bmwrxigfsn8dw" path="res://assets/ui/Botones Vector/Cerrar.png" id="13_i42df"]
 
 [node name="Menu" type="Control" unique_id=775083905]
 layout_mode = 3
@@ -68,37 +71,66 @@ offset_bottom = 1178.0
 scale = Vector2(0.1928514, 0.19549748)
 texture = ExtResource("6_i42df")
 
-[node name="TituloMati" type="TextureRect" parent="." unique_id=487535962]
+[node name="Titulo" type="TextureRect" parent="." unique_id=211664392]
 layout_mode = 0
-offset_left = 354.0
-offset_top = 188.0
-offset_right = 954.0
-offset_bottom = 368.0
-texture = ExtResource("7_7jp70")
+offset_left = 297.0
+offset_top = 215.0
+offset_right = 2297.0
+offset_bottom = 995.0
+scale = Vector2(0.37269336, 0.36685768)
+texture = ExtResource("9_i6lef")
 
-[node name="TituloAprende" type="TextureRect" parent="." unique_id=1513961743]
+[node name="Jugar" type="TextureButton" parent="." unique_id=406548662]
 layout_mode = 0
-offset_left = 315.00003
-offset_top = 339.00003
-offset_right = 1115.0
-offset_bottom = 519.0
-scale = Vector2(0.8552174, 0.93270487)
-texture = ExtResource("8_mxgkd")
-
-[node name="BtnJugar" type="TextureButton" parent="." unique_id=1506096554]
-layout_mode = 0
-offset_left = 474.99997
+offset_left = 491.99997
 offset_top = 526.0
-offset_right = 895.0
-offset_bottom = 656.0
-scale = Vector2(0.80423856, 0.8746954)
-texture_normal = ExtResource("9_g6gyw")
+offset_right = 3492.0
+offset_bottom = 1924.0
+scale = Vector2(0.10721189, 0.092529096)
+texture_normal = ExtResource("9_70i5f")
 
-[node name="Tuerca" type="TextureButton" parent="." unique_id=1754775018]
+[node name="Musica" type="AudioStreamPlayer" parent="." unique_id=504087815]
+stream = ExtResource("10_70i5f")
+volume_db = -5.0
+autoplay = true
+
+[node name="BtnAjustes" type="TextureButton" parent="." unique_id=578745176]
 layout_mode = 0
-offset_left = 1097.0
-offset_top = 32.000004
-offset_right = 2599.0
-offset_bottom = 1569.5006
-scale = Vector2(0.059453078, 0.05701495)
+offset_left = 1069.0
+offset_top = 23.999985
+offset_right = 2571.0
+offset_bottom = 1526.0
+scale = Vector2(0.073407024, 0.06766836)
 texture_normal = ExtResource("10_3dmrc")
+
+[node name="PanelAjustes" type="Control" parent="." unique_id=338344855]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FondoPanel" type="TextureRect" parent="PanelAjustes" unique_id=1397585787]
+layout_mode = 0
+offset_left = 180.0
+offset_top = 195.00002
+offset_right = 3176.0
+offset_bottom = 1463.0
+scale = Vector2(0.31629133, 0.32493946)
+texture = ExtResource("11_mj5lg")
+
+[node name="BtnVolumen" type="TextureButton" parent="PanelAjustes" unique_id=1284752152]
+layout_mode = 0
+offset_left = 460.99997
+offset_top = 336.99997
+offset_right = 1485.0
+offset_bottom = 1361.0
+scale = Vector2(0.13533758, 0.1286787)
+texture_normal = ExtResource("12_6cdou")
+
+[node name="BtnCerrar" type="TextureButton" parent="PanelAjustes" unique_id=1294322036]
+layout_mode = 0
+offset_left = 726.0
+offset_top = 342.0
+offset_right = 2228.0
+offset_bottom = 1844.0
+scale = Vector2(0.08525416, 0.0835042)
+texture_normal = ExtResource("13_i42df")
