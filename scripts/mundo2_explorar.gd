@@ -150,6 +150,9 @@ func _ready() -> void:
 	# Actualizar portal (encendido/apagado según progreso)
 	_actualizar_portal()
 
+	# Tilear el fondo para cubrir todo el mundo expandido
+	_extender_fondo()
+
 	# Nubes animadas (tonos fríos para el planeta de hielo)
 	$Fondo.z_index = -2
 	nubes_nodo = Node2D.new()
@@ -904,3 +907,37 @@ func _toggle_pausa() -> void:
 func _ir_al_mapa() -> void:
 	get_tree().paused = false
 	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")
+
+# ─────────────────────────────────────────────────────────────
+#  TILING DEL FONDO
+#  Clona el Sprite2D $Fondo para cubrir el mundo extendido.
+# ─────────────────────────────────────────────────────────────
+func _extender_fondo() -> void:
+	if not $Fondo.texture:
+		return
+	var tw  : float     = float($Fondo.texture.get_width()) * absf($Fondo.scale.x)
+	if tw < 1.0:
+		return
+	var cx  : float     = $Fondo.position.x
+	var cy  : float     = $Fondo.position.y
+	var sc  : Vector2   = $Fondo.scale
+	var tex : Texture2D = $Fondo.texture
+
+	var n_izq : int = ceili((cx + tw * 0.5 - LIMITE_IZQ) / tw)
+	var n_der : int = ceili((LIMITE_DER - cx + tw * 0.5) / tw)
+
+	for i in range(1, n_izq + 1):
+		var t := Sprite2D.new()
+		t.texture  = tex
+		t.scale    = sc
+		t.position = Vector2(cx - tw * float(i), cy)
+		t.z_index  = -2
+		add_child(t)
+
+	for i in range(1, n_der + 1):
+		var t := Sprite2D.new()
+		t.texture  = tex
+		t.scale    = sc
+		t.position = Vector2(cx + tw * float(i), cy)
+		t.z_index  = -2
+		add_child(t)

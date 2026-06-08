@@ -182,6 +182,9 @@ func _ready() -> void:
 	add_child(cueva_nodo)
 	_crear_overlay_cueva()
 
+	# Tilear el fondo para cubrir todo el mundo expandido
+	_extender_fondo()
+
 	# Efectos ambientales: brillitos flotantes
 	var efectos := Node2D.new()
 	efectos.set_script(load("res://scripts/efectos_ambiente.gd"))
