@@ -321,6 +321,17 @@ func _mostrar_resultado(monedas: int, perfecta: bool) -> void:
 	var cel_script = load("res://scripts/celebracion.gd")
 	cel_script.lanzar(get_tree().root)
 
+	# Si acaba de completar el Mundo 1 entero → mostrar animación de llave obtenida
+	if mundo_completado_ahora:
+		var llave_script = load("res://scripts/llave_animacion.gd")
+		await get_tree().create_timer(0.8).timeout
+		llave_script.mostrar(get_tree().root, "res://assets/ui/llaves/llave_mundo1.PNG",
+			func(): _mostrar_panel_resultado(monedas, perfecta))
+		return
+
+	_mostrar_panel_resultado(monedas, perfecta)
+
+func _mostrar_panel_resultado(monedas: int, perfecta: bool) -> void:
 	if has_node("PanelResultado"):
 		$PanelResultado.visible = true
 		if has_node("PanelResultado/LabelResultado"):
