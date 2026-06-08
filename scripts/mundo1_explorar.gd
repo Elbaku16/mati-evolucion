@@ -13,7 +13,7 @@ const DIST_INTERACCION : float = 280.0
 const LIMITE_IZQ  : float = -2800.0
 const LIMITE_DER  : float =  3500.0
 const LIMITE_ARR  : float =   480.0
-const LIMITE_ABA  : float =  1150.0
+const LIMITE_ABA  : float =  1400.0
 
 # Zona cueva: más allá del mundo → la oscuridad nunca se activa
 const CUEVA_INICIO_X : float = 9999.0

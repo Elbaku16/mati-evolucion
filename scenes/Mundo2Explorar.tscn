@@ -40,14 +40,15 @@ shape = SubResource("CapsuleShape2D_wyyw3")
 
 [node name="Camera2D" type="Camera2D" parent="Mati" unique_id=2049111018]
 zoom = Vector2(0.5, 0.5)
-limit_left = -1950
-limit_top = -100
-limit_right = 2600
-limit_bottom = 1544
+limit_left = -4200
+limit_top = 250
+limit_right = 4700
+limit_bottom = 1200
 
 [node name="Monedas" type="Node2D" parent="." unique_id=1784166774]
 
 [node name="SpriteAstronauta" type="Sprite2D" parent="." unique_id=979693898]
+visible = false
 position = Vector2(534.00006, 710)
 scale = Vector2(0.30355582, 0.3096786)
 texture = ExtResource("5_cgc1s")
@@ -123,6 +124,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="BtnContinuar" type="TextureButton" parent="UI/PanelPausa" unique_id=1278728713]
+visible = false
 process_mode = 3
 layout_mode = 0
 offset_left = 133.99997
@@ -133,6 +135,7 @@ scale = Vector2(0.04938427, 0.053371854)
 texture_normal = ExtResource("13_dfgg7")
 
 [node name="BtnSalir" type="TextureButton" parent="UI/PanelPausa" unique_id=1374388292]
+visible = false
 process_mode = 3
 layout_mode = 0
 offset_left = 38.0
@@ -194,6 +197,7 @@ scale = Vector2(0.3, 0.3)
 texture_normal = ExtResource("15_nnh7e")
 
 [node name="SpriteAstronauta2" type="Sprite2D" parent="." unique_id=1636111537]
+visible = false
 position = Vector2(530, 710)
 scale = Vector2(0.31955343, 0.3312667)
 texture = ExtResource("5_cgc1s")

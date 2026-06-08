@@ -88,10 +88,13 @@ func mostrar_pregunta() -> void:
 	var tipo = pregunta_actual["tipo"]
 
 	$Operador.texture = load(OPERADORES[op])
-	# Mantener siempre la escala original de la escena y dejar que stretch llene el rect
-	$Operador.scale        = Vector2(0.07568138, 0.08303241)
 	$Operador.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
 	$Operador.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	# La × está dibujada más pequeña en su imagen → escala mayor para igualar +/-
+	var escala_base := Vector2(0.07568138, 0.08303241)
+	if op == "x":
+		escala_base *= 2.0
+	$Operador.scale = escala_base
 
 	match tipo:
 		0:

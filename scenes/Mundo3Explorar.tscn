@@ -48,6 +48,7 @@ limit_bottom = 1544
 [node name="Monedas" type="Node2D" parent="."]
 
 [node name="SpritePortal" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(534.00006, 760)
 scale = Vector2(0.30355582, 0.3096786)
 texture = ExtResource("5_m3exp")
@@ -123,6 +124,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="BtnContinuar" type="TextureButton" parent="UI/PanelPausa"]
+visible = false
 process_mode = 3
 layout_mode = 0
 offset_left = 133.99997
@@ -133,6 +135,7 @@ scale = Vector2(0.04938427, 0.053371854)
 texture_normal = ExtResource("13_m3exp")
 
 [node name="BtnSalir" type="TextureButton" parent="UI/PanelPausa"]
+visible = false
 process_mode = 3
 layout_mode = 0
 offset_left = 38.0
