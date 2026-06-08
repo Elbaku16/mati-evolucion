@@ -92,7 +92,7 @@ func _ready() -> void:
 	#  🚧 BOTÓN DEV — BORRAR ANTES DE PUBLICAR 🚧
 	#  Desbloquea todos los mundos sin completar desafíos.
 	# ══════════════════════════════════════════════════════════
-	_crear_btn_dev()
+	# _crear_btn_dev()  # Botón de pruebas — desactivado temporalmente para envíos/exportación
 
 # ─────────────────────────────────────────────────────────────
 #  DETECCIÓN DE CLIC POR POSICIÓN
