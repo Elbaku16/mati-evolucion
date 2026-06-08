@@ -36,6 +36,7 @@ const SECCIONES = {
 	3:  { "tipo": "suma",  "max": 30 },
 	4:  { "tipo": "resta", "max": 20 },
 	5:  { "tipo": "mixto", "max": 30 },
+	6:  { "tipo": "suma",  "max": 35 },   # Desafío final de Cosmo — sumas un poco más complicadas
 	11: { "tipo": "resta", "max": 30 },
 	12: { "tipo": "mixto", "max": 40 },
 }
@@ -286,7 +287,7 @@ func _terminar_seccion() -> void:
 
 	# Verificar si completó las 7 secciones del Mundo 1
 	var todas_completas = true
-	for i in [1, 2, 3, 4, 5, 11, 12]:
+	for i in [1, 2, 3, 5, 6]:
 		if not secciones.get(str(i), {}).get("completada", false):
 			todas_completas = false
 			break

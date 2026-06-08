@@ -74,13 +74,14 @@ const NPCS_DATA : Array = [
 	{
 		"id":            "cosmo",
 		"nombre":        "Cosmo",
-		"seccion":       0,
-		"tiene_desafio": false,
+		"seccion":       6,
+		"tiene_desafio": true,
 		"es_final":      true,
 		"pos":           Vector2(2350, 850),    # Extremo derecho — ABAJO en el camino final
 		"textura":       "res://assets/npcs/Astronauta Solo.PNG",
 		"dialogo":       "¡Mati! ¡Por fin llegaste hasta aquí!\nMi nave se averió y me refugié\nen estas cavernas oscuras...\nPara repararla necesito que ayudes\na los 4 guardianes. ¡Habla con todos!",
-		"dialogo_hecho": "¡¡LO LOGRASTE MATI!!\n¡Completaste todos los desafíos!\nAhora puedo salir de la cueva\ny volver a casa. 🚀\n¡Eres el héroe del Planeta Verde!"
+		"dialogo_desafio": "¡Muy bien, Mati!\n¡Completaste los 4 guardianes!\nAhora ayúdame a contar las piezas\npara reparar mi nave...\n¡Estas sumas son un poquito\nmás complicadas! ¿Las resolvemos?",
+		"dialogo_hecho": "¡¡LO LOGRASTE MATI!!\n¡Reparaste mi nave por completo!\nAhora puedo salir de la cueva\ny volver a casa.\n¡Eres el héroe del Planeta Verde!\nYa puedes seguir al siguiente mundo."
 	}
 ]
 
@@ -304,6 +305,16 @@ func _todas_secciones_completas() -> bool:
 			return false
 	return true
 
+# Determina si corresponde mostrar el botón de "ayudar" (iniciar desafío)
+# para el NPC dado. Para Cosmo (es_final) el desafío propio solo aparece
+# después de haber ayudado a los 4 guardianes.
+func _debe_mostrar_btn_desafio(npc_data: Dictionary) -> bool:
+	if not npc_data.get("tiene_desafio", true):
+		return false
+	if npc_data.get("es_final", false) and not _todas_secciones_completas():
+		return false
+	return not guardado_node.seccion_completada(npc_data["seccion"])
+
 # ─────────────────────────────────────────────────────────────
 #  ANIMACIÓN DE ENTRADA (cohete aterriza y aparece Mati)
 # ─────────────────────────────────────────────────────────────
@@ -397,17 +408,26 @@ func _mostrar_dialogo_npc(idx: int) -> void:
 	npc_activo = idx
 	var npc_data = NPCS_DATA[idx]
 
-	# Para Cosmo (es_final): mostrar "hecho" solo si TODOS los desafíos están completos
-	var completada : bool
-	if npc_data.get("es_final", false):
-		completada = _todas_secciones_completas()
-	else:
-		completada = guardado_node.seccion_completada(npc_data["seccion"])
-
 	dialogo_activo   = true
 	texto_indice     = 0
 	texto_completo   = false
-	texto_npc_actual = npc_data["dialogo_hecho"] if completada else npc_data["dialogo"]
+
+	# Para Cosmo (es_final): tiene 3 estados —
+	#  1) faltan guardianes  → "dialogo" (pide ayudar a los 4 guardianes)
+	#  2) guardianes listos, falta su propio desafío → "dialogo_desafio"
+	#  3) todo completo → "dialogo_hecho"
+	if npc_data.get("es_final", false):
+		var guardianes_listos = _todas_secciones_completas()
+		var propio_completo   = guardado_node.seccion_completada(npc_data["seccion"])
+		if not guardianes_listos:
+			texto_npc_actual = npc_data["dialogo"]
+		elif not propio_completo:
+			texto_npc_actual = npc_data.get("dialogo_desafio", npc_data["dialogo"])
+		else:
+			texto_npc_actual = npc_data["dialogo_hecho"]
+	else:
+		var completada = guardado_node.seccion_completada(npc_data["seccion"])
+		texto_npc_actual = npc_data["dialogo_hecho"] if completada else npc_data["dialogo"]
 
 	$BtnInteractuar.visible = false
 	if label_npc_nombre: label_npc_nombre.visible = false
@@ -584,10 +604,7 @@ func _process(delta: float) -> void:
 			texto_completo = true
 			if npc_activo >= 0:
 				var npc_act = NPCS_DATA[npc_activo]
-				if npc_act.get("tiene_desafio", true):
-					var sec_completada = guardado_node.seccion_completada(npc_act["seccion"])
-					if _rpg_btn_ayd: _rpg_btn_ayd.visible = not sec_completada
-				# NPCs sin desafío (Cosmo): btn oculto
+				if _rpg_btn_ayd: _rpg_btn_ayd.visible = _debe_mostrar_btn_desafio(npc_act)
 			# Mostrar "toca para cerrar" si no hay botón de acción pendiente
 			var btn_visible : bool = _rpg_btn_ayd != null and _rpg_btn_ayd.visible
 			if not btn_visible:
@@ -632,9 +649,7 @@ func _input(event: InputEvent) -> void:
 			texto_completo = true
 			if npc_activo >= 0:
 				var npc_act2 = NPCS_DATA[npc_activo]
-				if npc_act2.get("tiene_desafio", true):
-					var sec_completada = guardado_node.seccion_completada(npc_act2["seccion"])
-					if _rpg_btn_ayd: _rpg_btn_ayd.visible = not sec_completada
+				if _rpg_btn_ayd: _rpg_btn_ayd.visible = _debe_mostrar_btn_desafio(npc_act2)
 			var btn_v2 : bool = _rpg_btn_ayd != null and _rpg_btn_ayd.visible
 			if not btn_v2:
 				if _rpg_lbl_cls: _rpg_lbl_cls.visible = true
@@ -664,9 +679,7 @@ func _input(event: InputEvent) -> void:
 						texto_completo = true
 						if npc_activo >= 0:
 							var npc_enter = NPCS_DATA[npc_activo]
-							if npc_enter.get("tiene_desafio", true):
-								var sc = guardado_node.seccion_completada(npc_enter["seccion"])
-								if _rpg_btn_ayd: _rpg_btn_ayd.visible = not sc
+							if _rpg_btn_ayd: _rpg_btn_ayd.visible = _debe_mostrar_btn_desafio(npc_enter)
 						var btn_ve : bool = _rpg_btn_ayd != null and _rpg_btn_ayd.visible
 						if not btn_ve:
 							if _rpg_lbl_cls: _rpg_lbl_cls.visible = true
