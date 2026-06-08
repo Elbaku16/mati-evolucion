@@ -21,6 +21,8 @@ func obtener_pregunta_actual() -> Dictionary:
 	return {}
 
 func responder(respuesta_usuario: int) -> bool:
+	if indice_actual >= preguntas.size():
+		return false
 	var correcta = preguntas[indice_actual]["respuesta"] == respuesta_usuario
 	if correcta:
 		aciertos += 1

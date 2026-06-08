@@ -6,6 +6,7 @@ var guardado_node
 var botones_valores = []
 var pregunta_actual = {}
 var numero_pregunta = 0
+var _respondiendo = false
 
 const OPERADORES = {
 	"+": "res://assets/ui/op_suma.png",
@@ -77,6 +78,7 @@ func actualizar_progreso() -> void:
 	$BarraProgreso.texture = load("res://assets/ui/progreso_%d.png" % numero_pregunta)
 
 func mostrar_pregunta() -> void:
+	_respondiendo = false
 	pregunta_actual = diagnostico_node.obtener_pregunta_actual()
 	if pregunta_actual.is_empty():
 		return
@@ -161,6 +163,12 @@ func _cargar_numero_boton(btn: TextureButton, numero: int) -> void:
 #  RESPUESTA
 # ─────────────────────────────────────────────────────────────
 func _on_btn_presionado(indice: int) -> void:
+	# Evita que una doble emisión de "pressed" (común en pantallas táctiles,
+	# donde un toque genera el evento táctil Y el evento de mouse emulado)
+	# llame a responder() dos veces y desborde el arreglo de preguntas.
+	if _respondiendo or not diagnostico_node.hay_mas_preguntas():
+		return
+	_respondiendo = true
 	var elegido = botones_valores[indice]
 	var tipo = pregunta_actual["tipo"]
 	var correcta: int
