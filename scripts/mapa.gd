@@ -14,7 +14,7 @@ const SKINS_TEXTURA_MAPA = {
 
 const OFFSET_MATI_NIVEL = {
 	1: Vector2(155, 195),
-	2: Vector2(575, 385),
+	2: Vector2(575, 335),
 	3: Vector2(975, 195),
 }
 
