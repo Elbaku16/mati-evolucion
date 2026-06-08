@@ -126,20 +126,20 @@ offset_bottom = 40.0
 [node name="BtnContinuar" type="TextureButton" parent="UI/PanelPausa" unique_id=1278728713]
 process_mode = 3
 layout_mode = 0
-offset_left = 133.99997
-offset_top = 400.0
-offset_right = 1636.0
-offset_bottom = 1902.0
+offset_left = 620.0
+offset_top = 220.0
+offset_right = 2122.0
+offset_bottom = 1722.0
 scale = Vector2(0.04938427, 0.053371854)
 texture_normal = ExtResource("13_dfgg7")
 
 [node name="BtnSalir" type="TextureButton" parent="UI/PanelPausa" unique_id=1374388292]
 process_mode = 3
 layout_mode = 0
-offset_left = 38.0
-offset_top = 402.0
-offset_right = 1540.0
-offset_bottom = 1904.0
+offset_left = 470.0
+offset_top = 220.0
+offset_right = 1972.0
+offset_bottom = 1722.0
 scale = Vector2(0.052214153, 0.050264124)
 texture_normal = ExtResource("14_77aeh")
 
