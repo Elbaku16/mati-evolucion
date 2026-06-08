@@ -90,11 +90,15 @@ func mostrar_pregunta() -> void:
 	$Operador.texture = load(OPERADORES[op])
 	$Operador.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
 	$Operador.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	# La × está dibujada más pequeña en su imagen → escala mayor para igualar +/-
-	var escala_base := Vector2(0.07568138, 0.08303241)
+	# La × está dibujada más pequeña → escala mayor + posición compensada para centrar
 	if op == "x":
-		escala_base *= 2.0
-	$Operador.scale = escala_base
+		$Operador.scale    = Vector2(0.07568138 * 2.0, 0.08303241 * 2.0)
+		# Al duplicar la escala el nodo crece hacia abajo-derecha.
+		# Movemos el origen arriba-izquierda exactamente la mitad extra para centrar.
+		$Operador.position = Vector2(381.0, 68.0)
+	else:
+		$Operador.scale    = Vector2(0.07568138, 0.08303241)
+		$Operador.position = Vector2(435.02228, 125.55615)
 
 	match tipo:
 		0:
