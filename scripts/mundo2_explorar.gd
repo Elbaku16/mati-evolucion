@@ -10,10 +10,10 @@ extends Node2D
 const VELOCIDAD        : float = 280.0
 const DIST_INTERACCION : float = 280.0
 
-const LIMITE_IZQ  : float = -2800.0
-const LIMITE_DER  : float =  3400.0
-const LIMITE_ARR  : float =   650.0   # tope superior: base de los icebergs
-const LIMITE_ABA  : float =   840.0   # tope inferior: fondo imagen bottom Y=1544
+const LIMITE_IZQ  : float = -2000.0
+const LIMITE_DER  : float =  2650.0
+const LIMITE_ARR  : float =   580.0
+const LIMITE_ABA  : float =  1500.0
 
 const RUTA_SAVE : String = "user://mati_save.json"
 
@@ -26,7 +26,7 @@ const NPCS_DATA : Array = [
 		"id":            "muneco",
 		"nombre":        "Muñeco",
 		"seccion":       6,
-		"pos":           Vector2(-2300, 760),   # Zona izquierda — pista de hielo
+		"pos":           Vector2(-1800, 760),   # Zona izquierda — pista de hielo
 		"textura":       "res://assets/npcs/Hombre de nieve.PNG",
 		"dialogo":       "¡Brrr, brrr! Soy Muñeco de Nieve.\nMi iglú se está derritiendo y\nnecesito sumar bloques de hielo\npara reconstruirlo. ¡Números grandes!",
 		"dialogo_hecho": "¡Mi iglú está completo!\nGracias Mati, ya no tengo frío."
@@ -62,7 +62,7 @@ const NPCS_DATA : Array = [
 		"id":            "mora",
 		"nombre":        "Mora",
 		"seccion":       10,
-		"pos":           Vector2(3000, 790),    # Zona derecha — lejos, exploración máxima
+		"pos":           Vector2(2400, 790),    # Zona derecha — lejos, exploración máxima
 		"textura":       "res://assets/npcs/Alíen morada.PNG",
 		"dialogo":       "¡Yo soy Mora, guardiana del portal!\nNadie cruza sin antes resolver\nmis multiplicaciones mixtas.\n¿Te atreves?",
 		"dialogo_hecho": "Impresionante, Mati.\nPocas veces alguien supera\nmis desafíos. ¡El portal es tuyo!"
@@ -149,9 +149,6 @@ func _ready() -> void:
 
 	# Actualizar portal (encendido/apagado según progreso)
 	_actualizar_portal()
-
-	# Tilear el fondo para cubrir todo el mundo expandido
-	_extender_fondo()
 
 	# Nubes animadas (tonos fríos para el planeta de hielo)
 	$Fondo.z_index = -2

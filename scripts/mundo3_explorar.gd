@@ -10,10 +10,10 @@ extends Node2D
 const VELOCIDAD        : float = 280.0
 const DIST_INTERACCION : float = 280.0
 
-const LIMITE_IZQ  : float = -2800.0
-const LIMITE_DER  : float =  3400.0
-const LIMITE_ARR  : float =   660.0   # tope superior: base de los hongos
-const LIMITE_ABA  : float =   840.0   # tope inferior: fondo imagen bottom Y=1544
+const LIMITE_IZQ  : float = -2000.0
+const LIMITE_DER  : float =  2650.0
+const LIMITE_ARR  : float =   580.0
+const LIMITE_ABA  : float =  1500.0
 
 const RUTA_SAVE : String = "user://mati_save.json"
 
@@ -26,7 +26,7 @@ const NPCS_DATA : Array = [
 		"id":            "fungi",
 		"nombre":        "Fungi",
 		"seccion":       11,
-		"pos":           Vector2(-2300, 790),   # Zona izquierda — extremo
+		"pos":           Vector2(-1800, 790),   # Zona izquierda — extremo
 		"textura":       "res://assets/npcs/Alien hongo morado.PNG",
 		"dialogo":       "¡Oye, oye! Soy Fungi.\nMis esporas mágicas se multiplican\nde a tres cada vez.\n¿Conoces la tabla del 3?",
 		"dialogo_hecho": "¡Mis esporas están a salvo!\nGracias Mati, eres el más inteligente\ndel Planeta Hongos."
@@ -53,7 +53,7 @@ const NPCS_DATA : Array = [
 		"id":            "aliencita",
 		"nombre":        "Aliencita",
 		"seccion":       14,
-		"pos":           Vector2(2800, 760),    # Zona derecha — lejos, exploración máxima
+		"pos":           Vector2(2400, 760),    # Zona derecha — lejos, exploración máxima
 		"textura":       "res://assets/npcs/aliencita.PNG",
 		"dialogo":       "¡Hola hola! Soy Aliencita.\nSoy pequeña pero muy inteligente.\nMezclé todas las tablas juntas...\n¡Ayúdame a resolverlas!",
 		"dialogo_hecho": "¡Eres increíble, Mati!\nNadie había resuelto tan rápido\nmis multiplicaciones mezcladas."
@@ -140,9 +140,6 @@ func _ready() -> void:
 
 	# Actualizar portal
 	_actualizar_portal()
-
-	# Tilear el fondo para cubrir todo el mundo expandido
-	_extender_fondo()
 
 	# Hongos flotantes en el cielo
 	$Fondo.z_index = -2

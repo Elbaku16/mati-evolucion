@@ -10,10 +10,10 @@ extends Node2D
 const VELOCIDAD        : float = 280.0
 const DIST_INTERACCION : float = 280.0
 
-const LIMITE_IZQ  : float = -2800.0
-const LIMITE_DER  : float =  3500.0
+const LIMITE_IZQ  : float = -1900.0
+const LIMITE_DER  : float =  2550.0
 const LIMITE_ARR  : float =   480.0
-const LIMITE_ABA  : float =  1400.0
+const LIMITE_ABA  : float =  1700.0
 
 # Zona cueva: más allá del mundo → la oscuridad nunca se activa
 const CUEVA_INICIO_X : float = 9999.0
@@ -181,9 +181,6 @@ func _ready() -> void:
 	cueva_nodo.set_script(load("res://scripts/efectos_cueva.gd"))
 	add_child(cueva_nodo)
 	_crear_overlay_cueva()
-
-	# Tilear el fondo para cubrir todo el mundo expandido
-	_extender_fondo()
 
 	# Efectos ambientales: brillitos flotantes
 	var efectos := Node2D.new()

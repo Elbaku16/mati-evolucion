@@ -42,10 +42,10 @@ shape = SubResource("CapsuleShape2D_wyyw3")
 
 [node name="Camera2D" type="Camera2D" parent="Mati" unique_id=2049111018]
 zoom = Vector2(0.5, 0.5)
-limit_left = -4080
-limit_top = 120
-limit_right = 4780
-limit_bottom = 1760
+limit_left = -1950
+limit_top = -380
+limit_right = 2600
+limit_bottom = 1779
 
 [node name="Monedas" type="Node2D" parent="." unique_id=1784166774]
 
