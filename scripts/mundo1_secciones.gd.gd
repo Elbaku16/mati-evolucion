@@ -82,7 +82,7 @@ func _on_seccion_seleccionada(id_seccion: int) -> void:
 		archivo.close()
 		print("[DEBUG] Guardado seccion_actual = ", id_seccion)
 
-	get_tree().change_scene_to_file("res://scenes/Mundo1Operaciones.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mundo1Operaciones.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  INDICADOR DE ESTRELLAS
@@ -144,4 +144,4 @@ func _actualizar_indicador_estrella(n: int) -> void:
 #  VOLVER AL MUNDO 1
 # ─────────────────────────────────────────────────────────────
 func _volver_al_mundo() -> void:
-	get_tree().change_scene_to_file("res://scenes/Mundo1Explorar.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mundo1Explorar.tscn")

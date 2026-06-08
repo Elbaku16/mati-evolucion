@@ -10,10 +10,10 @@ extends Node2D
 const VELOCIDAD        : float = 280.0
 const DIST_INTERACCION : float = 280.0
 
-const LIMITE_IZQ  : float = -1950.0
-const LIMITE_DER  : float =  2600.0
-const LIMITE_ARR  : float =   690.0   # tope superior: base de los hongos
-const LIMITE_ABA  : float =   815.0   # tope inferior: fondo imagen bottom Y=1544
+const LIMITE_IZQ  : float = -2800.0
+const LIMITE_DER  : float =  3400.0
+const LIMITE_ARR  : float =   660.0   # tope superior: base de los hongos
+const LIMITE_ABA  : float =   840.0   # tope inferior: fondo imagen bottom Y=1544
 
 const RUTA_SAVE : String = "user://mati_save.json"
 
@@ -26,7 +26,7 @@ const NPCS_DATA : Array = [
 		"id":            "fungi",
 		"nombre":        "Fungi",
 		"seccion":       11,
-		"pos":           Vector2(-1500, 800),   # Zona izquierda
+		"pos":           Vector2(-2300, 790),   # Zona izquierda — extremo
 		"textura":       "res://assets/npcs/Alien hongo morado.PNG",
 		"dialogo":       "¡Oye, oye! Soy Fungi.\nMis esporas mágicas se multiplican\nde a tres cada vez.\n¿Conoces la tabla del 3?",
 		"dialogo_hecho": "¡Mis esporas están a salvo!\nGracias Mati, eres el más inteligente\ndel Planeta Hongos."
@@ -35,7 +35,7 @@ const NPCS_DATA : Array = [
 		"id":            "brote",
 		"nombre":        "Brote",
 		"seccion":       12,
-		"pos":           Vector2(-500, 790),    # Centro-izquierda
+		"pos":           Vector2(-800, 670),    # Centro-izquierda — zona alta
 		"textura":       "res://assets/npcs/Alien hongo verde.PNG",
 		"dialogo":       "Hola, soy Brote el hongo verde.\nCuando llueve aquí los hongos\ncrecen de a cuatro...\n¡Enséñame la tabla del 4!",
 		"dialogo_hecho": "¡Ahora sé cuántos hongos\ncrecerán la próxima lluvia!\nGracias por enseñarme, Mati."
@@ -44,7 +44,7 @@ const NPCS_DATA : Array = [
 		"id":            "orbis",
 		"nombre":        "Orbis",
 		"seccion":       13,
-		"pos":           Vector2(550, 810),     # Centro del mundo
+		"pos":           Vector2(600, 835),     # Centro — zona baja
 		"textura":       "res://assets/npcs/Astronauta negro.PNG",
 		"dialogo":       "Soy Orbis, astronauta del cosmos.\nViajé galaxias estudiando el 5.\nLa tabla del 5 es mi secreto.\n¿Puedes rivalizar conmigo?",
 		"dialogo_hecho": "¡Extraordinario, Mati!\nDominas la tabla del 5\ncomo un verdadero astronauta."
@@ -53,7 +53,7 @@ const NPCS_DATA : Array = [
 		"id":            "aliencita",
 		"nombre":        "Aliencita",
 		"seccion":       14,
-		"pos":           Vector2(1900, 800),    # Zona derecha
+		"pos":           Vector2(2800, 760),    # Zona derecha — lejos, exploración máxima
 		"textura":       "res://assets/npcs/aliencita.PNG",
 		"dialogo":       "¡Hola hola! Soy Aliencita.\nSoy pequeña pero muy inteligente.\nMezclé todas las tablas juntas...\n¡Ayúdame a resolverlas!",
 		"dialogo_hecho": "¡Eres increíble, Mati!\nNadie había resuelto tan rápido\nmis multiplicaciones mezcladas."
@@ -230,15 +230,8 @@ func _actualizar_visual_npcs() -> void:
 #  PORTAL (encendido cuando todas las secciones están hechas)
 # ─────────────────────────────────────────────────────────────
 func _actualizar_portal() -> void:
-	if not has_node("SpritePortal"):
-		return
-	var portal = $SpritePortal
-	if mision_completada:
-		if ResourceLoader.exists("res://assets/mundo2/portal_encendido.png"):
-			portal.texture = load("res://assets/mundo2/portal_encendido.png")
-	else:
-		if ResourceLoader.exists("res://assets/mundo2/portal_apagado.png"):
-			portal.texture = load("res://assets/mundo2/portal_apagado.png")
+	if has_node("SpritePortal"):
+		$SpritePortal.visible = false
 
 # ─────────────────────────────────────────────────────────────
 #  MUNDO COMPLETO (secciones 11–15)
@@ -607,7 +600,7 @@ func _iniciar_desafio() -> void:
 		archivo.store_string(JSON.stringify(datos))
 		archivo.close()
 
-	get_tree().change_scene_to_file("res://scenes/Mundo3Operaciones.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mundo3Operaciones.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  MOVIMIENTO DE MATI
@@ -839,4 +832,4 @@ func _toggle_pausa() -> void:
 
 func _ir_al_mapa() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/Mapa.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")

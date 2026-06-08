@@ -395,7 +395,7 @@ func _actualizar_indicador_estrella(n: int) -> void:
 		indicador_wrap_node.visible = false
 
 func _volver() -> void:
-	get_tree().change_scene_to_file("res://scenes/Mapa.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  HELPERS

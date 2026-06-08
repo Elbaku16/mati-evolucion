@@ -183,7 +183,7 @@ func _pagina_anterior() -> void:
 		_mostrar_pagina(pagina_actual - 1)
 
 func _cerrar() -> void:
-	get_tree().change_scene_to_file(escena_origen)
+	TransitionManager.cambiar_escena(escena_origen)
 
 # ─────────────────────────────────────────────────────────────
 #  INPUT — toca en cualquier lugar para avanzar

@@ -10,10 +10,10 @@ extends Node2D
 const VELOCIDAD        : float = 280.0
 const DIST_INTERACCION : float = 280.0
 
-const LIMITE_IZQ  : float = -1950.0
-const LIMITE_DER  : float =  2600.0
-const LIMITE_ARR  : float =   560.0   # tope superior: se pueden ver las colinas altas
-const LIMITE_ABA  : float =  1055.0   # tope inferior: máximo sin barra gris (fondo bottom=1779)
+const LIMITE_IZQ  : float = -2800.0
+const LIMITE_DER  : float =  3500.0
+const LIMITE_ARR  : float =   480.0
+const LIMITE_ABA  : float =  1150.0
 
 # Zona cueva: más allá del mundo → la oscuridad nunca se activa
 const CUEVA_INICIO_X : float = 9999.0
@@ -79,7 +79,7 @@ const NPCS_DATA : Array = [
 		"es_final":      true,
 		"pos":           Vector2(2350, 850),    # Extremo derecho — ABAJO en el camino final
 		"textura":       "res://assets/npcs/Astronauta Solo.PNG",
-		"dialogo":       "¡Mati! ¡Por fin llegaste hasta aquí!\nMi nave se averió y me refugié\nen estas cavernas oscuras...\nPara repararla necesito que ayudes\na los 7 guardianes. ¡Habla con todos!",
+		"dialogo":       "¡Mati! ¡Por fin llegaste hasta aquí!\nMi nave se averió y me refugié\nen estas cavernas oscuras...\nPara repararla necesito que ayudes\na los 4 guardianes. ¡Habla con todos!",
 		"dialogo_hecho": "¡¡LO LOGRASTE MATI!!\n¡Completaste todos los desafíos!\nAhora puedo salir de la cueva\ny volver a casa. 🚀\n¡Eres el héroe del Planeta Verde!"
 	}
 ]
@@ -704,7 +704,7 @@ func _iniciar_desafio() -> void:
 		archivo.store_string(JSON.stringify(datos))
 		archivo.close()
 
-	get_tree().change_scene_to_file("res://scenes/Mundo1Operaciones.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mundo1Operaciones.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  MOVIMIENTO DE MATI
@@ -1016,7 +1016,7 @@ func _toggle_pausa() -> void:
 
 func _ir_al_mapa() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/Mapa.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")
 
 # ═══════════════════════════════════════════════════════════════
 #  DIÁLOGO ESTILO RPG — construye el overlay una sola vez

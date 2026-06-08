@@ -10,7 +10,7 @@ var numero_pregunta = 0
 const OPERADORES = {
 	"+": "res://assets/ui/op_suma.png",
 	"-": "res://assets/ui/op_resta.png",
-	"x": "res://assets/ui/op_mult.png"
+	"x": "res://assets/ui/op_mult (2).png"
 }
 
 const ESTRELLA_VACIA = "res://assets/ui/estrella_respuesta.png"
@@ -19,11 +19,39 @@ const ESTRELLA_VACIA = "res://assets/ui/estrella_respuesta.png"
 func _ruta_estrella(n: int) -> String:
 	return "res://assets/ui/estrellas/%d.png" % n
 
+var _musica_activa : bool = true
+var _btn_volumen   : TextureButton = null
+
 func _ready() -> void:
 	operaciones_node = load("res://scripts/operaciones.gd").new()
 	diagnostico_node = load("res://scripts/diagnostico.gd").new()
 	guardado_node = load("res://scripts/guardado.gd").new()
 	diagnostico_node.iniciar(operaciones_node)
+
+	# Mantener música del menú sonando
+	if get_node_or_null("/root/MusicaManager"):
+		get_node("/root/MusicaManager").reproducir("fondo")
+
+	# Botón de volumen anclado a esquina inferior derecha
+	var capa := CanvasLayer.new()
+	capa.layer = 10
+	add_child(capa)
+
+	_btn_volumen = TextureButton.new()
+	_btn_volumen.ignore_texture_size = true
+	_btn_volumen.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	var tex_vol := load("res://assets/ui/Botones Vector/volumen.png") as Texture2D
+	if tex_vol:
+		_btn_volumen.texture_normal = tex_vol
+	_btn_volumen.layout_mode = 1
+	_btn_volumen.size = Vector2(70, 70)
+	_btn_volumen.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	_btn_volumen.offset_left   = -80.0
+	_btn_volumen.offset_top    = -80.0
+	_btn_volumen.offset_right  = -10.0
+	_btn_volumen.offset_bottom = -10.0
+	_btn_volumen.pressed.connect(_on_volumen_presionado)
+	capa.add_child(_btn_volumen)
 
 	$LabelN1.visible = false
 	$LabelN2.visible = false
@@ -60,6 +88,10 @@ func mostrar_pregunta() -> void:
 	var tipo = pregunta_actual["tipo"]
 
 	$Operador.texture = load(OPERADORES[op])
+	# Mantener siempre la escala original de la escena y dejar que stretch llene el rect
+	$Operador.scale        = Vector2(0.07568138, 0.08303241)
+	$Operador.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
+	$Operador.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 
 	match tipo:
 		0:
@@ -167,4 +199,11 @@ func _on_btn_presionado(indice: int) -> void:
 func _ir_al_nivel() -> void:
 	var nivel = diagnostico_node.obtener_nivel_resultado()
 	guardado_node.guardar("Jugador", nivel, 0, 0, false)
-	get_tree().change_scene_to_file("res://scenes/Mapa.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")
+
+func _on_volumen_presionado() -> void:
+	_musica_activa = not _musica_activa
+	if get_node_or_null("/root/MusicaManager"):
+		get_node("/root/MusicaManager").set_volumen(1.0 if _musica_activa else 0.0)
+	if _btn_volumen:
+		_btn_volumen.modulate = Color(1, 1, 1, 1) if _musica_activa else Color(0.5, 0.5, 0.5, 1)

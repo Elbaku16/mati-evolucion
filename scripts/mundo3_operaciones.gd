@@ -343,7 +343,7 @@ func _pantalla_mundo_completo(monedas: int) -> void:
 	overlay.add_child(boton)
 
 func _ir_al_mapa() -> void:
-	get_tree().change_scene_to_file("res://scenes/Mapa.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")
 
 func _volver_a_explorar() -> void:
-	get_tree().change_scene_to_file("res://scenes/Mundo3Explorar.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mundo3Explorar.tscn")

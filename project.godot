@@ -18,12 +18,15 @@ config/icon="uid://d4njxehauvuoy"
 [autoload]
 
 MusicaManager="*res://scripts/musica_manager.gd"
+TransitionManager="*res://scripts/transition_manager.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/size/mode=3
 window/stretch/mode="canvas_items"
+window/stretch/aspect="ignore"
 
 [physics]
 
@@ -35,3 +38,4 @@ rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.08, 0.04, 0.18, 1)

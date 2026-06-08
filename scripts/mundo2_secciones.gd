@@ -96,7 +96,7 @@ func _on_seccion_seleccionada(id_seccion: int) -> void:
 		archivo.store_string(JSON.stringify(datos))
 		archivo.close()
 
-	get_tree().change_scene_to_file("res://scenes/Mundo2Operaciones.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mundo2Operaciones.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  INDICADOR DE ESTRELLAS
@@ -158,4 +158,4 @@ func _actualizar_indicador_estrella(n: int) -> void:
 #  VOLVER AL MUNDO 2
 # ─────────────────────────────────────────────────────────────
 func _volver_al_mundo() -> void:
-	get_tree().change_scene_to_file("res://scenes/Mundo2Explorar.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mundo2Explorar.tscn")

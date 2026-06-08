@@ -10,10 +10,10 @@ extends Node2D
 const VELOCIDAD        : float = 280.0
 const DIST_INTERACCION : float = 280.0
 
-const LIMITE_IZQ  : float = -1950.0
-const LIMITE_DER  : float =  2600.0
-const LIMITE_ARR  : float =   680.0   # tope superior: base de los icebergs
-const LIMITE_ABA  : float =   815.0   # tope inferior: fondo imagen bottom Y=1544
+const LIMITE_IZQ  : float = -2800.0
+const LIMITE_DER  : float =  3400.0
+const LIMITE_ARR  : float =   650.0   # tope superior: base de los icebergs
+const LIMITE_ABA  : float =   840.0   # tope inferior: fondo imagen bottom Y=1544
 
 const RUTA_SAVE : String = "user://mati_save.json"
 
@@ -26,7 +26,7 @@ const NPCS_DATA : Array = [
 		"id":            "muneco",
 		"nombre":        "Muñeco",
 		"seccion":       6,
-		"pos":           Vector2(-1500, 750),   # Zona izquierda — pista de hielo
+		"pos":           Vector2(-2300, 760),   # Zona izquierda — pista de hielo
 		"textura":       "res://assets/npcs/Hombre de nieve.PNG",
 		"dialogo":       "¡Brrr, brrr! Soy Muñeco de Nieve.\nMi iglú se está derritiendo y\nnecesito sumar bloques de hielo\npara reconstruirlo. ¡Números grandes!",
 		"dialogo_hecho": "¡Mi iglú está completo!\nGracias Mati, ya no tengo frío."
@@ -35,7 +35,7 @@ const NPCS_DATA : Array = [
 		"id":            "cristal",
 		"nombre":        "Cristal",
 		"seccion":       7,
-		"pos":           Vector2(-500, 740),    # Centro-izquierda — pista de hielo
+		"pos":           Vector2(-900, 700),    # Centro-izquierda — arriba de la pista
 		"textura":       "res://assets/npcs/Astronauta de la nieve.PNG",
 		"dialogo":       "Soy Cristal, el espíritu del hielo.\nMis cristales se rompen uno a uno...\nNecesito RESTAR para saber\ncuántos me quedan. ¿Me ayudas?",
 		"dialogo_hecho": "Mis cristales están a salvo.\n¡Gracias Mati! Eres muy inteligente."
@@ -44,7 +44,7 @@ const NPCS_DATA : Array = [
 		"id":            "kiro",
 		"nombre":        "Kiro",
 		"seccion":       8,
-		"pos":           Vector2(550, 755),     # Centro del mundo — pista de hielo
+		"pos":           Vector2(400, 830),     # Centro del mundo — zona baja
 		"textura":       "res://assets/npcs/Niño azul.PNG",
 		"dialogo":       "¡Hiya! Soy Kiro el ninja del hielo.\nMi entrenamiento usa multiplicaciones.\n¿Conoces la tabla del 1?\n¡Demuéstramelo, guerrero!",
 		"dialogo_hecho": "¡Impresionante, guerrero!\nTu conocimiento de la tabla del 1\nes digno de un ninja."
@@ -53,7 +53,7 @@ const NPCS_DATA : Array = [
 		"id":            "maestra_neva",
 		"nombre":        "Maestra Neva",
 		"seccion":       9,
-		"pos":           Vector2(1600, 745),    # Derecha-centro — pista de hielo
+		"pos":           Vector2(1800, 680),    # Derecha-centro — zona alta
 		"textura":       "res://assets/npcs/Chica pelo verde.PNG",
 		"dialogo":       "Buenos días, estudiante...\nSoy Maestra Neva.\nPara cruzar mi puente de hielo\ndebes dominar la tabla del 2.",
 		"dialogo_hecho": "¡Excelente estudiante!\nLa tabla del 2 ya no tiene\nsecretos para ti. ¡Bien hecho!"
@@ -62,7 +62,7 @@ const NPCS_DATA : Array = [
 		"id":            "mora",
 		"nombre":        "Mora",
 		"seccion":       10,
-		"pos":           Vector2(2380, 770),    # Zona derecha — pista de hielo
+		"pos":           Vector2(3000, 790),    # Zona derecha — lejos, exploración máxima
 		"textura":       "res://assets/npcs/Alíen morada.PNG",
 		"dialogo":       "¡Yo soy Mora, guardiana del portal!\nNadie cruza sin antes resolver\nmis multiplicaciones mixtas.\n¿Te atreves?",
 		"dialogo_hecho": "Impresionante, Mati.\nPocas veces alguien supera\nmis desafíos. ¡El portal es tuyo!"
@@ -241,15 +241,8 @@ func _actualizar_visual_npcs() -> void:
 #  PORTAL DE HIELO (encendido cuando todas las secciones están hechas)
 # ─────────────────────────────────────────────────────────────
 func _actualizar_portal() -> void:
-	if not has_node("SpriteAstronauta"):
-		return
-	var portal = $SpriteAstronauta
-	if mision_completada:
-		if ResourceLoader.exists("res://assets/mundo2/portal_encendido.png"):
-			portal.texture = load("res://assets/mundo2/portal_encendido.png")
-	else:
-		if ResourceLoader.exists("res://assets/mundo2/portal_apagado.png"):
-			portal.texture = load("res://assets/mundo2/portal_apagado.png")
+	if has_node("SpriteAstronauta"):
+		$SpriteAstronauta.visible = false
 
 # ─────────────────────────────────────────────────────────────
 #  MUNDO COMPLETO (secciones 6–10)
@@ -670,7 +663,7 @@ func _iniciar_desafio() -> void:
 		archivo.store_string(JSON.stringify(datos))
 		archivo.close()
 
-	get_tree().change_scene_to_file("res://scenes/Mundo2Operaciones.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mundo2Operaciones.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  MOVIMIENTO DE MATI
@@ -910,4 +903,4 @@ func _toggle_pausa() -> void:
 
 func _ir_al_mapa() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/Mapa.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")

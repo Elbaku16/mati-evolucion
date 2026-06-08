@@ -264,7 +264,7 @@ func _on_jugar_presionado() -> void:
 	tw.set_trans(Tween.TRANS_QUAD)
 	tw.tween_property(_overlay, "color:a", 1.0, 0.5)
 	tw.tween_callback(func():
-		get_tree().change_scene_to_file("res://scenes/Diagnostico.tscn")
+		TransitionManager.cambiar_escena("res://scenes/Diagnostico.tscn")
 	)
 
 # ─────────────────────────────────────────────────────────────

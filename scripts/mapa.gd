@@ -13,9 +13,9 @@ const SKINS_TEXTURA_MAPA = {
 }
 
 const OFFSET_MATI_NIVEL = {
-	1: Vector2(160, 200),
-	2: Vector2(600, 285),
-	3: Vector2(980, 200),
+	1: Vector2(155, 195),
+	2: Vector2(565, 490),
+	3: Vector2(975, 195),
 }
 
 # Centros aproximados de cada planeta y radio de detección de clic
@@ -117,17 +117,13 @@ func _seleccionar_planeta(id_planeta: int) -> void:
 
 	match id_planeta:
 		1:
-			get_tree().change_scene_to_file("res://scenes/Mundo1Explorar.tscn")
+			TransitionManager.cambiar_escena("res://scenes/Mundo1Explorar.tscn")
 		2:
 			if mundo1_completado:
-				get_tree().change_scene_to_file("res://scenes/Mundo2Explorar.tscn")
-			else:
-				print("[MAPA] Mundo 2 bloqueado — completa el Mundo 1 primero")
+				TransitionManager.cambiar_escena("res://scenes/Mundo2Explorar.tscn")
 		3:
 			if mundo2_completado:
-				get_tree().change_scene_to_file("res://scenes/Mundo3Explorar.tscn")
-			else:
-				print("[MAPA] Mundo 3 bloqueado — completa el Mundo 2 primero")
+				TransitionManager.cambiar_escena("res://scenes/Mundo3Explorar.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  TODAS LAS SECCIONES MUNDO 2 (6-10)
@@ -204,7 +200,7 @@ func _actualizar_indicador_estrella(n: int) -> void:
 		indicador_wrap_node.visible = false
 
 func _ir_a_tienda() -> void:
-	get_tree().change_scene_to_file("res://scenes/Tienda.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Tienda.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  BOTÓN HISTORIA — libro dorado que abre las ilustraciones
@@ -358,7 +354,7 @@ func _desbloquear_todo_dev() -> void:
 	print("[DEV] Mundos desbloqueados ✓  (secciones sin tocar)")
 
 func _ir_a_historia() -> void:
-	get_tree().change_scene_to_file("res://scenes/Historia.tscn")
+	TransitionManager.cambiar_escena("res://scenes/Historia.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  LLAVES DE PROGRESO — se muestran en la esquina inferior derecha
@@ -370,10 +366,11 @@ func _mostrar_llaves() -> void:
 		{ "ruta": "res://assets/ui/llaves/llave_mundo3.PNG", "ganada": mundo3_completado },
 	]
 
-	var size    : float = 72.0
-	var gap     : float = 12.0
-	var start_x : float = 1280.0 - 24.0 - 3.0 * (size + gap) + gap
-	var y       : float = 720.0 - size - 18.0   # 18px del borde inferior
+	var size    : float = 148.0
+	var gap     : float = 18.0
+	var total_w : float = 3.0 * size + 2.0 * gap
+	var start_x : float = (1280.0 - total_w) / 2.0   # centradas horizontalmente
+	var y       : float = 720.0 - size - 12.0          # pegadas al borde inferior
 
 	for i in range(llaves.size()):
 		var info = llaves[i]
