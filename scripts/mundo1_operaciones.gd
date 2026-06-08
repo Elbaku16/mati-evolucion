@@ -321,12 +321,6 @@ func _mostrar_resultado(monedas: int, perfecta: bool) -> void:
 	var cel_script = load("res://scripts/celebracion.gd")
 	cel_script.lanzar(get_tree().root)
 
-	# Si acaba de completar el Mundo 1 entero → pantalla especial
-	if mundo_completado_ahora:
-		await get_tree().create_timer(0.8).timeout
-		_mostrar_mundo_completo(monedas)
-		return
-
 	if has_node("PanelResultado"):
 		$PanelResultado.visible = true
 		if has_node("PanelResultado/LabelResultado"):
@@ -342,61 +336,6 @@ func _mostrar_resultado(monedas: int, perfecta: bool) -> void:
 	else:
 		await get_tree().create_timer(1.0).timeout
 		_volver_a_secciones()
-
-# ─────────────────────────────────────────────────────────────
-#  PANTALLA DE MUNDO COMPLETO
-# ─────────────────────────────────────────────────────────────
-func _mostrar_mundo_completo(monedas: int) -> void:
-	print("[DEBUG] ¡MUNDO 1 COMPLETO! Mostrando pantalla especial")
-	# Animación de llave ANTES de la pantalla de completado
-	var llave_script = load("res://scripts/llave_animacion.gd")
-	llave_script.mostrar(get_tree().root, "res://assets/ui/llaves/llave_mundo1.PNG",
-		func(): _pantalla_mundo_completo(monedas))
-
-func _pantalla_mundo_completo(monedas: int) -> void:
-
-	# Crear overlay encima de todo
-	var overlay = ColorRect.new()
-	overlay.name = "OverlayMundoCompleto"
-	overlay.color = Color(0.05, 0.05, 0.15, 0.92)
-	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-	add_child(overlay)
-
-	# Título grande
-	var titulo = Label.new()
-	titulo.text = "🎉 ¡MUNDO 1 COMPLETO! 🎉"
-	titulo.add_theme_font_size_override("font_size", 56)
-	titulo.add_theme_color_override("font_color", Color(1, 0.85, 0.3))
-	titulo.set_anchors_preset(Control.PRESET_CENTER)
-	titulo.position = Vector2(-380, -180)
-	titulo.size = Vector2(760, 80)
-	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	overlay.add_child(titulo)
-
-	# Mensaje
-	var mensaje = Label.new()
-	mensaje.text = "¡Felicidades Mati!\nGanaste " + str(monedas) + " monedas en esta sección.\n\n¡Completaste los 7 desafíos!\nAhora puedes ir al Planeta de Hielo 🧊"
-	mensaje.add_theme_font_size_override("font_size", 28)
-	mensaje.add_theme_color_override("font_color", Color(1, 1, 1))
-	mensaje.set_anchors_preset(Control.PRESET_CENTER)
-	mensaje.position = Vector2(-380, -60)
-	mensaje.size = Vector2(760, 180)
-	mensaje.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	overlay.add_child(mensaje)
-
-	# Botón continuar
-	var boton = Button.new()
-	boton.text = "Ir al Mapa"
-	boton.add_theme_font_size_override("font_size", 28)
-	boton.set_anchors_preset(Control.PRESET_CENTER)
-	boton.position = Vector2(-130, 140)
-	boton.size = Vector2(260, 70)
-	boton.pressed.connect(_ir_al_mapa)
-	overlay.add_child(boton)
-
-func _ir_al_mapa() -> void:
-	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")
 
 func _volver_a_secciones() -> void:
 	TransitionManager.cambiar_escena("res://scenes/Mundo1Explorar.tscn")
