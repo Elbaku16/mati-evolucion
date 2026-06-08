@@ -13,7 +13,7 @@ const DIST_INTERACCION : float = 280.0
 const LIMITE_IZQ  : float = -2000.0
 const LIMITE_DER  : float =  2650.0
 const LIMITE_ARR  : float =   580.0
-const LIMITE_ABA  : float =  1500.0
+const LIMITE_ABA  : float =   950.0
 
 const RUTA_SAVE : String = "user://mati_save.json"
 
@@ -53,7 +53,7 @@ const NPCS_DATA : Array = [
 		"id":            "maestra_neva",
 		"nombre":        "Maestra Neva",
 		"seccion":       9,
-		"pos":           Vector2(1800, 680),    # Derecha-centro — zona alta
+		"pos":           Vector2(1800, 790),    # Derecha-centro — zona alta, sobre el hielo
 		"textura":       "res://assets/npcs/Chica pelo verde.PNG",
 		"dialogo":       "Buenos días, estudiante...\nSoy Maestra Neva.\nPara cruzar mi puente de hielo\ndebes dominar la tabla del 2.",
 		"dialogo_hecho": "¡Excelente estudiante!\nLa tabla del 2 ya no tiene\nsecretos para ti. ¡Bien hecho!"
@@ -62,7 +62,7 @@ const NPCS_DATA : Array = [
 		"id":            "mora",
 		"nombre":        "Mora",
 		"seccion":       10,
-		"pos":           Vector2(2400, 790),    # Zona derecha — lejos, exploración máxima
+		"pos":           Vector2(2400, 900),    # Zona derecha — lejos, sobre el hielo
 		"textura":       "res://assets/npcs/Alíen morada.PNG",
 		"dialogo":       "¡Yo soy Mora, guardiana del portal!\nNadie cruza sin antes resolver\nmis multiplicaciones mixtas.\n¿Te atreves?",
 		"dialogo_hecho": "Impresionante, Mati.\nPocas veces alguien supera\nmis desafíos. ¡El portal es tuyo!"

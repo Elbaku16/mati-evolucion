@@ -133,9 +133,9 @@ offset_bottom = 40.0
 process_mode = 3
 layout_mode = 0
 offset_left = 133.99997
-offset_top = 50.0
+offset_top = 400.0
 offset_right = 1636.0
-offset_bottom = 1552.0
+offset_bottom = 1902.0
 scale = Vector2(0.04938427, 0.053371854)
 texture_normal = ExtResource("12_m2o00")
 
@@ -143,9 +143,9 @@ texture_normal = ExtResource("12_m2o00")
 process_mode = 3
 layout_mode = 0
 offset_left = 38.0
-offset_top = 52.0
+offset_top = 402.0
 offset_right = 1540.0
-offset_bottom = 1554.0
+offset_bottom = 1904.0
 scale = Vector2(0.052214153, 0.050264124)
 texture_normal = ExtResource("13_xvjnu")
 
