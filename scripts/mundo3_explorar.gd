@@ -59,13 +59,13 @@ const NPCS_DATA : Array = [
 		"dialogo_hecho": "¡Eres increíble, Mati!\nNadie había resuelto tan rápido\nmis multiplicaciones mezcladas."
 	},
 	{
-		"id":            "seta",
-		"nombre":        "Seta",
+		"id":            "blanco",
+		"nombre":        "Blanco",
 		"seccion":       15,
 		"pos":           Vector2(-300, 800),
-		"textura":       "res://assets/npcs/Alien hongo morado.PNG",
-		"dialogo":       "¡Oye! Soy Seta, hermana de Fungi.\nTengo el doble de esporas que él.\nNecesito la tabla del 6 para\ncontar mis hongos. ¿Me ayudas?",
-		"dialogo_hecho": "¡Ahora sé exactamente\ncuántas esporas tengo!\nGracias Mati, eres muy listo."
+		"textura":       "res://assets/npcs/Alien hongo blanco.PNG",
+		"dialogo":       "Hola... soy Blanco.\nSiempre estoy triste porque\nno recuerdo la tabla del 6...\n¿Me puedes ayudar a aprenderla?",
+		"dialogo_hecho": "Ya no estoy triste.\nAhora recuerdo perfectamente\nla tabla del 6. ¡Gracias Mati!"
 	},
 	{
 		"id":            "turbo",
@@ -77,13 +77,13 @@ const NPCS_DATA : Array = [
 		"dialogo_hecho": "¡Velocidad mental increíble, Mati!\nYa puedo calcular mis carreras\ncon la tabla del 7. ¡Genial!"
 	},
 	{
-		"id":            "cosmica",
-		"nombre":        "Cosmica",
+		"id":            "jefe_hongo",
+		"nombre":        "El Gran Mago",
 		"seccion":       17,
 		"pos":           Vector2(1850, 810),
-		"textura":       "res://assets/npcs/Chica pelo verde.PNG",
-		"dialogo":       "Hola, soy Cosmica, guardiana\nde los hongos cósmicos.\nPara pasar necesitas dominar\nTODAS las tablas juntas.\n¡Demuestra que eres el mejor!",
-		"dialogo_hecho": "¡Lo lograste, Mati!\nEres el verdadero maestro\nde las multiplicaciones.\n¡Mision cumplida!"
+		"textura":       "res://assets/npcs/Jefe hongo.PNG",
+		"dialogo":       "¡Ja ja ja! Soy el Gran Mago\nde los Hongos Cósmicos.\nNadie ha pasado por aqui\nsin resolver mis multiplicaciones.\n¡Enfrentate a TODAS las tablas\nsi te atreves!",
+		"dialogo_hecho": "¡Increible, Mati!\nNunca nadie habia derrotado\nmis multiplicaciones tan bien.\n¡Eres el campeon del Planeta Hongos!"
 	}
 ]
 
