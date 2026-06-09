@@ -34,9 +34,9 @@ const SECCIONES = {
 	1:  { "tipo": "suma",  "max": 10 },
 	2:  { "tipo": "suma",  "max": 20 },
 	3:  { "tipo": "suma",  "max": 30 },
-	4:  { "tipo": "resta", "max": 20 },
+	4:  { "tipo": "suma",  "max": 30 },   # Desafío final de Cosmo — sumas más complicadas
 	5:  { "tipo": "mixto", "max": 30 },
-	6:  { "tipo": "suma",  "max": 35 },   # Desafío final de Cosmo — sumas un poco más complicadas
+
 	11: { "tipo": "resta", "max": 30 },
 	12: { "tipo": "mixto", "max": 40 },
 }
@@ -287,7 +287,7 @@ func _terminar_seccion() -> void:
 
 	# Verificar si completó las 7 secciones del Mundo 1
 	var todas_completas = true
-	for i in [1, 2, 3, 5, 6]:
+	for i in [1, 2, 3, 5, 4]:
 		if not secciones.get(str(i), {}).get("completada", false):
 			todas_completas = false
 			break
@@ -321,15 +321,52 @@ func _mostrar_resultado(monedas: int, perfecta: bool) -> void:
 	var cel_script = load("res://scripts/celebracion.gd")
 	cel_script.lanzar(get_tree().root)
 
-	# Si acaba de completar el Mundo 1 entero → mostrar animación de llave obtenida
+	# Si acaba de completar el Mundo 1 entero → llave + pantalla especial
 	if mundo_completado_ahora:
-		var llave_script = load("res://scripts/llave_animacion.gd")
 		await get_tree().create_timer(0.8).timeout
+		var llave_script = load("res://scripts/llave_animacion.gd")
 		llave_script.mostrar(get_tree().root, "res://assets/ui/llaves/llave_mundo1.PNG",
-			func(): _mostrar_panel_resultado(monedas, perfecta))
+			func(): _pantalla_mundo_completo(monedas))
 		return
 
 	_mostrar_panel_resultado(monedas, perfecta)
+
+func _pantalla_mundo_completo(monedas: int) -> void:
+	var overlay = ColorRect.new()
+	overlay.name = "OverlayMundoCompleto"
+	overlay.color = Color(0.05, 0.10, 0.05, 0.92)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+
+	var titulo = Label.new()
+	titulo.text = "¡MUNDO 1 COMPLETO!"
+	titulo.add_theme_font_size_override("font_size", 56)
+	titulo.add_theme_color_override("font_color", Color(0.4, 1.0, 0.4))
+	titulo.set_anchors_preset(Control.PRESET_CENTER)
+	titulo.position = Vector2(-380, -180)
+	titulo.size = Vector2(760, 80)
+	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	overlay.add_child(titulo)
+
+	var mensaje = Label.new()
+	mensaje.text = "¡Felicidades Mati!\nReparaste la nave de Cosmo\ny completaste el Planeta Verde.\nGanaste " + str(monedas) + " monedas.\n\n¡Ahora puedes explorar el Planeta de Hielo!"
+	mensaje.add_theme_font_size_override("font_size", 28)
+	mensaje.add_theme_color_override("font_color", Color(1, 1, 1))
+	mensaje.set_anchors_preset(Control.PRESET_CENTER)
+	mensaje.position = Vector2(-380, -60)
+	mensaje.size = Vector2(760, 240)
+	mensaje.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	overlay.add_child(mensaje)
+
+	var boton = Button.new()
+	boton.text = "Ir al Mapa"
+	boton.add_theme_font_size_override("font_size", 28)
+	boton.set_anchors_preset(Control.PRESET_CENTER)
+	boton.position = Vector2(-130, 190)
+	boton.size = Vector2(260, 70)
+	boton.pressed.connect(func(): TransitionManager.cambiar_escena("res://scenes/Mapa.tscn"))
+	overlay.add_child(boton)
 
 func _mostrar_panel_resultado(monedas: int, perfecta: bool) -> void:
 	if has_node("PanelResultado"):

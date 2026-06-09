@@ -74,7 +74,7 @@ const NPCS_DATA : Array = [
 	{
 		"id":            "cosmo",
 		"nombre":        "Cosmo",
-		"seccion":       6,
+		"seccion":       4,
 		"tiene_desafio": true,
 		"es_final":      true,
 		"pos":           Vector2(2350, 850),    # Extremo derecho — ABAJO en el camino final
@@ -300,7 +300,7 @@ func _actualizar_visual_npcs() -> void:
 #  MUNDO COMPLETO (secciones 1–5)
 # ─────────────────────────────────────────────────────────────
 func _todas_secciones_completas() -> bool:
-	for i in [1, 2, 3, 5]:   # secciones del Mundo 1 (sin Capitán Rayo sec.4)
+	for i in [1, 2, 3, 5]:   # los 4 guardianes del Mundo 1
 		if not guardado_node.seccion_completada(i):
 			return false
 	return true

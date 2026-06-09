@@ -35,6 +35,9 @@ const SECCIONES = {
 	12: { "tipo": "mult",       "tabla": 4 },
 	13: { "tipo": "mult",       "tabla": 5 },
 	14: { "tipo": "mult_mixto", "max": 7   },
+	15: { "tipo": "mult",       "tabla": 6 },
+	16: { "tipo": "mult",       "tabla": 7 },
+	17: { "tipo": "mult_mixto", "max": 9   },
 }
 
 func _ruta_estrella(n: int) -> String:
@@ -248,9 +251,9 @@ func _terminar_seccion() -> void:
 
 	var monedas_totales = int(datos.get("monedas", 0)) + monedas_ganadas
 
-	# Verificar si completó las 4 secciones del Mundo 3 (11-14)
+	# Verificar si completó las 7 secciones del Mundo 3 (11-17)
 	var todas_completas = true
-	for i in range(11, 15):
+	for i in range(11, 18):
 		if not secciones.get(str(i), {}).get("completada", false):
 			todas_completas = false
 			break
@@ -314,7 +317,7 @@ func _pantalla_mundo_completo(monedas: int) -> void:
 	add_child(overlay)
 
 	var titulo = Label.new()
-	titulo.text = "🍄 ¡MUNDO 3 COMPLETO! 🍄"
+	titulo.text = "¡MISION CUMPLIDA!"
 	titulo.add_theme_font_size_override("font_size", 56)
 	titulo.add_theme_color_override("font_color", Color(0.88, 0.55, 1.0))
 	titulo.set_anchors_preset(Control.PRESET_CENTER)
@@ -324,7 +327,7 @@ func _pantalla_mundo_completo(monedas: int) -> void:
 	overlay.add_child(titulo)
 
 	var mensaje = Label.new()
-	mensaje.text = "¡Increíble Mati!\n¡Conquistaste el Planeta de los Hongos!\nGanaste " + str(monedas) + " monedas.\n\n¡Eres un maestro de las multiplicaciones!"
+	mensaje.text = "¡Lo lograste, Mati!\nCompletaste los 7 desafios del Planeta Hongos\ny demostraste que eres un campeon.\nGanaste " + str(monedas) + " monedas.\n\n¡Eres un verdadero maestro\nde las multiplicaciones!"
 	mensaje.add_theme_font_size_override("font_size", 28)
 	mensaje.add_theme_color_override("font_color", Color(1, 1, 1))
 	mensaje.set_anchors_preset(Control.PRESET_CENTER)

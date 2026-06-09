@@ -57,6 +57,33 @@ const NPCS_DATA : Array = [
 		"textura":       "res://assets/npcs/aliencita.PNG",
 		"dialogo":       "¡Hola hola! Soy Aliencita.\nSoy pequeña pero muy inteligente.\nMezclé todas las tablas juntas...\n¡Ayúdame a resolverlas!",
 		"dialogo_hecho": "¡Eres increíble, Mati!\nNadie había resuelto tan rápido\nmis multiplicaciones mezcladas."
+	},
+	{
+		"id":            "seta",
+		"nombre":        "Seta",
+		"seccion":       15,
+		"pos":           Vector2(-300, 800),
+		"textura":       "res://assets/npcs/Alien hongo morado.PNG",
+		"dialogo":       "¡Oye! Soy Seta, hermana de Fungi.\nTengo el doble de esporas que él.\nNecesito la tabla del 6 para\ncontar mis hongos. ¿Me ayudas?",
+		"dialogo_hecho": "¡Ahora sé exactamente\ncuántas esporas tengo!\nGracias Mati, eres muy listo."
+	},
+	{
+		"id":            "turbo",
+		"nombre":        "Turbo",
+		"seccion":       16,
+		"pos":           Vector2(1200, 680),
+		"textura":       "res://assets/npcs/Niño azul.PNG",
+		"dialogo":       "¡Hiya! Soy Turbo, el más veloz\ndel Planeta Hongos.\nCorro de 7 en 7 pasos.\n¡Pon a prueba la tabla del 7!",
+		"dialogo_hecho": "¡Velocidad mental increíble, Mati!\nYa puedo calcular mis carreras\ncon la tabla del 7. ¡Genial!"
+	},
+	{
+		"id":            "cosmica",
+		"nombre":        "Cosmica",
+		"seccion":       17,
+		"pos":           Vector2(1850, 810),
+		"textura":       "res://assets/npcs/Chica pelo verde.PNG",
+		"dialogo":       "Hola, soy Cosmica, guardiana\nde los hongos cósmicos.\nPara pasar necesitas dominar\nTODAS las tablas juntas.\n¡Demuestra que eres el mejor!",
+		"dialogo_hecho": "¡Lo lograste, Mati!\nEres el verdadero maestro\nde las multiplicaciones.\n¡Mision cumplida!"
 	}
 ]
 
@@ -237,7 +264,7 @@ func _actualizar_portal() -> void:
 #  MUNDO COMPLETO (secciones 11–15)
 # ─────────────────────────────────────────────────────────────
 func _todas_secciones_completas() -> bool:
-	for i in range(11, 15):
+	for i in range(11, 18):
 		if not guardado_node.seccion_completada(i):
 			return false
 	return true
