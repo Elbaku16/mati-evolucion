@@ -149,10 +149,10 @@ func _todas_secciones_mundo2_completas() -> bool:
 	return true
 
 # ─────────────────────────────────────────────────────────────
-#  TODAS LAS SECCIONES MUNDO 3 (11-15)
+#  TODAS LAS SECCIONES MUNDO 3 (11-17)
 # ─────────────────────────────────────────────────────────────
 func _todas_secciones_mundo3_completas() -> bool:
-	for i in range(11, 15):
+	for i in range(11, 18):
 		if not guardado_node.seccion_completada(i):
 			return false
 	return true
