@@ -1,4 +1,4 @@
-extends Control
+﻿extends Control
 
 # ═══════════════════════════════════════════════════════════════
 #  MUNDO 2 — PANTALLA DE OPERACIONES (PLANETA HIELO)
@@ -35,7 +35,8 @@ const SECCIONES = {
 	7:  { "tipo": "resta",      "max": 50 },
 	8:  { "tipo": "mult",       "tabla": 1 },
 	9:  { "tipo": "mult",       "tabla": 2 },
-	10: { "tipo": "mult_mixto", "max": 3 },
+	10: { "tipo": "mult_mixto", "max": 3  },
+	18: { "tipo": "mixto",      "max": 50 },   # Desafío del robot ROBO-X (opcional, no bloquea progresión)
 }
 
 func _ruta_estrella(n: int) -> String:
@@ -53,8 +54,6 @@ func _ready() -> void:
 	var datos = guardado_node.cargar()
 	seccion_actual = int(datos.get("seccion_actual", 6))
 	config_seccion = SECCIONES.get(seccion_actual, SECCIONES[6])
-	print("[DEBUG M2] Sección actual: ", seccion_actual)
-
 	_generar_preguntas()
 
 	for nombre in ["LabelN1","LabelN2","LabelRes","LabelB0","LabelB1","LabelB2","LabelB3","LabelB4","LabelB5"]:
@@ -73,6 +72,34 @@ func _ready() -> void:
 
 	actualizar_progreso()
 	mostrar_pregunta()
+	_crear_boton_casa()
+
+func _crear_boton_casa() -> void:
+	const RUTA_CASA = "res://assets/ui/Casa_transparente.png"
+	var accion := func():
+		get_tree().paused = false
+		TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")
+	if ResourceLoader.exists(RUTA_CASA):
+		var btn := TextureButton.new()
+		btn.texture_normal = load(RUTA_CASA)
+		btn.ignore_texture_size = true
+		btn.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+		btn.position = Vector2(10, 10)
+		btn.size = Vector2(64, 64)
+		btn.tooltip_text = "Volver al mapa"
+		var sbe := StyleBoxEmpty.new()
+		for estado in ["normal", "pressed", "hover", "focus", "disabled"]:
+			btn.add_theme_stylebox_override(estado, sbe)
+		btn.pressed.connect(accion)
+		add_child(btn)
+	else:
+		var btn := Button.new()
+		btn.text = "🏠"
+		btn.add_theme_font_size_override("font_size", 22)
+		btn.position = Vector2(12, 12)
+		btn.size = Vector2(54, 48)
+		btn.pressed.connect(accion)
+		add_child(btn)
 
 # ─────────────────────────────────────────────────────────────
 #  GENERAR PREGUNTAS
@@ -118,6 +145,25 @@ func _generar_operacion() -> Dictionary:
 			num1 = randi_range(1, maximo)
 			num2 = randi_range(1, 9)
 			respuesta = num1 * num2
+		"mixto":
+			var maximo = int(config_seccion.get("max", 50))
+			var sub_tipo = randi_range(0, 2)
+			match sub_tipo:
+				0:
+					op = "+"
+					num1 = randi_range(1, maximo - 1)
+					num2 = randi_range(1, maximo - num1)
+					respuesta = num1 + num2
+				1:
+					op = "-"
+					num1 = randi_range(2, maximo)
+					num2 = randi_range(1, num1 - 1)
+					respuesta = num1 - num2
+				2:
+					op = "x"
+					num1 = randi_range(1, 9)
+					num2 = randi_range(1, 9)
+					respuesta = num1 * num2
 
 	return {
 		"num1": num1,
@@ -211,11 +257,14 @@ func _on_btn_presionado(indice: int) -> void:
 
 	if elegido == correcta:
 		btns[indice].modulate = Color(0.3, 1, 0.3, 1)
+		_animar_boton_feedback(btns[indice], true)
+		if get_node_or_null("/root/MusicaManager"):
+			MusicaManager.play_sfx("correcto")
 		aciertos += 1
 		indice_actual += 1
 		numero_pregunta += 1
 		actualizar_progreso()
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.7).timeout
 
 		if indice_actual < preguntas.size():
 			mostrar_pregunta()
@@ -223,13 +272,48 @@ func _on_btn_presionado(indice: int) -> void:
 			_terminar_seccion()
 	else:
 		btns[indice].modulate = Color(1, 0.3, 0.3, 1)
+		_animar_boton_feedback(btns[indice], false)
+		if get_node_or_null("/root/MusicaManager"):
+			MusicaManager.play_sfx("incorrecto")
 		fallos += 1
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.7).timeout
 		_mostrar_intentar_de_nuevo()
 
 # ─────────────────────────────────────────────────────────────
 #  INTÉNTALO DE NUEVO
 # ─────────────────────────────────────────────────────────────
+func _animar_boton_feedback(btn: TextureButton, correcto: bool) -> void:
+	var orig_scale := btn.scale
+	var tw := create_tween()
+	tw.set_ease(Tween.EASE_OUT)
+	tw.set_trans(Tween.TRANS_BACK)
+	tw.tween_property(btn, "scale", orig_scale * 1.30, 0.12)
+	tw.tween_property(btn, "scale", orig_scale,        0.18)
+
+	var lbl := Label.new()
+	lbl.text = "✓" if correcto else "✗"
+	lbl.add_theme_font_size_override("font_size", 52)
+	lbl.add_theme_color_override("font_color",
+		Color(0.2, 1.0, 0.3) if correcto else Color(1.0, 0.25, 0.25))
+	lbl.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.6))
+	lbl.add_theme_constant_override("shadow_offset_x", 2)
+	lbl.add_theme_constant_override("shadow_offset_y", 2)
+	lbl.pivot_offset = Vector2(20, 26)
+	lbl.scale        = Vector2(0.2, 0.2)
+	lbl.modulate.a   = 0.0
+	lbl.position     = btn.position + Vector2(btn.size.x * 0.5 - 20, -60)
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	btn.get_parent().add_child(lbl)
+
+	var tl := create_tween()
+	tl.set_parallel(true)
+	tl.tween_property(lbl, "scale",      Vector2(1.0, 1.0), 0.20).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tl.tween_property(lbl, "modulate:a", 1.0,               0.12)
+	tl.chain().tween_interval(0.25)
+	tl.chain().tween_property(lbl, "position:y", lbl.position.y - 35, 0.25)
+	tl.chain().tween_property(lbl, "modulate:a", 0.0,                  0.20)
+	tl.chain().tween_callback(func(): lbl.queue_free())
+
 func _mostrar_intentar_de_nuevo() -> void:
 	if has_node("PanelIntentar"):
 		$PanelIntentar.visible = true
@@ -249,8 +333,6 @@ func _terminar_seccion() -> void:
 	var monedas_ganadas = MONEDAS_SECCION
 	if perfecta:
 		monedas_ganadas += MONEDAS_PERFECTA
-
-	print("[DEBUG M2] Terminando sección ", seccion_actual, " — monedas: ", monedas_ganadas)
 
 	var datos = guardado_node.cargar()
 	var secciones = datos.get("secciones", {})
@@ -282,9 +364,6 @@ func _terminar_seccion() -> void:
 		datos.get("mundo1_completado", false),
 		secciones
 	)
-
-	print("[DEBUG M2] Sección guardada. Monedas totales: ", monedas_totales)
-	print("[DEBUG M2] Mundo 2 completado ahora: ", mundo_completado_ahora)
 
 	_mostrar_resultado(monedas_ganadas, perfecta)
 
@@ -321,7 +400,6 @@ func _mostrar_resultado(monedas: int, perfecta: bool) -> void:
 #  PANTALLA DE MUNDO COMPLETO
 # ─────────────────────────────────────────────────────────────
 func _mostrar_mundo_completo(monedas: int) -> void:
-	print("[DEBUG M2] ¡MUNDO 2 COMPLETO! Mostrando pantalla especial")
 	var llave_script = load("res://scripts/llave_animacion.gd")
 	llave_script.mostrar(get_tree().root, "res://assets/ui/llaves/llave_mundo2.PNG",
 		func(): _pantalla_mundo_completo(monedas))
@@ -329,39 +407,63 @@ func _mostrar_mundo_completo(monedas: int) -> void:
 func _pantalla_mundo_completo(monedas: int) -> void:
 	var overlay = ColorRect.new()
 	overlay.name = "OverlayMundoCompleto"
-	overlay.color = Color(0.05, 0.1, 0.25, 0.92)
+	overlay.color = Color(0.05, 0.1, 0.25, 0.0)
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(overlay)
 
+	var cristales = Label.new()
+	cristales.text = "❄️  ❄️  ❄️  ❄️  ❄️"
+	cristales.add_theme_font_size_override("font_size", 36)
+	cristales.set_anchors_preset(Control.PRESET_CENTER)
+	cristales.position = Vector2(-380, -260)
+	cristales.size = Vector2(760, 50)
+	cristales.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cristales.modulate.a = 0.0
+	overlay.add_child(cristales)
+
 	var titulo = Label.new()
-	titulo.text = "❄️ ¡MUNDO 2 COMPLETO! ❄️"
-	titulo.add_theme_font_size_override("font_size", 56)
+	titulo.text = "¡MUNDO 2 COMPLETO!"
+	titulo.add_theme_font_size_override("font_size", 62)
 	titulo.add_theme_color_override("font_color", Color(0.6, 0.9, 1))
 	titulo.set_anchors_preset(Control.PRESET_CENTER)
-	titulo.position = Vector2(-380, -180)
-	titulo.size = Vector2(760, 80)
+	titulo.position = Vector2(-380, -190)
+	titulo.size = Vector2(760, 90)
 	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	titulo.pivot_offset = Vector2(380, 45)
+	titulo.scale = Vector2(0.1, 0.1)
+	titulo.modulate.a = 0.0
 	overlay.add_child(titulo)
 
 	var mensaje = Label.new()
-	mensaje.text = "¡Increíble Mati!\nEl portal de hielo está encendido.\nGanaste " + str(monedas) + " monedas.\n\n¡Sigue tu aventura!"
+	mensaje.text = "¡Increíble Mati!\nEl portal de hielo está encendido.\nGanaste ★ " + str(monedas) + " monedas.\n\n¡Sigue tu aventura!"
 	mensaje.add_theme_font_size_override("font_size", 28)
 	mensaje.add_theme_color_override("font_color", Color(1, 1, 1))
 	mensaje.set_anchors_preset(Control.PRESET_CENTER)
 	mensaje.position = Vector2(-380, -60)
 	mensaje.size = Vector2(760, 200)
 	mensaje.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	mensaje.modulate.a = 0.0
 	overlay.add_child(mensaje)
 
 	var boton = Button.new()
-	boton.text = "Ir al Mapa"
+	boton.text = "Ir al Mapa  →"
 	boton.add_theme_font_size_override("font_size", 28)
 	boton.set_anchors_preset(Control.PRESET_CENTER)
 	boton.position = Vector2(-130, 160)
-	boton.size = Vector2(260, 70)
+	boton.size = Vector2(280, 70)
+	boton.modulate.a = 0.0
 	boton.pressed.connect(_ir_al_mapa)
 	overlay.add_child(boton)
+
+	# Animación de entrada
+	var tw := create_tween().set_parallel(false)
+	tw.tween_property(overlay, "color", Color(0.05, 0.1, 0.25, 0.92), 0.4)
+	tw.tween_property(titulo, "scale", Vector2(1.0, 1.0), 0.35).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tw.parallel().tween_property(titulo, "modulate:a", 1.0, 0.25)
+	tw.tween_property(cristales, "modulate:a", 1.0, 0.3)
+	tw.tween_property(mensaje, "modulate:a", 1.0, 0.4)
+	tw.tween_property(boton, "modulate:a", 1.0, 0.3)
 
 func _ir_al_mapa() -> void:
 	TransitionManager.cambiar_escena("res://scenes/Mapa.tscn")

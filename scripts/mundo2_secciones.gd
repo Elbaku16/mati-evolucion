@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  MUNDO 2 — MAPA DE SECCIONES (PLANETA HIELO)
@@ -54,7 +54,7 @@ func _configurar_botones() -> void:
 			btn.disabled = true
 			btn.modulate = Color(0.6, 0.6, 0.6)
 		elif perfecta:
-			texto = "⭐ " + texto + " ✓"
+			texto = "★ " + texto + " ✓"
 			btn.disabled = false
 			btn.modulate = Color(1, 0.85, 0.3)
 		elif completada:
@@ -85,8 +85,6 @@ func _seccion_desbloqueada_mundo2(id_seccion: int) -> bool:
 #  AL SELECCIONAR UNA SECCIÓN
 # ─────────────────────────────────────────────────────────────
 func _on_seccion_seleccionada(id_seccion: int) -> void:
-	print("[DEBUG M2] Sección elegida: ", id_seccion)
-
 	# Guardar seccion_actual directo al JSON
 	var datos = guardado_node.cargar()
 	datos["seccion_actual"] = id_seccion
@@ -125,7 +123,7 @@ func _crear_indicador_estrella(parent: Node, pos: Vector2) -> void:
 	indicador_label0.layout_mode          = 0
 	indicador_label0.position             = Vector2(0, 0)
 	indicador_label0.size                 = Vector2(90.0, 90.0)
-	indicador_label0.text                 = "⭐ 0"
+	indicador_label0.text                 = "★ 0"
 	indicador_label0.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	indicador_label0.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
 	indicador_label0.add_theme_font_size_override("font_size", 24)

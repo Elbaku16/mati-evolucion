@@ -1,4 +1,4 @@
-extends Control
+﻿extends Control
 
 # ═══════════════════════════════════════════════════════════════
 #  MAPA — Selección de mundo
@@ -27,6 +27,8 @@ const PLANETAS = {
 }
 
 var guardado_node
+var _musica_activa_mapa : bool        = true
+var _btn_vol_mapa       : TextureButton = null
 var mundo1_completado   : bool        = false
 var mundo2_completado   : bool        = false
 var mundo3_completado   : bool        = false
@@ -88,11 +90,27 @@ func _ready() -> void:
 	# Llaves de progreso
 	_mostrar_llaves()
 
-	# ══════════════════════════════════════════════════════════
-	#  🚧 BOTÓN DEV — BORRAR ANTES DE PUBLICAR 🚧
-	#  Desbloquea todos los mundos sin completar desafíos.
-	# ══════════════════════════════════════════════════════════
-	# _crear_btn_dev()  # Botón de pruebas — desactivado temporalmente para envíos/exportación
+
+	# Diploma — solo si los 3 mundos están completos
+	if mundo1_completado and mundo2_completado and mundo3_completado:
+		_crear_btn_diploma(datos.get("nombre", "Jugador"))
+
+	# Botón de volumen — esquina inferior derecha
+	_btn_vol_mapa = TextureButton.new()
+	_btn_vol_mapa.ignore_texture_size = true
+	_btn_vol_mapa.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	var tex_vol_mapa := load("res://assets/ui/Botones Vector/volumen.png") as Texture2D
+	if tex_vol_mapa:
+		_btn_vol_mapa.texture_normal = tex_vol_mapa
+	_btn_vol_mapa.layout_mode = 1
+	_btn_vol_mapa.size = Vector2(50, 50)
+	_btn_vol_mapa.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	_btn_vol_mapa.offset_left   = -66.0
+	_btn_vol_mapa.offset_top    = -66.0
+	_btn_vol_mapa.offset_right  = -16.0
+	_btn_vol_mapa.offset_bottom = -16.0
+	_btn_vol_mapa.pressed.connect(_on_vol_mapa_presionado)
+	add_child(_btn_vol_mapa)
 
 # ─────────────────────────────────────────────────────────────
 #  DETECCIÓN DE CLIC POR POSICIÓN
@@ -100,8 +118,6 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var clic_pos = event.position
-		print("[MAPA] Clic en: ", clic_pos)
-
 		for id_planeta in PLANETAS.keys():
 			var planeta = PLANETAS[id_planeta]
 			var distancia = clic_pos.distance_to(planeta["centro"])
@@ -113,8 +129,6 @@ func _input(event: InputEvent) -> void:
 #  SELECCIONAR PLANETA
 # ─────────────────────────────────────────────────────────────
 func _seleccionar_planeta(id_planeta: int) -> void:
-	print("[MAPA] Planeta seleccionado: ", id_planeta)
-
 	match id_planeta:
 		1:
 			TransitionManager.cambiar_escena("res://scenes/Mundo1Explorar.tscn")
@@ -154,27 +168,40 @@ func _crear_indicador_estrella(parent: Node, pos: Vector2) -> void:
 	parent.add_child(indicador_wrap_node)
 	indicador_wrap_node.layout_mode   = 0
 	indicador_wrap_node.position      = pos
-	indicador_wrap_node.size          = Vector2(90.0, 90.0)
-	indicador_wrap_node.clip_contents = true
+	indicador_wrap_node.size          = Vector2(120.0, 56.0)
 
+	# Ícono estrella PNG (siempre visible)
+	var ico := TextureRect.new()
+	if ResourceLoader.exists("res://assets/ui/Estrella Amarilla.PNG"):
+		ico.texture = load("res://assets/ui/Estrella Amarilla.PNG")
+	ico.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	ico.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
+	ico.layout_mode  = 0
+	ico.position     = Vector2(0, 4)
+	ico.size         = Vector2(48, 48)
+	ico.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	indicador_wrap_node.add_child(ico)
+
+	# Imagen numérica (n > 0)
 	indicador_estrella = TextureRect.new()
 	indicador_wrap_node.add_child(indicador_estrella)
 	indicador_estrella.layout_mode  = 0
-	indicador_estrella.position     = Vector2(0, 0)
-	indicador_estrella.size         = Vector2(90.0, 90.0)
-	indicador_estrella.stretch_mode = TextureRect.STRETCH_SCALE
+	indicador_estrella.position     = Vector2(52, 0)
+	indicador_estrella.size         = Vector2(56.0, 56.0)
+	indicador_estrella.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	indicador_estrella.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
 
+	# Etiqueta para 0
 	indicador_label0 = Label.new()
 	indicador_wrap_node.add_child(indicador_label0)
 	indicador_label0.layout_mode          = 0
-	indicador_label0.position             = Vector2(0, 0)
-	indicador_label0.size                 = Vector2(90.0, 90.0)
-	indicador_label0.text                 = "⭐ 0"
+	indicador_label0.position             = Vector2(52, 8)
+	indicador_label0.size                 = Vector2(56.0, 40.0)
+	indicador_label0.text                 = "0"
 	indicador_label0.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	indicador_label0.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
-	indicador_label0.add_theme_font_size_override("font_size", 24)
-	indicador_label0.add_theme_color_override("font_color", Color(1.0, 0.85, 0.0))
+	indicador_label0.add_theme_font_size_override("font_size", 26)
+	indicador_label0.add_theme_color_override("font_color", Color(1.0, 0.92, 0.0))
 	indicador_label0.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.7))
 	indicador_label0.add_theme_constant_override("shadow_offset_x", 2)
 	indicador_label0.add_theme_constant_override("shadow_offset_y", 2)
@@ -199,6 +226,13 @@ func _actualizar_indicador_estrella(n: int) -> void:
 	else:
 		indicador_wrap_node.visible = false
 
+func _on_vol_mapa_presionado() -> void:
+	_musica_activa_mapa = not _musica_activa_mapa
+	if get_node_or_null("/root/MusicaManager"):
+		get_node("/root/MusicaManager").set_volumen(1.0 if _musica_activa_mapa else 0.0)
+	if _btn_vol_mapa:
+		_btn_vol_mapa.modulate = Color(1, 1, 1, 1) if _musica_activa_mapa else Color(0.5, 0.5, 0.5, 1)
+
 func _ir_a_tienda() -> void:
 	TransitionManager.cambiar_escena("res://scenes/Tienda.tscn")
 
@@ -210,7 +244,7 @@ func _crear_btn_historia() -> void:
 	btn.layout_mode          = 0
 	btn.ignore_texture_size  = true
 	btn.stretch_mode         = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
-	btn.position = Vector2(8.0, 8.0)
+	btn.position = Vector2(8.0, 105.0)
 	btn.size     = Vector2(90.0, 90.0)
 
 	var tex = load("res://assets/ui/boton_historia.png")
@@ -228,7 +262,16 @@ func _estilo_btn_tienda(btn: Button) -> void:
 	# ── Tamaño y posición ────────────────────────────────────
 	btn.position = Vector2(1000.0, 8.0)
 	btn.size     = Vector2(265.0, 68.0)
-	btn.text     = "🛒  Tienda"
+	btn.text     = "  Tienda"
+	if ResourceLoader.exists("res://assets/ui/Carrito.png"):
+		var icono := TextureRect.new()
+		icono.texture = load("res://assets/ui/Carrito.png")
+		icono.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icono.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
+		icono.size = Vector2(40, 40)
+		icono.position = Vector2(10, 14)
+		icono.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		btn.add_child(icono)
 	btn.add_theme_font_size_override("font_size", 28)
 	btn.add_theme_color_override("font_color", Color.WHITE)
 	btn.add_theme_color_override("font_shadow_color", Color(0.15, 0.04, 0.38, 0.90))
@@ -310,48 +353,6 @@ func _estilo_btn_tienda(btn: Button) -> void:
 	sg2.corner_radius_bottom_right = 5
 	g2.add_theme_stylebox_override("panel", sg2)
 
-# ══════════════════════════════════════════════════════════════
-#  🚧 BOTÓN DEV — BORRAR ANTES DE PUBLICAR 🚧
-# ══════════════════════════════════════════════════════════════
-func _crear_btn_dev() -> void:
-	var btn := Button.new()
-	btn.text = "🔓 DEV"
-	btn.position = Vector2(8.0, 660.0)   # esquina inferior izquierda
-	btn.size     = Vector2(110.0, 50.0)
-	btn.add_theme_font_size_override("font_size", 18)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	# Fondo rojo para que sea obvio que es de prueba
-	var st := StyleBoxFlat.new()
-	st.bg_color                   = Color(0.75, 0.10, 0.10)
-	st.corner_radius_top_left     = 10
-	st.corner_radius_top_right    = 10
-	st.corner_radius_bottom_left  = 10
-	st.corner_radius_bottom_right = 10
-	st.border_width_left   = 2
-	st.border_width_right  = 2
-	st.border_width_top    = 2
-	st.border_width_bottom = 2
-	st.border_color = Color(1.0, 0.45, 0.45)
-	btn.add_theme_stylebox_override("normal",  st)
-	btn.add_theme_stylebox_override("hover",   st)
-	btn.add_theme_stylebox_override("pressed", st)
-	btn.pressed.connect(_desbloquear_todo_dev)
-	add_child(btn)
-
-func _desbloquear_todo_dev() -> void:
-	var datos = guardado_node.cargar()
-	# Solo desbloquear acceso a los mundos — NO marcar secciones completadas
-	# (así los NPCs siguen luciendo normales y a full brillo para testear)
-	datos["mundo1_completado"] = true
-	var archivo = FileAccess.open("user://mati_save.json", FileAccess.WRITE)
-	if archivo:
-		archivo.store_string(JSON.stringify(datos))
-		archivo.close()
-	# Refrescar estado local y candados
-	mundo1_completado = true
-	mundo2_completado = true
-	_actualizar_candados()
-	print("[DEV] Mundos desbloqueados ✓  (secciones sin tocar)")
 
 func _ir_a_historia() -> void:
 	TransitionManager.cambiar_escena("res://scenes/Historia.tscn")
@@ -391,6 +392,27 @@ func _mostrar_llaves() -> void:
 			rect.modulate = Color(0.25, 0.25, 0.25, 0.50) # grisado / bloqueada
 
 		add_child(rect)
+
+func _crear_btn_diploma(nombre_jugador: String) -> void:
+	var btn := Button.new()
+	btn.text = "🎓  Ver Diploma"
+	btn.add_theme_font_size_override("font_size", 20)
+	btn.layout_mode = 1
+	btn.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	btn.offset_left   = -220.0
+	btn.offset_top    =  16.0
+	btn.offset_right  =  -16.0
+	btn.offset_bottom =  60.0
+	btn.modulate.a = 0.0
+	btn.pressed.connect(func(): _mostrar_diploma(nombre_jugador))
+	add_child(btn)
+	var tw := create_tween()
+	tw.tween_property(btn, "modulate:a", 1.0, 0.6).set_delay(0.5)
+
+func _mostrar_diploma(nombre: String) -> void:
+	var dip_script = load("res://scripts/diploma.gd")
+	if dip_script:
+		dip_script.mostrar(self, nombre)
 
 func _actualizar_candados() -> void:
 	if has_node("CandadoPl2"):

@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  MUNDO 1 — MAPA DE SECCIONES
@@ -48,7 +48,7 @@ func _configurar_botones() -> void:
 			btn.disabled = true
 			btn.modulate = Color(0.6, 0.6, 0.6)
 		elif perfecta:
-			texto = "⭐ " + texto + " ✓"
+			texto = "★ " + texto + " ✓"
 			btn.disabled = false
 			btn.modulate = Color(1, 0.85, 0.3)
 		elif completada:
@@ -69,8 +69,6 @@ func _configurar_botones() -> void:
 #  AL SELECCIONAR UNA SECCIÓN  (CORREGIDO)
 # ─────────────────────────────────────────────────────────────
 func _on_seccion_seleccionada(id_seccion: int) -> void:
-	print("[DEBUG] Sección elegida en el mapa: ", id_seccion)
-
 	# Guardar seccion_actual DIRECTO al archivo JSON
 	# (sin usar guardar() porque no maneja ese campo)
 	var datos = guardado_node.cargar()
@@ -80,7 +78,6 @@ func _on_seccion_seleccionada(id_seccion: int) -> void:
 	if archivo:
 		archivo.store_string(JSON.stringify(datos))
 		archivo.close()
-		print("[DEBUG] Guardado seccion_actual = ", id_seccion)
 
 	TransitionManager.cambiar_escena("res://scenes/Mundo1Operaciones.tscn")
 
@@ -111,7 +108,7 @@ func _crear_indicador_estrella(parent: Node, pos: Vector2) -> void:
 	indicador_label0.layout_mode          = 0
 	indicador_label0.position             = Vector2(0, 0)
 	indicador_label0.size                 = Vector2(90.0, 90.0)
-	indicador_label0.text                 = "⭐ 0"
+	indicador_label0.text                 = "★ 0"
 	indicador_label0.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	indicador_label0.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
 	indicador_label0.add_theme_font_size_override("font_size", 24)
