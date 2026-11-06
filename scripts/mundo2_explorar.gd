@@ -796,7 +796,23 @@ func _iniciar_desafio() -> void:
 		archivo.store_string(JSON.stringify(datos))
 		archivo.close()
 
-	TransitionManager.cambiar_escena("res://scenes/Mundo2Operaciones.tscn")
+	if NPCS_DATA[npc_activo].get("id", "") == "robot":
+		# Jefe robot → sistema de combate
+		var combate_script = load("res://scripts/combate_jefe.gd")
+		combate_script.guardar_config({
+			"jefe_nombre":    "ROBO-X",
+			"jefe_textura":   "res://assets/npcs/robot_villano.PNG",
+			"jefe_vida_max":  8,
+			"seccion":        20,
+			"tipo_op":        "mixto",
+			"nivel_op":       2,
+			"total_preguntas": 8,
+			"monedas":        10,
+			"escena_origen":  "res://scenes/Mundo2Explorar.tscn"
+		})
+		TransitionManager.cambiar_escena("res://scenes/CombateJefe.tscn")
+	else:
+		TransitionManager.cambiar_escena("res://scenes/Mundo2Operaciones.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  MOVIMIENTO DE MATI

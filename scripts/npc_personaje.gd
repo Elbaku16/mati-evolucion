@@ -5,11 +5,18 @@
 #  el jugador ya completó su desafío.
 # ═══════════════════════════════════════════════════════════════
 
-const DISPLAY_W : float = 200.0   # Ancho de display en mundo 2D
-const DISPLAY_H : float = 240.0   # Alto  de display en mundo 2D
+const DISPLAY_W : float = 200.0
+const DISPLAY_H : float = 240.0
 
 var textura    : Texture2D = null
 var completado : bool      = false
+
+var _animador = preload("res://scripts/animador_personaje.gd")
+
+func _ready() -> void:
+	# Iniciar idle con pequeño delay aleatorio para que no todos estén sincronizados
+	await get_tree().create_timer(randf_range(0.0, 1.0)).timeout
+	_animador.npc_idle(self)
 
 # ─────────────────────────────────────────────────────────────
 func setup(tex: Texture2D) -> void:
@@ -19,6 +26,11 @@ func setup(tex: Texture2D) -> void:
 func marcar_completado(val: bool) -> void:
 	completado = val
 	queue_redraw()
+	if val:
+		_animador.npc_alegria(self)
+
+func animar_reaccion() -> void:
+	_animador.npc_reaccion(self)
 
 # ─────────────────────────────────────────────────────────────
 #  DIBUJO PRINCIPAL

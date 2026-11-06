@@ -805,7 +805,20 @@ func _iniciar_desafio() -> void:
 		archivo.close()
 
 	if NPCS_DATA[npc_activo].get("id", "") == "jefe_hongo":
-		TransitionManager.cambiar_escena("res://scenes/JefeBossTest.tscn")
+		# Lanzar sistema de combate
+		var combate_script = load("res://scripts/combate_jefe.gd")
+		combate_script.guardar_config({
+			"jefe_nombre":    "Jefe Hongo",
+			"jefe_textura":   "res://assets/npcs/Jefe hongo.PNG",
+			"jefe_vida_max":  10,
+			"seccion":        18,
+			"tipo_op":        "mult_mixto",
+			"min":            4, "max": 9, "min_factor": 5,
+			"total_preguntas": 10,
+			"monedas":        12,
+			"escena_origen":  "res://scenes/Mundo3Explorar.tscn"
+		})
+		TransitionManager.cambiar_escena("res://scenes/CombateJefe.tscn")
 	else:
 		TransitionManager.cambiar_escena("res://scenes/Mundo3Operaciones.tscn")
 
