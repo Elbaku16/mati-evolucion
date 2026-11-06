@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://minijuego_carrera_mati"]
+
+[ext_resource type="Script" path="res://scripts/minijuego_carrera.gd" id="1_carrera"]
+
+[node name="MinijuegoCarrera" type="Node2D"]
+script = ExtResource("1_carrera")

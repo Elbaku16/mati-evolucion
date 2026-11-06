@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://minijuego_construccion_mati"]
+
+[ext_resource type="Script" path="res://scripts/minijuego_construccion.gd" id="1_construccion"]
+
+[node name="MinijuegoConstruccion" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_construccion")
