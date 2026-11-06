@@ -100,7 +100,6 @@ func _construir_ui() -> void:
 
 	# Estrellas de fondo
 	var estrellas := _Estrellas.new()
-	estrellas.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(estrellas)
 
 	# Título
