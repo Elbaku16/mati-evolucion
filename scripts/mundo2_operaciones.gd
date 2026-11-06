@@ -36,7 +36,7 @@ const SECCIONES = {
 	8:  { "tipo": "mult",       "tabla": 1 },
 	9:  { "tipo": "mult",       "tabla": 2 },
 	10: { "tipo": "mult_mixto", "max": 3  },
-	18: { "tipo": "mixto",      "max": 50 },   # Desafío del robot ROBO-X (opcional, no bloquea progresión)
+	20: { "tipo": "mixto",      "max": 50 },   # Desafío del robot ROBO-X (opcional, no bloquea progresión)
 }
 
 func _ruta_estrella(n: int) -> String:
