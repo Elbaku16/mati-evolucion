@@ -222,7 +222,7 @@ func _crear_panel_luchador(es_mati: bool) -> VBoxContainer:
 			"escolar":  "res://assets/personajes/mati_escolar.PNG",
 			"fachero":  "res://assets/personajes/mati_fachero.PNG",
 		}
-		var ruta := rutas.get(skin, rutas["clasica"])
+		var ruta: String = rutas.get(skin, rutas["clasica"])
 		if ResourceLoader.exists(ruta):
 			img.texture = load(ruta)
 
