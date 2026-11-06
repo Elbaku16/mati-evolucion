@@ -272,7 +272,7 @@ func _activar() -> void:
 	_mostrar_panel()
 
 func _generar_acertijo() -> Dictionary:
-	var tipo := _proceso_acertijo_tipo()
+	var tipo: String = _proceso_acertijo_tipo()
 	var rng  := RandomNumberGenerator.new()
 	rng.randomize()
 
@@ -297,7 +297,7 @@ func _generar_acertijo() -> Dictionary:
 
 		"faltante":
 			var b := rng.randi_range(2, 9)
-			var r := rng.randi_range(2, 9)
+			var r: int = rng.randi_range(2, 9)
 			return {"tipo": "faltante", "pregunta": "__ × %d = %d" % [b, r * b],
 			        "respuesta": r, "pista": "¿Qué número multiplicado por %d da %d?" % [b, r * b]}
 
@@ -405,7 +405,7 @@ func _mostrar_panel() -> void:
 	panel.add_child(lbl_fb)
 
 	# Botones de respuesta
-	var tipo := _acertijo.get("tipo", "suma")
+	var tipo: String = str(_acertijo.get("tipo", "suma"))
 	if tipo == "simbolo":
 		_crear_botones_simbolo(panel, t)
 	else:
@@ -553,7 +553,7 @@ func _abrir() -> void:
 
 	# Guardar progreso
 	if _id > 0:
-		var datos := _guardado.cargar()
+		var datos: Dictionary = _guardado.cargar()
 		var secs  : Array = datos.get("secciones", [])
 		if not _id in secs:
 			secs.append(_id)

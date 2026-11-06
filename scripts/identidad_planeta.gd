@@ -20,7 +20,7 @@ static func aplicar(planeta: int, mundo: Node) -> void:
 
 static func _registrar_visita(planeta: int) -> void:
 	var gd = load("res://scripts/guardado.gd").new()
-	var datos := gd.cargar()
+	var datos: Dictionary = gd.cargar()
 	var visitas : Array = datos.get("planetas_visitados", [])
 	if not planeta in visitas:
 		visitas.append(planeta)

@@ -119,5 +119,5 @@ func _draw() -> void:
 				pts.append(pos - ny)
 				pts.append(pos + nx)  # cerrar
 				draw_colored_polygon(PackedVector2Array([pts[0], pts[1], pts[2], pts[3]]), col)
-				var col_borde := col; col_borde.a = min(col.a * 1.5, 1.0)
+				var col_borde: Color = col; col_borde.a = min(col.a * 1.5, 1.0)
 				draw_polyline(pts, col_borde, 0.8)

@@ -58,12 +58,12 @@ func _ready() -> void:
 #  CONSULTAS
 # ─────────────────────────────────────────────────────────────
 func esta_desbloqueada(id: String) -> bool:
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	var habs  : Array = datos.get("habilidades_desbloqueadas", [])
 	return id in habs
 
 func esta_activa(id: String) -> bool:
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	var activas : Array = datos.get("habilidades_activas", [])
 	return id in activas
 
@@ -83,7 +83,7 @@ func desbloquear(id: String) -> bool:
 		return true  # ya la tiene
 
 	var costo := int(HABILIDADES_CONFIG[id].get("costo", 999))
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	var monedas := int(datos.get("monedas", 0))
 
 	if monedas < costo:
@@ -106,7 +106,7 @@ func desbloquear(id: String) -> bool:
 func activar(id: String) -> void:
 	if not esta_desbloqueada(id):
 		return
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	var activas : Array = datos.get("habilidades_activas", [])
 	if not id in activas:
 		activas.append(id)
@@ -117,7 +117,7 @@ func activar(id: String) -> void:
 		archivo.close()
 
 func desactivar(id: String) -> void:
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	var activas : Array = datos.get("habilidades_activas", [])
 	activas.erase(id)
 	datos["habilidades_activas"] = activas

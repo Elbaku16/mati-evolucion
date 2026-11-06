@@ -194,7 +194,7 @@ static func incrementar(id: String, datos: Dictionary, cantidad: int = 1) -> boo
 	if nuevo >= objetivo:
 		datos["misiones"][id + "_completa"] = true
 		# Aplicar recompensa en datos
-		var tipo := mision.get("recompensa_tipo", "monedas")
+		var tipo: String = str(mision.get("recompensa_tipo", "monedas"))
 		var valor := int(mision.get("recompensa", 0))
 		match tipo:
 			"monedas":

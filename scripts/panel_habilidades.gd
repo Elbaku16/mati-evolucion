@@ -55,7 +55,7 @@ func _construir_ui() -> void:
 	add_child(lbl_titulo)
 
 	# Monedas actuales
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	_lbl_monedas = Label.new()
 	_lbl_monedas.position = Vector2(SCR_W - 220, 22)
 	_lbl_monedas.size     = Vector2(200, 40)
@@ -242,7 +242,7 @@ func _refrescar() -> void:
 			_cards[id].queue_free()
 	_cards.clear()
 
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	_lbl_monedas.text = "%d" % int(datos.get("monedas", 0))
 
 	var ids := _habilidades.get_todas()

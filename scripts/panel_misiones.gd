@@ -129,7 +129,7 @@ func _crear_fila_mision(m: Dictionary) -> Control:
 	var fila := Panel.new()
 	fila.custom_minimum_size = Vector2(1200, 72)
 	var sty := StyleBoxFlat.new()
-	var col_borde := COLORES_PLANETA.get(int(m.get("planeta", 0)), Color(0.5, 0.5, 0.8))
+	var col_borde: Color = COLORES_PLANETA.get(int(m.get("planeta", 0)), Color(0.5, 0.5, 0.8))
 	sty.bg_color = Color(0.08, 0.06, 0.18, 0.9) if not completa else Color(0.05, 0.14, 0.05, 0.9)
 	sty.border_width_left   = 3
 	sty.border_color = col_borde if completa else Color(col_borde.r, col_borde.g, col_borde.b, 0.4)

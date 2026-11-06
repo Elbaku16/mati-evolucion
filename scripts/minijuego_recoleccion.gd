@@ -153,7 +153,7 @@ func _construir_escenario() -> void:
 	_mati = Node2D.new()
 	_mati.name = "Mati"
 	add_child(_mati)
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	var skin  : String = datos.get("skin_activa", "clasica")
 	var rutas := {
 		"clasica":  "res://assets/personajes/mati_frente.PNG",
@@ -597,7 +597,7 @@ func _completar() -> void:
 	var sec_id := int(_config.get("seccion_id", 0))
 	var monedas_ganar := int(_config.get("monedas", 8))
 	if sec_id > 0:
-		var datos := _guardado.cargar()
+		var datos: Dictionary = _guardado.cargar()
 		var secciones : Dictionary = datos.get("secciones", {})
 		secciones[str(sec_id)] = {"completada": true, "perfecta": true}
 		_guardado.guardar(

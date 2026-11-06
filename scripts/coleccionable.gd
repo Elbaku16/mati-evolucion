@@ -34,7 +34,7 @@ func configurar(planeta: int, save_key: String) -> void:
 	# Verificar si ya fue recogido en esta partida
 	if _save_key != "":
 		var gd = load("res://scripts/guardado.gd").new()
-		var datos := gd.cargar()
+		var datos: Dictionary = gd.cargar()
 		var recogidos : Array = datos.get("coleccionables_ids", [])
 		if _save_key in recogidos:
 			queue_free()
@@ -60,7 +60,7 @@ func _recoger() -> void:
 	_recogido = true
 
 	var gd = load("res://scripts/guardado.gd").new()
-	var datos := gd.cargar()
+	var datos: Dictionary = gd.cargar()
 
 	# Marcar como recogido para no duplicar
 	if _save_key != "":
