@@ -178,6 +178,9 @@ func _ready() -> void:
 	guardado_node = load("res://scripts/guardado.gd").new()
 	var datos = guardado_node.cargar()
 
+	# Identidad del planeta
+	load("res://scripts/identidad_planeta.gd").aplicar(1, self)
+
 	# Música de exploración
 	if Engine.has_singleton("MusicaManager") or get_node_or_null("/root/MusicaManager"):
 		get_node("/root/MusicaManager").musica_explorar_mundo(1)
@@ -394,6 +397,20 @@ func _crear_puertas_y_dispositivos() -> void:
 			})
 			TransitionManager.cambiar_escena("res://scenes/MinijuegoCarrera.tscn")
 		)
+
+	# Cristales coleccionables — Planeta 1
+	var col_script = load("res://scripts/coleccionable.gd")
+	var col_posiciones := [
+		Vector2(-1500, 820), Vector2(-500, 580), Vector2(400, 650),
+		Vector2(1200, 820),  Vector2(2000, 720),
+	]
+	for i in col_posiciones.size():
+		var col_node := Node2D.new()
+		col_node.set_script(col_script)
+		col_node.position = col_posiciones[i]
+		col_node.z_index   = 3
+		add_child(col_node)
+		col_node.configurar(1, "p1_cristal_%d" % i)
 
 func _crear_arbusto_mariposas() -> void:
 	var frames : Array = []

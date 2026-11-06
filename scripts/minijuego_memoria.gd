@@ -375,6 +375,8 @@ func _victoria() -> void:
 		datos["secciones"] = secs
 	datos["monedas"] = int(datos.get("monedas", 0)) + monedas
 	datos["estrellas"] = int(datos.get("estrellas", 0)) + 1
+	var sid_m := int(_config.get("seccion_id", 0))
+	if sid_m == 120: load("res://scripts/misiones.gd").marcar_completa("p2_memoria", datos)
 	var archivo := FileAccess.open(_guardado._ruta(), FileAccess.WRITE)
 	if archivo:
 		archivo.store_string(JSON.stringify(datos))

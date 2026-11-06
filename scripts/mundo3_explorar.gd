@@ -176,6 +176,9 @@ func _ready() -> void:
 	guardado_node = load("res://scripts/guardado.gd").new()
 	var datos = guardado_node.cargar()
 
+	# Identidad del planeta
+	load("res://scripts/identidad_planeta.gd").aplicar(3, self)
+
 	if get_node_or_null("/root/MusicaManager"):
 		get_node("/root/MusicaManager").musica_explorar_mundo(3)
 
@@ -364,6 +367,20 @@ func _crear_puertas_y_dispositivos() -> void:
 			})
 			TransitionManager.cambiar_escena("res://scenes/MinijuegoCarrera.tscn")
 		)
+
+	# Esporas coleccionables — Planeta 3
+	var col_script = load("res://scripts/coleccionable.gd")
+	var col_posiciones := [
+		Vector2(-1300, 790), Vector2(-300, 545), Vector2(600, 610),
+		Vector2(1400, 785),  Vector2(2000, 680),
+	]
+	for i in col_posiciones.size():
+		var col_node := Node2D.new()
+		col_node.set_script(col_script)
+		col_node.position = col_posiciones[i]
+		col_node.z_index   = 3
+		add_child(col_node)
+		col_node.configurar(3, "p3_espora_%d" % i)
 
 # ─────────────────────────────────────────────────────────────
 #  CREAR NPCs EN EL MUNDO 2D
