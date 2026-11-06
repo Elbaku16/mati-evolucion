@@ -402,7 +402,6 @@ func _victoria() -> void:
 	# Misión por planeta según seccion_id
 	var sid := int(_config.get("seccion_id", 0))
 	if sid == 111: load("res://scripts/misiones.gd").marcar_completa("p1_nave", datos)
-	elif sid == 121: load("res://scripts/misiones.gd").marcar_completa("p1_nave", datos)
 	elif sid == 131: load("res://scripts/misiones.gd").marcar_completa("p3_construccion", datos)
 	var arch := FileAccess.open(_guardado._ruta(), FileAccess.WRITE)
 	if arch:

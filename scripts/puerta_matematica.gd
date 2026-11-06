@@ -561,12 +561,11 @@ func _abrir() -> void:
 		# Dar monedas
 		datos["monedas"] = int(datos.get("monedas", 0)) + _monedas
 		# Misión de puertas por planeta
-		var id_mision := "p1_puertas"
-		if _id >= 111 and _id <= 119: id_mision = "p1_puertas"
-		elif _id >= 121 and _id <= 129: id_mision = "p2_monedas"
-		elif _id >= 121 and _id <= 129: id_mision = "p2_monedas"
+		var id_mision := ""
+		if _id >= 101 and _id <= 109:   id_mision = "p1_puertas"
 		elif _id >= 131 and _id <= 139: id_mision = "p3_acertijos"
-		load("res://scripts/misiones.gd").incrementar(id_mision, datos, 1)
+		if id_mision != "":
+			load("res://scripts/misiones.gd").incrementar(id_mision, datos, 1)
 		var archivo := FileAccess.open(_guardado._ruta(), FileAccess.WRITE)
 		if archivo:
 			archivo.store_string(JSON.stringify(datos))

@@ -46,10 +46,9 @@ static func _planeta_verde(mundo: Node) -> void:
 	tinte.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	canvas.add_child(tinte)
 
-	# Partículas de flora — polvo verde flotante
+	# Partículas de flora — polvo verde flotante (dentro del CanvasLayer para que no scrollee)
 	var flora := _FloraParticulas.new()
-	flora.z_index = 2
-	mundo.add_child(flora)
+	canvas.add_child(flora)
 
 # ─────────────────────────────────────────────────────────────
 #  PLANETA 2 — HIELO  (tinte azul frío, copos de nieve)

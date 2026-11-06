@@ -545,9 +545,7 @@ func _fin_carrera(llego_a_meta: bool) -> void:
 	datos["estrellas"] = int(datos.get("estrellas", 0)) + (2 if llego_a_meta else 0)
 	if llego_a_meta:
 		var sid := int(_config.get("seccion_id", 0))
-		if sid == 112: load("res://scripts/misiones.gd").marcar_completa("p1_nave", datos)
-		elif sid == 122: load("res://scripts/misiones.gd").marcar_completa("p2_carrera", datos)
-		elif sid == 132: load("res://scripts/misiones.gd").marcar_completa("p2_carrera", datos)
+		if sid == 122: load("res://scripts/misiones.gd").marcar_completa("p2_carrera", datos)
 	var arch := FileAccess.open(_guardado._ruta(), FileAccess.WRITE)
 	if arch:
 		arch.store_string(JSON.stringify(datos))
