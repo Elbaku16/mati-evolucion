@@ -177,7 +177,6 @@ func _ready() -> void:
 	var datos = guardado_node.cargar()
 
 	# Identidad del planeta
-	load("res://scripts/identidad_planeta.gd").aplicar(3, self)
 
 	if get_node_or_null("/root/MusicaManager"):
 		get_node("/root/MusicaManager").musica_explorar_mundo(3)
@@ -257,130 +256,6 @@ func _ready() -> void:
 		$ZonaCohete.body_entered.connect(func(_b): pass)
 		$ZonaCohete.body_exited.connect(func(_b): pass)
 
-	# Puertas matemáticas y dispositivo de memoria
-	_crear_puertas_y_dispositivos()
-
-# ─────────────────────────────────────────────────────────────
-#  PUERTAS MATEMÁTICAS Y DISPOSITIVO DE MEMORIA
-# ─────────────────────────────────────────────────────────────
-func _crear_puertas_y_dispositivos() -> void:
-	var puerta_script = load("res://scripts/puerta_matematica.gd")
-	var puertas_cfg := [
-		{"id": 121, "tipo": "puerta",  "nivel": 3, "visual": "puerta",  "monedas": 12, "pos": Vector2(-700, 760),  "tema": "mundo3"},
-		{"id": 122, "tipo": "cofre",   "nivel": 3, "visual": "cofre",   "monedas": 15, "pos": Vector2( 700, 720),  "tema": "mundo3"},
-		{"id": 123, "tipo": "palanca", "nivel": 4, "visual": "palanca", "monedas": 18, "pos": Vector2(1800, 680),  "tema": "mundo3"},
-	]
-	for cfg in puertas_cfg:
-		var p := Node2D.new()
-		p.set_script(puerta_script)
-		p.position = Vector2(cfg["pos"])
-		add_child(p)
-		p.configurar({
-			"id":      cfg["id"],
-			"tipo":    cfg.get("tipo", "auto"),
-			"nivel":   cfg.get("nivel", 3),
-			"visual":  cfg.get("visual", "puerta"),
-			"monedas": cfg.get("monedas", 12),
-			"tema":    cfg.get("tema", "mundo3"),
-		})
-
-	var mem_script = load("res://scripts/minijuego_memoria.gd")
-	if mem_script:
-		var dispositivo := ColorRect.new()
-		dispositivo.color    = Color(0.2, 0.0, 0.3, 0.9)
-		dispositivo.size     = Vector2(60, 80)
-		dispositivo.position = Vector2(2100, 710)
-		dispositivo.z_index  = 2
-		add_child(dispositivo)
-
-		var lbl_d := Label.new()
-		lbl_d.text = "🛸"
-		lbl_d.add_theme_font_size_override("font_size", 36)
-		lbl_d.position = Vector2(5, 8)
-		dispositivo.add_child(lbl_d)
-
-		var btn_d := Button.new()
-		btn_d.text = "Jugar"
-		btn_d.position = Vector2(-10, 85)
-		btn_d.size     = Vector2(80, 34)
-		btn_d.add_theme_font_size_override("font_size", 15)
-		dispositivo.add_child(btn_d)
-		btn_d.pressed.connect(func():
-			mem_script.guardar_config({
-				"titulo":        "Dispositivo Alienígena",
-				"nivel_inicio":  4,
-				"rondas":        5,
-				"monedas":       18,
-				"seccion_id":    130,
-				"escena_origen": "res://scenes/Mundo3Explorar.tscn"
-			})
-			TransitionManager.cambiar_escena("res://scenes/MinijuegoMemoria.tscn")
-		)
-
-	var const_script = load("res://scripts/minijuego_construccion.gd")
-	if const_script:
-		var nave_btn := ColorRect.new()
-		nave_btn.color    = Color(0.2, 0.0, 0.3, 0.85)
-		nave_btn.size     = Vector2(70, 90)
-		nave_btn.position = Vector2(-1000, 720)
-		nave_btn.z_index  = 2
-		add_child(nave_btn)
-		var lbl_nave := Label.new()
-		lbl_nave.text = "🚀"; lbl_nave.add_theme_font_size_override("font_size", 40)
-		lbl_nave.position = Vector2(5, 5); nave_btn.add_child(lbl_nave)
-		var btn_nave := Button.new()
-		btn_nave.text = "Reparar"; btn_nave.position = Vector2(-15, 94); btn_nave.size = Vector2(100, 32)
-		btn_nave.add_theme_font_size_override("font_size", 14); nave_btn.add_child(btn_nave)
-		btn_nave.pressed.connect(func():
-			const_script.guardar_config({
-				"titulo":        "Portal Roto",
-				"nivel":         3,
-				"monedas":       18,
-				"seccion_id":    131,
-				"escena_origen": "res://scenes/Mundo3Explorar.tscn"
-			})
-			TransitionManager.cambiar_escena("res://scenes/MinijuegoConstruccion.tscn")
-		)
-
-	var carrera_script = load("res://scripts/minijuego_carrera.gd")
-	if carrera_script:
-		var carrera_btn := ColorRect.new()
-		carrera_btn.color    = Color(0.2, 0.0, 0.2, 0.85)
-		carrera_btn.size     = Vector2(70, 90)
-		carrera_btn.position = Vector2(200, 480)
-		carrera_btn.z_index  = 2
-		add_child(carrera_btn)
-		var lbl_car := Label.new()
-		lbl_car.text = "🏁"; lbl_car.add_theme_font_size_override("font_size", 36)
-		lbl_car.position = Vector2(8, 5); carrera_btn.add_child(lbl_car)
-		var btn_car := Button.new()
-		btn_car.text = "Carrera"; btn_car.position = Vector2(-15, 94); btn_car.size = Vector2(100, 32)
-		btn_car.add_theme_font_size_override("font_size", 14); carrera_btn.add_child(btn_car)
-		btn_car.pressed.connect(func():
-			carrera_script.guardar_config({
-				"titulo":        "Nebulosa Final",
-				"distancia":     2600,
-				"velocidad":     300,
-				"monedas_max":   18,
-				"seccion_id":    132,
-				"escena_origen": "res://scenes/Mundo3Explorar.tscn"
-			})
-			TransitionManager.cambiar_escena("res://scenes/MinijuegoCarrera.tscn")
-		)
-
-	# Esporas coleccionables — Planeta 3
-	var col_script = load("res://scripts/coleccionable.gd")
-	var col_posiciones := [
-		Vector2(-1300, 790), Vector2(-300, 545), Vector2(600, 610),
-		Vector2(1400, 785),  Vector2(2000, 680),
-	]
-	for i in col_posiciones.size():
-		var col_node := Node2D.new()
-		col_node.set_script(col_script)
-		col_node.position = col_posiciones[i]
-		col_node.z_index   = 3
-		add_child(col_node)
-		col_node.configurar(3, "p3_espora_%d" % i)
 
 # ─────────────────────────────────────────────────────────────
 #  CREAR NPCs EN EL MUNDO 2D

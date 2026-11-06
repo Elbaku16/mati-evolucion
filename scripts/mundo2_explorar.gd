@@ -168,7 +168,6 @@ func _ready() -> void:
 	var datos = guardado_node.cargar()
 
 	# Identidad del planeta
-	load("res://scripts/identidad_planeta.gd").aplicar(2, self)
 
 	if get_node_or_null("/root/MusicaManager"):
 		get_node("/root/MusicaManager").musica_explorar_mundo(2)
@@ -255,62 +254,9 @@ func _ready() -> void:
 	_crear_puertas_y_dispositivos()
 
 # ─────────────────────────────────────────────────────────────
-#  PUERTAS MATEMÁTICAS Y DISPOSITIVO DE MEMORIA
+#  ROBOT AVERIADO
 # ─────────────────────────────────────────────────────────────
 func _crear_puertas_y_dispositivos() -> void:
-	var puerta_script = load("res://scripts/puerta_matematica.gd")
-	var puertas_cfg := [
-		{"id": 111, "tipo": "cofre",   "nivel": 2, "visual": "cofre",   "monedas": 8,  "pos": Vector2(-800, 780),  "tema": "mundo2"},
-		{"id": 112, "tipo": "puerta",  "nivel": 2, "visual": "puerta",  "monedas": 10, "pos": Vector2( 600, 740),  "tema": "mundo2"},
-		{"id": 113, "tipo": "palanca", "nivel": 3, "visual": "palanca", "monedas": 12, "pos": Vector2(1700, 700),  "tema": "mundo2"},
-	]
-	for cfg in puertas_cfg:
-		var p := Node2D.new()
-		p.set_script(puerta_script)
-		p.position = Vector2(cfg["pos"])
-		add_child(p)
-		p.configurar({
-			"id":      cfg["id"],
-			"tipo":    cfg.get("tipo", "auto"),
-			"nivel":   cfg.get("nivel", 2),
-			"visual":  cfg.get("visual", "puerta"),
-			"monedas": cfg.get("monedas", 8),
-			"tema":    cfg.get("tema", "mundo2"),
-		})
-
-	var mem_script = load("res://scripts/minijuego_memoria.gd")
-	if mem_script:
-		var dispositivo := ColorRect.new()
-		dispositivo.color    = Color(0.05, 0.08, 0.35, 0.9)
-		dispositivo.size     = Vector2(60, 80)
-		dispositivo.position = Vector2(2000, 750)
-		dispositivo.z_index  = 2
-		add_child(dispositivo)
-
-		var lbl_d := Label.new()
-		lbl_d.text = "🛸"
-		lbl_d.add_theme_font_size_override("font_size", 36)
-		lbl_d.position = Vector2(5, 8)
-		dispositivo.add_child(lbl_d)
-
-		var btn_d := Button.new()
-		btn_d.text = "Jugar"
-		btn_d.position = Vector2(-10, 85)
-		btn_d.size     = Vector2(80, 34)
-		btn_d.add_theme_font_size_override("font_size", 15)
-		dispositivo.add_child(btn_d)
-		btn_d.pressed.connect(func():
-			mem_script.guardar_config({
-				"titulo":        "Dispositivo Alienígena",
-				"nivel_inicio":  3,
-				"rondas":        4,
-				"monedas":       14,
-				"seccion_id":    120,
-				"escena_origen": "res://scenes/Mundo2Explorar.tscn"
-			})
-			TransitionManager.cambiar_escena("res://scenes/MinijuegoMemoria.tscn")
-		)
-
 	var const_script = load("res://scripts/minijuego_construccion.gd")
 	if const_script:
 		var nave_btn := ColorRect.new()
@@ -335,46 +281,6 @@ func _crear_puertas_y_dispositivos() -> void:
 			})
 			TransitionManager.cambiar_escena("res://scenes/MinijuegoConstruccion.tscn")
 		)
-
-	var carrera_script = load("res://scripts/minijuego_carrera.gd")
-	if carrera_script:
-		var carrera_btn := ColorRect.new()
-		carrera_btn.color    = Color(0.1, 0.2, 0.0, 0.85)
-		carrera_btn.size     = Vector2(70, 90)
-		carrera_btn.position = Vector2(100, 500)
-		carrera_btn.z_index  = 2
-		add_child(carrera_btn)
-		var lbl_car := Label.new()
-		lbl_car.text = "🏁"; lbl_car.add_theme_font_size_override("font_size", 36)
-		lbl_car.position = Vector2(8, 5); carrera_btn.add_child(lbl_car)
-		var btn_car := Button.new()
-		btn_car.text = "Carrera"; btn_car.position = Vector2(-15, 94); btn_car.size = Vector2(100, 32)
-		btn_car.add_theme_font_size_override("font_size", 14); carrera_btn.add_child(btn_car)
-		btn_car.pressed.connect(func():
-			carrera_script.guardar_config({
-				"titulo":        "Gran Prix Orbital",
-				"distancia":     2200,
-				"velocidad":     270,
-				"monedas_max":   14,
-				"seccion_id":    122,
-				"escena_origen": "res://scenes/Mundo2Explorar.tscn"
-			})
-			TransitionManager.cambiar_escena("res://scenes/MinijuegoCarrera.tscn")
-		)
-
-	# Fragmentos de hielo coleccionables — Planeta 2
-	var col_script = load("res://scripts/coleccionable.gd")
-	var col_posiciones := [
-		Vector2(-1400, 800), Vector2(-400, 560), Vector2(500, 630),
-		Vector2(1300, 800),  Vector2(1900, 700),
-	]
-	for i in col_posiciones.size():
-		var col_node := Node2D.new()
-		col_node.set_script(col_script)
-		col_node.position = col_posiciones[i]
-		col_node.z_index   = 3
-		add_child(col_node)
-		col_node.configurar(2, "p2_fragmento_%d" % i)
 
 # ─────────────────────────────────────────────────────────────
 #  CREAR NPCs EN EL MUNDO 2D

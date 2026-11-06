@@ -90,9 +90,6 @@ func _ready() -> void:
 	# Botón Habilidades
 	_crear_btn_habilidades()
 
-	# Botón Misiones
-	_crear_btn_misiones()
-
 	# Llaves de progreso
 	_mostrar_llaves()
 
@@ -422,26 +419,6 @@ func _mostrar_diploma(nombre: String) -> void:
 	var dip_script = load("res://scripts/diploma.gd")
 	if dip_script:
 		dip_script.mostrar(self, nombre)
-
-func _crear_btn_misiones() -> void:
-	var btn := Button.new()
-	btn.text = "📋 Misiones"
-	btn.add_theme_font_size_override("font_size", 22)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.position = Vector2(16, 80)
-	btn.size     = Vector2(220, 56)
-	var sty := StyleBoxFlat.new()
-	sty.bg_color = Color(0.08, 0.28, 0.55)
-	sty.corner_radius_top_left = 14; sty.corner_radius_top_right = 14
-	sty.corner_radius_bottom_left = 14; sty.corner_radius_bottom_right = 14
-	btn.add_theme_stylebox_override("normal", sty)
-	var sty_h := sty.duplicate()
-	sty_h.bg_color = Color(0.12, 0.40, 0.75)
-	btn.add_theme_stylebox_override("hover", sty_h)
-	btn.pressed.connect(func():
-		TransitionManager.cambiar_escena("res://scenes/PanelMisiones.tscn")
-	)
-	add_child(btn)
 
 func _crear_btn_habilidades() -> void:
 	var btn := Button.new()

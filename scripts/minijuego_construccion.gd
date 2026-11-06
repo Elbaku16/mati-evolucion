@@ -399,10 +399,6 @@ func _victoria() -> void:
 		datos["secciones"] = secs
 	datos["monedas"]   = int(datos.get("monedas",   0)) + monedas
 	datos["estrellas"] = int(datos.get("estrellas", 0)) + 2
-	# Misión por planeta según seccion_id
-	var sid := int(_config.get("seccion_id", 0))
-	if sid == 111: load("res://scripts/misiones.gd").marcar_completa("p1_nave", datos)
-	elif sid == 131: load("res://scripts/misiones.gd").marcar_completa("p3_construccion", datos)
 	var arch := FileAccess.open(_guardado._ruta(), FileAccess.WRITE)
 	if arch:
 		arch.store_string(JSON.stringify(datos))
