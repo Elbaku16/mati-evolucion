@@ -94,7 +94,7 @@ static func error_respuesta(nodo: Node2D) -> void:
 	for offset in [10.0, -10.0, 8.0, -8.0, 5.0, -5.0, 0.0]:
 		tw.tween_property(nodo, "position:x", ox + offset, 0.05)
 	# Flash rojo
-	if nodo is Sprite2D or nodo is TextureRect:
+	if nodo is Sprite2D:
 		tw.parallel().tween_property(nodo, "modulate", Color(1.4, 0.3, 0.3), 0.05)
 		tw.tween_property(nodo, "modulate", Color(1, 1, 1), 0.3)
 	tw.tween_callback(func(): idle(nodo))
