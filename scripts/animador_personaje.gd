@@ -67,6 +67,7 @@ static func interaccion(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 static func victoria(nodo: Node2D) -> void:
 	detener(nodo)
+	_sfx("fanfare")
 	var origen_y := nodo.position.y
 	var tw := nodo.create_tween()
 	# Salto doble
@@ -87,6 +88,7 @@ static func victoria(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 static func error_respuesta(nodo: Node2D) -> void:
 	detener(nodo)
+	_sfx("incorrecto")
 	var ox := nodo.position.x
 	var tw := nodo.create_tween()
 	for offset in [10.0, -10.0, 8.0, -8.0, 5.0, -5.0, 0.0]:
@@ -102,6 +104,7 @@ static func error_respuesta(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 static func daño(nodo: Node2D) -> void:
 	detener(nodo)
+	_sfx("golpe")
 	var ox := nodo.position.x
 	var tw := nodo.create_tween()
 	tw.tween_property(nodo, "position:x", ox - 20, 0.1)
@@ -211,3 +214,8 @@ static func detener(nodo: Node2D) -> void:
 	nodo.rotation = 0.0
 	nodo.scale    = Vector2(1, 1)
 	nodo.modulate = Color(1, 1, 1, 1)
+
+# Llama MusicaManager.play_sfx si existe, sin crashear si no hay autoload
+static func _sfx(nombre: String) -> void:
+	if Engine.has_singleton("MusicaManager"):
+		Engine.get_singleton("MusicaManager").play_sfx(nombre)

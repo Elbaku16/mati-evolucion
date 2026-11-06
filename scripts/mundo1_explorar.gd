@@ -182,6 +182,11 @@ func _ready() -> void:
 	if Engine.has_singleton("MusicaManager") or get_node_or_null("/root/MusicaManager"):
 		get_node("/root/MusicaManager").musica_explorar_mundo(1)
 
+	# Efecto de portal al entrar al mundo
+	var _efectos_e = load("res://scripts/efectos_ui.gd")
+	if _efectos_e:
+		_efectos_e.flash_blanco(get_tree().root)
+
 	monedas_sesion = int(datos.get("monedas", 0))
 	$UI/LabelMonedas.visible = false
 	_crear_indicador_estrella($UI, Vector2(10.0, 8.0))

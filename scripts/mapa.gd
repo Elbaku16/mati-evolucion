@@ -134,13 +134,13 @@ func _input(event: InputEvent) -> void:
 func _seleccionar_planeta(id_planeta: int) -> void:
 	match id_planeta:
 		1:
-			TransitionManager.cambiar_escena("res://scenes/Mundo1Explorar.tscn")
+			TransitionManager.cambiar_escena("res://scenes/Mundo1Explorar.tscn", "barrido")
 		2:
 			if mundo1_completado:
-				TransitionManager.cambiar_escena("res://scenes/Mundo2Explorar.tscn")
+				TransitionManager.cambiar_escena("res://scenes/Mundo2Explorar.tscn", "barrido")
 		3:
 			if mundo2_completado:
-				TransitionManager.cambiar_escena("res://scenes/Mundo3Explorar.tscn")
+				TransitionManager.cambiar_escena("res://scenes/Mundo3Explorar.tscn", "barrido")
 
 # ─────────────────────────────────────────────────────────────
 #  TODAS LAS SECCIONES MUNDO 2 (6-10)

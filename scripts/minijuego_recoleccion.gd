@@ -40,6 +40,7 @@ var _guardado                   = null
 var _animador                   = null
 var _moneda_burst               = null
 var _habilidades                = null
+var _efectos                    = null
 
 var _velocidad_real  : float = VELOCIDAD_MATI
 var _radio_real      : float = RADIO_RECOLECTAR
@@ -103,6 +104,7 @@ func _ready() -> void:
 	_animador     = load("res://scripts/animador_personaje.gd")
 	_moneda_burst = load("res://scripts/moneda_burst.gd")
 	_habilidades  = load("res://scripts/habilidades.gd").new()
+	_efectos      = load("res://scripts/efectos_ui.gd")
 	_config       = _leer_config()
 
 	if _habilidades.esta_activa("turbo"):
@@ -474,6 +476,10 @@ func _recolectar(obj_data: Dictionary) -> void:
 	# Sonido
 	if get_node_or_null("/root/MusicaManager"):
 		MusicaManager.play_sfx("moneda")
+
+	# Efecto visual de recolección
+	if _efectos:
+		_efectos.estrella_burst(get_tree().root, obj.global_position, 4)
 
 	# Animación de recolección (escala up y fade)
 	var tw := create_tween()

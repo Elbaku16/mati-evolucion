@@ -7,6 +7,10 @@
 # ═══════════════════════════════════════════════════════════════
 
 static func lanzar(parent: Node) -> void:
+	# Sonido de fanfare si no está ya sonando
+	if Engine.has_singleton("MusicaManager"):
+		Engine.get_singleton("MusicaManager").play_sfx("fanfare")
+
 	# CanvasLayer para dibujar por encima de todo
 	var canvas := CanvasLayer.new()
 	canvas.layer = 95

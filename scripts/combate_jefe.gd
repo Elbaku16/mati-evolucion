@@ -37,6 +37,7 @@ var _operaciones                  = null
 var _guardado                     = null
 var _animador                     = null
 var _habilidades                  = null
+var _efectos                      = null
 
 # Efectos de habilidades activas
 var _escudo_activo   : bool = false   # bloquea primer daño si "escudo" equipado
@@ -77,6 +78,7 @@ func _ready() -> void:
 	_guardado     = load("res://scripts/guardado.gd").new()
 	_animador     = load("res://scripts/animador_personaje.gd")
 	_habilidades  = load("res://scripts/habilidades.gd").new()
+	_efectos      = load("res://scripts/efectos_ui.gd")
 
 	_rayo_equipado  = _habilidades.esta_activa("rayo")
 	_escudo_activo  = _habilidades.esta_activa("escudo")
@@ -345,6 +347,9 @@ func _entrada_jefe() -> void:
 	_turno_bloqueado = true
 	if _img_jefe:
 		_animador.jefe_entrada(_img_jefe, _img_jefe.position)
+		# Zoom dramático al presentar al jefe
+		if _efectos:
+			_efectos.zoom_jefe(self, 1.05, 0.55)
 	await get_tree().create_timer(0.9).timeout
 	_turno_bloqueado = false
 	_nueva_pregunta()
@@ -434,6 +439,9 @@ func _on_respuesta(idx: int) -> void:
 
 		_colorear_btn(idx, COL_CORRECTO)
 		_feedback("¡Correcto! +⚡", Color(0.3, 1.0, 0.4))
+		if _efectos:
+			_efectos.flash_correcto(get_tree().root)
+		MusicaManager.play_sfx("correcto")
 		await get_tree().create_timer(0.35).timeout
 
 		# Mati ataca
@@ -448,6 +456,9 @@ func _on_respuesta(idx: int) -> void:
 
 		_colorear_btn(idx, COL_INCORRECTO)
 		_feedback("¡Incorrecto!", Color(1.0, 0.3, 0.3))
+		if _efectos:
+			_efectos.flash_incorrecto(get_tree().root)
+			_efectos.sacudida(self, 4.0, 0.25)
 		await get_tree().create_timer(0.35).timeout
 
 		if _img_mati:
@@ -493,9 +504,14 @@ func _usar_ataque_especial() -> void:
 	_feedback("⚡ ¡ATAQUE ESPECIAL!", COL_ESPECIAL)
 	if _img_mati:
 		_animador.victoria(_img_mati)
+	if _efectos:
+		_efectos.flash_dorado(get_tree().root)
 	await get_tree().create_timer(0.5).timeout
 
 	var dmg_especial := 6 if _rayo_equipado else 3
+	if _efectos and _img_jefe:
+		var pos_jefe := _img_jefe.get_global_rect().get_center()
+		_efectos.explosion(get_tree().root, pos_jefe, Color(1.0, 0.65, 0.1))
 	_dañar_jefe(dmg_especial)
 	await get_tree().create_timer(0.4).timeout
 	_turno_bloqueado = false
@@ -556,9 +572,14 @@ func _victoria() -> void:
 	# Animación de derrota del jefe
 	if _img_jefe:
 		_animador.jefe_derrota(_img_jefe)
+		if _efectos:
+			var pos_j := _img_jefe.get_global_rect().get_center()
+			_efectos.explosion(get_tree().root, pos_j, Color(1.0, 0.5, 0.1), 120.0)
 	if _img_mati:
 		await get_tree().create_timer(0.4).timeout
 		_animador.victoria(_img_mati)
+		if _efectos:
+			_efectos.estrella_burst(get_tree().root, _img_mati.get_global_rect().get_center())
 
 	await get_tree().create_timer(0.8).timeout
 

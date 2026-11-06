@@ -179,6 +179,10 @@ func _ready() -> void:
 	if get_node_or_null("/root/MusicaManager"):
 		get_node("/root/MusicaManager").musica_explorar_mundo(3)
 
+	var _efectos_e = load("res://scripts/efectos_ui.gd")
+	if _efectos_e:
+		_efectos_e.flash_blanco(get_tree().root)
+
 	monedas_sesion = int(datos.get("monedas", 0))
 	$UI/LabelMonedas.visible = false
 	_crear_indicador_estrella($UI, Vector2(10.0, 8.0))
@@ -818,7 +822,7 @@ func _iniciar_desafio() -> void:
 			"monedas":        12,
 			"escena_origen":  "res://scenes/Mundo3Explorar.tscn"
 		})
-		TransitionManager.cambiar_escena("res://scenes/CombateJefe.tscn")
+		TransitionManager.cambiar_escena("res://scenes/CombateJefe.tscn", "barrido")
 	else:
 		TransitionManager.cambiar_escena("res://scenes/Mundo3Operaciones.tscn")
 
