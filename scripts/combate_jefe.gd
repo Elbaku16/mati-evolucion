@@ -214,7 +214,7 @@ func _crear_panel_luchador(es_mati: bool) -> VBoxContainer:
 		_barra_mati      = barra
 		_img_mati        = img
 		# Cargar textura de Mati (skin activa)
-		var datos := _guardado.cargar()
+		var datos: Dictionary = _guardado.cargar()
 		var skin  : String = datos.get("skin_activa", "clasica")
 		var rutas := {
 			"clasica":  "res://assets/personajes/mati_frente.PNG",
@@ -419,8 +419,8 @@ func _on_respuesta(idx: int) -> void:
 	for btn in _botones:
 		btn.disabled = true
 
-	var val_elegido := _botones_vals[idx]
-	var correcto    := val_elegido == _respuesta_ok
+	var val_elegido: int = int(_botones_vals[idx])
+	var correcto: bool = val_elegido == _respuesta_ok
 	_pregs_respondidas += 1
 
 	if correcto:
@@ -599,7 +599,7 @@ func _victoria() -> void:
 	if perfecta:
 		monedas_ganar += 5
 
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	var secciones : Dictionary = datos.get("secciones", {})
 	var key := str(seccion_id)
 	var anterior = secciones.get(key, {})

@@ -238,7 +238,7 @@ func _mostrar_intro() -> void:
 	var btn := Button.new()
 	btn.text = "▶ Comenzar"
 	btn.size = Vector2(220, 60)
-	btn.set_anchors_preset(Control.PRESET_BOTTOM_CENTER)
+	btn.set_anchors_preset(Control.PRESET_CENTER)
 	btn.offset_left   = -110
 	btn.offset_top    = -100
 	btn.offset_right  = 110
@@ -367,7 +367,7 @@ func _victoria() -> void:
 	var sec_id  : int = int(_config.get("seccion_id", 0))
 
 	# Guardar progreso y monedas
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	if sec_id > 0:
 		var secs : Array = datos.get("secciones", [])
 		if not sec_id in secs:
@@ -412,7 +412,7 @@ func _victoria() -> void:
 	var btn := Button.new()
 	btn.text = "Continuar ▶"
 	btn.size = Vector2(240, 60)
-	btn.set_anchors_preset(Control.PRESET_BOTTOM_CENTER)
+	btn.set_anchors_preset(Control.PRESET_CENTER)
 	btn.offset_left   = -120
 	btn.offset_top    = -100
 	btn.offset_right  = 120
@@ -446,7 +446,7 @@ class _Boton extends Button:
 	func _draw() -> void:
 		var w := size.x
 		var h := size.y
-		var r := min(w, h) * 0.5 - 8.0
+		var r: float = min(w, h) * 0.5 - 8.0
 		var centro := Vector2(w * 0.5, h * 0.5)
 
 		var col : Color = col_brillo if encendido else col_base

@@ -248,7 +248,7 @@ func _mostrar_intro() -> void:
 	var btn := Button.new()
 	btn.text = "▶ Comenzar"
 	btn.size = Vector2(220, 60)
-	btn.set_anchors_preset(Control.PRESET_BOTTOM_CENTER)
+	btn.set_anchors_preset(Control.PRESET_CENTER)
 	btn.offset_left = -110; btn.offset_top = -100
 	btn.offset_right = 110; btn.offset_bottom = -40
 	btn.add_theme_font_size_override("font_size", 26)
@@ -418,7 +418,7 @@ func _verificar_colisiones() -> void:
 			continue
 		var info : Dictionary = puerta.call("get_carriles")
 		# La puerta bloquea toda la pantalla — detectar si Mati entra en su zona
-		var px := puerta.position.x
+		var px: float = puerta.position.x
 		if px < mx + 60 and px > mx - 20:
 			_etapa = "puerta"
 			_abrir_panel_puerta(puerta, info)
@@ -465,7 +465,7 @@ func _abrir_panel_puerta(puerta: Node, _info: Dictionary) -> void:
 	var correcto : int = int(reto.get("respuesta", 2))
 	var incorrecto : int = correcto + (randi() % 4 + 2) * (1 if randf() > 0.5 else -1)
 	if incorrecto <= 0: incorrecto = correcto + 3
-	var opciones := [correcto, incorrecto]
+	var opciones: Array[int] = [correcto, incorrecto]
 	opciones.shuffle()
 
 	_canvas_puerta = CanvasLayer.new()
@@ -497,7 +497,7 @@ func _abrir_panel_puerta(puerta: Node, _info: Dictionary) -> void:
 		btn.size     = Vector2(240, 80)
 		btn.add_theme_font_size_override("font_size", 40)
 		ovl.add_child(btn)
-		var val := opciones[i]
+		var val: int = int(opciones[i])
 		btn.pressed.connect(func():
 			_evaluar_puerta(val == correcto)
 		)
@@ -535,7 +535,7 @@ func _fin_carrera(llego_a_meta: bool) -> void:
 		monedas_ganadas = min(_monedas, monedas_max)
 
 	var sec_id : int = int(_config.get("seccion_id", 0))
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	if llego_a_meta and sec_id > 0:
 		var secs : Array = datos.get("secciones", [])
 		if not sec_id in secs:
@@ -590,7 +590,7 @@ func _fin_carrera(llego_a_meta: bool) -> void:
 	var btn := Button.new()
 	btn.text = "Continuar ▶"
 	btn.size = Vector2(240, 60)
-	btn.set_anchors_preset(Control.PRESET_BOTTOM_CENTER)
+	btn.set_anchors_preset(Control.PRESET_CENTER)
 	btn.offset_left = -120; btn.offset_top = -100
 	btn.offset_right = 120; btn.offset_bottom = -40
 	btn.add_theme_font_size_override("font_size", 26)
@@ -635,7 +635,7 @@ class _Fondo extends Node2D:
 		draw_rect(Rect2(0, 0, 1280, 720), Color(0.02, 0.01, 0.10))
 		# Planetas
 		for p in _planetas:
-			var px := fmod(float(p["x"]) - _offset * float(p["speed"]), 1400.0)
+			var px: float = fmod(float(p["x"]) - _offset * float(p["speed"]), 1400.0)
 			if px < -100: px += 1400
 			draw_circle(Vector2(px, float(p["y"])), float(p["r"]), p["col"])
 		# Estrellas parallax

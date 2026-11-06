@@ -218,7 +218,7 @@ func _abrir_reto(idx: int) -> void:
 	_reto_idx = idx
 	_etapa    = "reto"
 	var reto  := _generar_reto(idx)
-	var pieza := PIEZAS[idx]
+	var pieza: Dictionary = PIEZAS[idx]
 
 	# Limpiar panel
 	for child in _panel_reto.get_children():
@@ -278,11 +278,11 @@ func _abrir_reto(idx: int) -> void:
 
 	# 4 opciones numéricas
 	var correcto : int = int(reto["respuesta"])
-	var opciones := _generar_opciones(correcto)
+	var opciones: Array = _generar_opciones(correcto)
 	var btn_x := [60.0, 240.0, 60.0, 240.0]
 	var btn_y := [170.0, 170.0, 240.0, 240.0]
 	for i in 4:
-		var val := opciones[i]
+		var val: int = int(opciones[i])
 		var btn := Button.new()
 		btn.text     = str(val)
 		btn.position = Vector2(btn_x[i], btn_y[i])
@@ -391,7 +391,7 @@ func _victoria() -> void:
 	var monedas : int = int(_config.get("monedas", 12))
 	var sec_id  : int = int(_config.get("seccion_id", 0))
 
-	var datos := _guardado.cargar()
+	var datos: Dictionary = _guardado.cargar()
 	if sec_id > 0:
 		var secs : Array = datos.get("secciones", [])
 		if not sec_id in secs:
@@ -451,7 +451,7 @@ func _victoria() -> void:
 	var btn := Button.new()
 	btn.text = "Continuar ▶"
 	btn.size = Vector2(240, 60)
-	btn.set_anchors_preset(Control.PRESET_BOTTOM_CENTER)
+	btn.set_anchors_preset(Control.PRESET_CENTER)
 	btn.offset_left = -120; btn.offset_top = -100
 	btn.offset_right = 120; btn.offset_bottom = -40
 	btn.add_theme_font_size_override("font_size", 26)
@@ -636,7 +636,7 @@ class _Slot extends Control:
 			                0.7 + hover_extra), false, 2.0)
 			# Cruz de "faltante"
 			var c := Vector2(w * 0.5, h * 0.5)
-			var r := min(w, h) * 0.22
+			var r: float = min(w, h) * 0.22
 			draw_line(c - Vector2(r, 0), c + Vector2(r, 0),
 			          Color(col.r, col.g, col.b, 0.6 + hover_extra), 2.5)
 			draw_line(c - Vector2(0, r), c + Vector2(0, r),
