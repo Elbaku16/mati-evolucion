@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  NUBES ANIMADAS — Flotan lentamente por el cielo del mundo.

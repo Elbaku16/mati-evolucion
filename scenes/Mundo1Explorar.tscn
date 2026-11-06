@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://bmwrxigfsn8dw" path="res://assets/ui/Botones Vector/Cerrar.png" id="13_xvjnu"]
 [ext_resource type="Texture2D" uid="uid://dde65wibyldl6" path="res://assets/ui/boton_jugar.png" id="15_768jq"]
 [ext_resource type="Texture2D" uid="uid://bmkts4xc1b3xa" path="res://assets/ui/Cohete Vertical.PNG" id="15_cdksc"]
+[ext_resource type="Texture2D" uid="uid://cyjcmyfr77con" path="res://assets/ui/Botones Vector/volumen.png" id="20_vol1"]
+[ext_resource type="Texture2D" uid="uid://5qonk63lrjlk" path="res://assets/ui/tabla.png" id="21_pausa1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wyyw3"]
 
@@ -74,7 +76,8 @@ offset_left = 119.00001
 offset_top = 380.0
 offset_right = 1621.0
 offset_bottom = 1882.0
-scale = Vector2(0.05003396, 0.06134946)
+scale = Vector2(0.041, 0.0503)
+modulate = Color(1, 1, 1, 0.72)
 texture_normal = ExtResource("7_kg051")
 
 [node name="BtnAbajo" type="TextureButton" parent="UI" unique_id=725190867]
@@ -82,7 +85,8 @@ offset_left = 112.0
 offset_top = 546.0
 offset_right = 1614.0
 offset_bottom = 2048.0
-scale = Vector2(0.05678192, 0.060506616)
+scale = Vector2(0.0466, 0.0496)
+modulate = Color(1, 1, 1, 0.72)
 texture_normal = ExtResource("8_pbuom")
 
 [node name="BtnIzquierda" type="TextureButton" parent="UI" unique_id=1620112377]
@@ -90,7 +94,8 @@ offset_left = 54.000004
 offset_top = 458.00003
 offset_right = 1556.0
 offset_bottom = 1960.0
-scale = Vector2(0.053897835, 0.06604504)
+scale = Vector2(0.0442, 0.0542)
+modulate = Color(1, 1, 1, 0.72)
 texture_normal = ExtResource("9_e1wcl")
 
 [node name="BtnDerecha" type="TextureButton" parent="UI" unique_id=2007612768]
@@ -98,10 +103,12 @@ offset_left = 177.0
 offset_top = 460.00003
 offset_right = 1679.0
 offset_bottom = 1962.0
-scale = Vector2(0.052283384, 0.06469509)
+scale = Vector2(0.0429, 0.0530)
+modulate = Color(1, 1, 1, 0.72)
 texture_normal = ExtResource("10_kp34r")
 
 [node name="BtnPausa" type="TextureButton" parent="UI" unique_id=266599008]
+visible = false
 offset_left = 1065.0
 offset_top = 23.0
 offset_right = 2567.0
@@ -129,25 +136,49 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="BtnContinuar" type="TextureButton" parent="UI/PanelPausa" unique_id=1278728713]
+[node name="FondoPanel" type="TextureRect" parent="UI/PanelPausa"]
 process_mode = 3
 layout_mode = 0
-offset_left = 1160.0
-offset_top = 220.0
-offset_right = 2662.0
-offset_bottom = 1722.0
-scale = Vector2(0.04938427, 0.053371854)
-texture_normal = ExtResource("12_m2o00")
+ignore_texture_size = true
+stretch_mode = 0
+offset_left = 300.0
+offset_top = 210.0
+offset_right = 980.0
+offset_bottom = 510.0
+texture = ExtResource("21_pausa1")
 
 [node name="BtnSalir" type="TextureButton" parent="UI/PanelPausa" unique_id=1374388292]
 process_mode = 3
 layout_mode = 0
-offset_left = 1070.0
-offset_top = 220.0
-offset_right = 2572.0
-offset_bottom = 1722.0
-scale = Vector2(0.052214153, 0.050264124)
+ignore_texture_size = true
+stretch_mode = 5
+offset_left = 375.0
+offset_top = 295.0
+offset_right = 505.0
+offset_bottom = 425.0
 texture_normal = ExtResource("13_xvjnu")
+
+[node name="BtnContinuar" type="TextureButton" parent="UI/PanelPausa" unique_id=1278728713]
+process_mode = 3
+layout_mode = 0
+ignore_texture_size = true
+stretch_mode = 5
+offset_left = 575.0
+offset_top = 295.0
+offset_right = 705.0
+offset_bottom = 425.0
+texture_normal = ExtResource("12_m2o00")
+
+[node name="BtnVolumen" type="TextureButton" parent="UI/PanelPausa"]
+process_mode = 3
+layout_mode = 0
+ignore_texture_size = true
+stretch_mode = 5
+offset_left = 775.0
+offset_top = 295.0
+offset_right = 905.0
+offset_bottom = 425.0
+texture_normal = ExtResource("20_vol1")
 
 [node name="PanelDialogo" type="Control" parent="UI" unique_id=927979932]
 visible = false

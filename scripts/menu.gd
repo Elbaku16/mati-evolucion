@@ -1,4 +1,4 @@
-extends Control
+﻿extends Control
 
 # ═══════════════════════════════════════════════════════════════
 #  MENÚ PRINCIPAL — Efectos visuales animados
@@ -143,41 +143,41 @@ func _animar_titulo() -> void:
 func _lanzar_chispa_titulo() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
-	var simbolos := ["✨", "⭐", "✦", "★", "✧", "💫"]
-	var colores  := [
+	var colores := [
 		Color(1.0, 0.95, 0.3, 1.0),
 		Color(0.4, 0.9,  1.0, 1.0),
 		Color(1.0, 0.5,  0.9, 1.0),
 		Color(0.8, 1.0,  0.5, 1.0),
 		Color(1.0, 1.0,  1.0, 1.0),
+		Color(1.0, 0.6,  0.2, 1.0),
 	]
 	for _i in range(18):
-		var lbl := Label.new()
-		lbl.text = simbolos[randi() % simbolos.size()]
-		lbl.layout_mode = 0
-		lbl.position = Vector2(
+		var tam := rng.randi_range(10, 24)
+		var circulo := ColorRect.new()
+		circulo.size = Vector2(tam, tam)
+		circulo.color = colores[randi() % colores.size()]
+		circulo.layout_mode = 0
+		circulo.position = Vector2(
 			rng.randf_range(260.0, 1100.0),
 			rng.randf_range(255.0, 545.0)
 		)
-		lbl.add_theme_font_size_override("font_size", rng.randi_range(18, 38))
-		lbl.add_theme_color_override("font_color", colores[randi() % colores.size()])
-		lbl.modulate.a = 0.0
-		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		add_child(lbl)
+		circulo.modulate.a = 0.0
+		circulo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(circulo)
 
 		var dur   : float = rng.randf_range(0.3, 0.7)
 		var delay : float = rng.randf_range(0.0, 3.0)
 		var tw := create_tween()
 		tw.set_loops()
-		tw.tween_property(lbl, "modulate:a", 1.0, dur * 0.5).set_delay(delay)
-		tw.tween_property(lbl, "modulate:a", 0.0, dur * 0.5)
-		tw.tween_property(lbl, "modulate:a", 0.0, dur * 2.0)
-		lbl.scale = Vector2(0.1, 0.1)
+		tw.tween_property(circulo, "modulate:a", 1.0, dur * 0.5).set_delay(delay)
+		tw.tween_property(circulo, "modulate:a", 0.0, dur * 0.5)
+		tw.tween_property(circulo, "modulate:a", 0.0, dur * 2.0)
+		circulo.scale = Vector2(0.1, 0.1)
 		var ts := create_tween()
 		ts.set_loops()
-		ts.tween_property(lbl, "scale", Vector2(1.2, 1.2), dur * 0.4).set_delay(delay)
-		ts.tween_property(lbl, "scale", Vector2(0.1, 0.1), dur * 0.6)
-		ts.tween_property(lbl, "scale", Vector2(0.1, 0.1), dur * 2.0)
+		ts.tween_property(circulo, "scale", Vector2(1.2, 1.2), dur * 0.4).set_delay(delay)
+		ts.tween_property(circulo, "scale", Vector2(0.1, 0.1), dur * 0.6)
+		ts.tween_property(circulo, "scale", Vector2(0.1, 0.1), dur * 2.0)
 
 # ─────────────────────────────────────────────────────────────
 #  🟡 BOTÓN JUGAR — pulso de brillo
@@ -257,6 +257,89 @@ func _efecto_agua() -> void:
 #  🎬 TRANSICIÓN — fade negro al cambiar escena
 # ─────────────────────────────────────────────────────────────
 func _on_jugar_presionado() -> void:
+	var gd_script = load("res://scripts/guardado.gd")
+	var nombre_actual : String = gd_script.obtener_perfil_actual()
+	if nombre_actual == "Jugador" or nombre_actual == "":
+		_mostrar_panel_nombre()
+	else:
+		_ir_a_juego()
+
+func _mostrar_panel_nombre() -> void:
+	# Fondo oscuro que cubre toda la pantalla
+	var fondo := ColorRect.new()
+	fondo.name = "FondoNombre"
+	fondo.color = Color(0, 0, 0, 0)
+	fondo.set_anchors_preset(Control.PRESET_FULL_RECT)
+	fondo.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(fondo)
+
+	var panel := PanelContainer.new()
+	panel.name = "PanelNombre"
+	panel.layout_mode = 0
+	panel.position = Vector2(340, 190)
+	panel.size = Vector2(600, 340)
+	panel.modulate.a = 0.0
+	fondo.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 16)
+	panel.add_child(vbox)
+
+	var lbl_titulo := Label.new()
+	lbl_titulo.text = "¡Bienvenido a Mati Evolución!"
+	lbl_titulo.add_theme_font_size_override("font_size", 28)
+	lbl_titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(lbl_titulo)
+
+	var lbl_sub := Label.new()
+	lbl_sub.text = "¿Cuál es tu nombre?"
+	lbl_sub.add_theme_font_size_override("font_size", 22)
+	lbl_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(lbl_sub)
+
+	var line := LineEdit.new()
+	line.name = "InputNombre"
+	line.placeholder_text = "Escribe tu nombre aquí..."
+	line.add_theme_font_size_override("font_size", 20)
+	line.max_length = 40
+	line.custom_minimum_size = Vector2(540, 44)
+	vbox.add_child(line)
+	line.grab_focus()
+
+	var hbox := HBoxContainer.new()
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_theme_constant_override("separation", 16)
+	vbox.add_child(hbox)
+
+	var btn_invitado := Button.new()
+	btn_invitado.text = "Modo Invitado"
+	btn_invitado.add_theme_font_size_override("font_size", 18)
+	btn_invitado.custom_minimum_size = Vector2(200, 44)
+	btn_invitado.pressed.connect(func():
+		var gd2 = load("res://scripts/guardado.gd")
+		gd2.guardar_perfil_actual("Invitado")
+		fondo.queue_free(); _ir_a_juego())
+	hbox.add_child(btn_invitado)
+
+	var btn_ok := Button.new()
+	btn_ok.text = "¡Jugar!"
+	btn_ok.add_theme_font_size_override("font_size", 18)
+	btn_ok.custom_minimum_size = Vector2(200, 44)
+	btn_ok.pressed.connect(func():
+		var nombre : String = line.text.strip_edges()
+		if nombre.length() < 2:
+			line.placeholder_text = "¡Escribe al menos 2 letras!"
+			return
+		var gd2 = load("res://scripts/guardado.gd")
+		gd2.guardar_perfil_actual(nombre)
+		fondo.queue_free(); _ir_a_juego())
+	hbox.add_child(btn_ok)
+
+	var tw_p := create_tween().set_parallel(false)
+	tw_p.tween_property(fondo, "color", Color(0, 0, 0, 0.65), 0.25)
+	tw_p.tween_property(panel, "modulate:a", 1.0, 0.25)
+
+func _ir_a_juego() -> void:
 	$Jugar.disabled = true
 	_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	var tw := create_tween()

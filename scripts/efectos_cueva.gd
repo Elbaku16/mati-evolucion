@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  EFECTOS CUEVA — Estalactitas y piedras que cuelgan del techo

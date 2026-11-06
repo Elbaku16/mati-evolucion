@@ -1,4 +1,4 @@
-extends Control
+﻿extends Control
 
 # ═══════════════════════════════════════════════════════════════
 #  TIENDA — Skins de Mati
@@ -272,12 +272,12 @@ func _crear_card(skin_id: String, cfg: Dictionary, pos: Vector2) -> void:
 	var lbl_err := Label.new()
 	root.add_child(lbl_err)
 	lbl_err.layout_mode          = 0
-	lbl_err.position             = Vector2(0.0, btn_y - 6.0)
-	lbl_err.size                 = Vector2(CARD_W, btn_h + 12.0)
+	lbl_err.position             = Vector2(btn_mx, btn_y)
+	lbl_err.size                 = Vector2(CARD_W - btn_mx * 2.0, btn_h)
 	lbl_err.text                 = "¡Faltan monedas!"
 	lbl_err.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl_err.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
-	lbl_err.add_theme_font_size_override("font_size", 19)
+	lbl_err.add_theme_font_size_override("font_size", 13)
 	lbl_err.add_theme_color_override("font_color", Color(1.0, 0.25, 0.25))
 	lbl_err.add_theme_color_override("font_shadow_color", Color.BLACK)
 	lbl_err.add_theme_constant_override("shadow_offset_x", 1)
@@ -339,11 +339,12 @@ func _on_btn_skin(skin_id: String) -> void:
 
 func _mostrar_error_monedas(skin_id: String) -> void:
 	var lbl : Label = labels_error.get(skin_id)
-	if lbl == null:
+	if not is_instance_valid(lbl):
 		return
 	lbl.visible = true
 	get_tree().create_timer(1.5).timeout.connect(func():
-		lbl.visible = false
+		if is_instance_valid(lbl):
+			lbl.visible = false
 	)
 
 func _crear_indicador_estrella(parent: Node, pos: Vector2) -> void:
@@ -365,7 +366,7 @@ func _crear_indicador_estrella(parent: Node, pos: Vector2) -> void:
 	indicador_label0.layout_mode          = 0
 	indicador_label0.position             = Vector2(0, 0)
 	indicador_label0.size                 = Vector2(90.0, 90.0)
-	indicador_label0.text                 = "⭐ 0"
+	indicador_label0.text                 = "★ 0"
 	indicador_label0.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	indicador_label0.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
 	indicador_label0.add_theme_font_size_override("font_size", 24)

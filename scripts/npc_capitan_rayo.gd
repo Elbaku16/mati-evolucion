@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  NPC CAPITÁN RAYO — Dibujado 100 % con código, sin imagen.

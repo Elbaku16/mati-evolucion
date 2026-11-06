@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  EFECTOS AMBIENTALES — Esporas flotantes del Planeta Hongos

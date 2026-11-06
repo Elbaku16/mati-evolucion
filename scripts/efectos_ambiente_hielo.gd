@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  EFECTOS AMBIENTALES — Partículas de hielo en el Planeta Hielo

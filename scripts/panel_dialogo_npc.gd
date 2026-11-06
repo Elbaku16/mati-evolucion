@@ -1,4 +1,4 @@
-extends Control
+﻿extends Control
 
 # ═══════════════════════════════════════════════════════════════
 #  PANEL DIÁLOGO NPC — fondo naranja-amarillo con tab lateral

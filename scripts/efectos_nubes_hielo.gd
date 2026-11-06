@@ -1,4 +1,4 @@
-extends "res://scripts/efectos_nubes.gd"
+﻿extends "res://scripts/efectos_nubes.gd"
 
 # ═══════════════════════════════════════════════════════════════
 #  FRAGMENTOS DE HIELO FLOTANTES

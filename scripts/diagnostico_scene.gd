@@ -1,4 +1,4 @@
-extends Control
+﻿extends Control
 
 var operaciones_node
 var diagnostico_node
@@ -45,12 +45,12 @@ func _ready() -> void:
 	if tex_vol:
 		_btn_volumen.texture_normal = tex_vol
 	_btn_volumen.layout_mode = 1
-	_btn_volumen.size = Vector2(70, 70)
+	_btn_volumen.size = Vector2(50, 50)
 	_btn_volumen.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	_btn_volumen.offset_left   = -80.0
-	_btn_volumen.offset_top    = -80.0
-	_btn_volumen.offset_right  = -10.0
-	_btn_volumen.offset_bottom = -10.0
+	_btn_volumen.offset_left   = -66.0
+	_btn_volumen.offset_top    = -66.0
+	_btn_volumen.offset_right  = -16.0
+	_btn_volumen.offset_bottom = -16.0
 	_btn_volumen.pressed.connect(_on_volumen_presionado)
 	capa.add_child(_btn_volumen)
 
@@ -92,15 +92,8 @@ func mostrar_pregunta() -> void:
 	$Operador.texture = load(OPERADORES[op])
 	$Operador.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
 	$Operador.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	# La × está dibujada más pequeña → escala mayor + posición compensada para centrar
-	if op == "x":
-		$Operador.scale    = Vector2(0.07568138 * 2.0, 0.08303241 * 2.0)
-		# Al duplicar la escala el nodo crece hacia abajo-derecha.
-		# Movemos el origen arriba-izquierda exactamente la mitad extra para centrar.
-		$Operador.position = Vector2(381.0, 68.0)
-	else:
-		$Operador.scale    = Vector2(0.07568138, 0.08303241)
-		$Operador.position = Vector2(435.02228, 125.55615)
+	$Operador.scale    = Vector2(0.07568138, 0.08303241)
+	$Operador.position = Vector2(435.02228, 125.55615)
 
 	match tipo:
 		0:

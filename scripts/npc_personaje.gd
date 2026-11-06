@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  NPC PERSONAJE — Usa la imagen real del NPC + badge ✓ cuando

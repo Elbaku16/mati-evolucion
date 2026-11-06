@@ -1,4 +1,4 @@
-extends Node
+﻿extends Node
 
 # ═══════════════════════════════════════════════════════════════
 #  MÚSICA MANAGER — Autoload singleton
@@ -23,7 +23,11 @@ const PISTAS = {
 	"desafio"  : "res://assets/sonidos/musica_desafio.ogg",
 	"victoria" : "res://assets/sonidos/musica_victoria.ogg",
 	"mapa"     : "res://assets/sonidos/musica_mapa.ogg",
+	"jefe"     : "res://assets/sonidos/musica_jefe.ogg",
 }
+
+const SFX_DIR = "res://assets/sonidos/sfx/"
+const SFX_POOL_SIZE = 6
 
 const VOL_NORMAL  : float = 0.0    # dB
 const VOL_SILENCIO: float = -80.0
@@ -35,6 +39,9 @@ var _activo   : AudioStreamPlayer = null   # el que suena ahora
 var _pista_actual : String = ""
 var _volumen_base : float = VOL_NORMAL
 
+var _sfx_pool : Array[AudioStreamPlayer] = []
+var _sfx_idx  : int = 0
+
 func _ready() -> void:
 	_player_a = AudioStreamPlayer.new()
 	_player_b = AudioStreamPlayer.new()
@@ -43,6 +50,12 @@ func _ready() -> void:
 	add_child(_player_a)
 	add_child(_player_b)
 	_activo = _player_a
+
+	for i in SFX_POOL_SIZE:
+		var p = AudioStreamPlayer.new()
+		p.bus = "Master"
+		add_child(p)
+		_sfx_pool.append(p)
 
 # ─────────────────────────────────────────────────────────────
 #  API PÚBLICA
@@ -129,3 +142,29 @@ func musica_victoria() -> void:
 
 func musica_mapa() -> void:
 	reproducir("mapa")
+
+func musica_jefe() -> void:
+	reproducir("jefe")
+
+# ─────────────────────────────────────────────────────────────
+#  SFX — efectos de sonido puntuales
+#  Archivos en assets/sonidos/sfx/:
+#    moneda.ogg     ← recolectar moneda
+#    correcto.ogg   ← respuesta correcta
+#    incorrecto.ogg ← respuesta incorrecta
+#    fanfare.ogg    ← sección/mundo completado
+#    golpe.ogg      ← golpe al jefe / recibir daño
+#    click.ogg      ← botones UI
+# ─────────────────────────────────────────────────────────────
+func play_sfx(nombre: String, vol_db: float = 0.0) -> void:
+	var ruta = SFX_DIR + nombre + ".ogg"
+	if not ResourceLoader.exists(ruta):
+		return
+	var stream = load(ruta)
+	if stream == null:
+		return
+	var player = _sfx_pool[_sfx_idx % SFX_POOL_SIZE]
+	_sfx_idx += 1
+	player.stream = stream
+	player.volume_db = vol_db
+	player.play()

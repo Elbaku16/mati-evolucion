@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  MUNDO 1 — PLANETA VERDE
@@ -10,8 +10,8 @@ extends Node2D
 const VELOCIDAD        : float = 280.0
 const DIST_INTERACCION : float = 280.0
 
-const LIMITE_IZQ  : float = -1900.0
-const LIMITE_DER  : float =  2550.0
+const LIMITE_IZQ  : float = -1930.0
+const LIMITE_DER  : float =  2580.0
 const LIMITE_ARR  : float =   480.0
 const LIMITE_ABA  : float =  1700.0
 
@@ -36,7 +36,7 @@ const NPCS_DATA : Array = [
 		"id":            "tristan",
 		"nombre":        "Tristán",
 		"seccion":       1,
-		"pos":           Vector2(-1650, 590),   # Extremo izquierdo — ARRIBA en las colinas
+		"pos":           Vector2(-1700, 610),   # Extremo izquierdo — ARRIBA en las colinas
 		"textura":       "res://assets/npcs/triste.PNG",
 		"dialogo":       "¡Hola! Soy Tristán...\nSiempre me pongo triste cuando\nno puedo contar bien mis cosas.\n¿Me ayudas con unas sumitas?",
 		"dialogo_hecho": "¡Gracias Mati!\nYa sé cuántas cosas tengo.\n¡Ya no estoy tan triste!"
@@ -46,7 +46,7 @@ const NPCS_DATA : Array = [
 		"id":            "peque",
 		"nombre":        "Peque",
 		"seccion":       2,
-		"pos":           Vector2(-500, 890),    # Centro-izquierda — ABAJO en el camino claro
+		"pos":           Vector2(-600, 880),    # Izquierda baja — cerca del inicio, primer contacto fácil
 		"textura":       "res://assets/npcs/pequeño.PNG",
 		"dialogo":       "¡Oye! Soy Peque.\nSoy pequeño pero mis problemas\nde matemáticas son GRANDES.\nNecesito hacer SUMAS más difíciles.",
 		"dialogo_hecho": "¡Lo logramos!\nAunque soy pequeño, ahora sé\nsumar números grandes. ¡Gracias!"
@@ -55,7 +55,7 @@ const NPCS_DATA : Array = [
 		"id":            "nova",
 		"nombre":        "Nova",
 		"seccion":       5,
-		"pos":           Vector2(700, 700),     # Centro-derecha — altura media (primer NPC a la derecha)
+		"pos":           Vector2(200, 620),     # Centro — ARRIBA, obliga a explorar la zona alta
 		"textura":       "res://assets/npcs/Alien Cool Solo.PNG",
 		"dialogo":       "¡Hola! Soy Nova, exploradora galáctica.\nEstaba contando las estrellas del planeta\npero me confundí con las operaciones...\n¿Puedes ayudarme con sumas y restas?",
 		"dialogo_hecho": "¡Increíble Mati!\nYa pude terminar mis mapas estelares.\n¡Eres muy listo!"
@@ -65,7 +65,7 @@ const NPCS_DATA : Array = [
 		"id":            "zote",
 		"nombre":        "Zote",
 		"seccion":       3,
-		"pos":           Vector2(1600, 580),    # Derecha alta — ARRIBA entre las colinas
+		"pos":           Vector2(1500, 880),    # Derecha baja — ABAJO, contraste con Nova que está arriba
 		"textura":       "res://assets/npcs/alienzote.PNG",
 		"dialogo":       "¡GRRRR! Soy Zote, el gran alien.\nTengo muchas cosas que contar\npero me pierdo en las sumas.\n¡Ayúdame o te enfrento!",
 		"dialogo_hecho": "Hmm... impresionante, pequeño.\nSabías más que yo.\n¡Eso no lo olvidaré!"
@@ -85,11 +85,37 @@ const NPCS_DATA : Array = [
 	}
 ]
 
-const SKINS_TEXTURA_EXPLORAR = {
-	"default": "res://assets/personajes/mati_frente.PNG",
-	"fachero": "res://assets/personajes/mati_fachero.PNG",
-	"ninja":   "res://assets/personajes/mati_ninja.PNG",
-	"escolar": "res://assets/personajes/mati_escolar.PNG",
+const SKINS_VISTAS = {
+	"default": {
+		"frente":  "res://assets/personajes/mati_frente.PNG",
+		"perfil":  "res://assets/personajes/mati_perfil.PNG",
+		"espalda": "res://assets/personajes/mati_espalda.PNG",
+	},
+	"fachero": {
+		"frente":  "res://assets/personajes/mati_fachero.PNG",
+		"perfil":  "res://assets/personajes/mati_fachero_perfil.PNG",
+		"espalda": "res://assets/personajes/mati_fachero_espalda.PNG",
+	},
+	"ninja": {
+		"frente":  "res://assets/personajes/mati_ninja.PNG",
+		"perfil":  "res://assets/personajes/mati_ninja_perfil.PNG",
+		"espalda": "res://assets/personajes/mati_ninja_espalda.PNG",
+	},
+	"escolar": {
+		"frente":  "res://assets/personajes/mati_escolar.PNG",
+		"perfil":  "res://assets/personajes/mati_escolar_perfil.PNG",
+		"espalda": "res://assets/personajes/mati_escolar_espalda.PNG",
+	},
+	"joven": {
+		"frente":  "res://assets/personajes/mati_joven.PNG",
+		"perfil":  "res://assets/personajes/mati_joven_perfil.PNG",
+		"espalda": "res://assets/personajes/mati_joven_espalda.PNG",
+	},
+	"lentes": {
+		"frente":  "res://assets/personajes/mati_lentes.PNG",
+		"perfil":  "res://assets/personajes/mati_lentes_perfil.PNG",
+		"espalda": "res://assets/personajes/mati_lentes.PNG",   # sin vista trasera → reutilizar frente
+	},
 }
 
 # ── Estado general ────────────────────────────────────────────
@@ -106,6 +132,11 @@ const VELOCIDAD_TEXTO : float = 0.04
 
 var dir_x : float = 0.0
 var dir_y : float = 0.0
+
+# ── Vistas direccionales de Mati ──────────────────────────────
+var _skin_vistas : Dictionary = {}   # {"frente": Texture2D, "perfil": ..., "espalda": ...}
+var _dir_actual  : String = "frente" # "frente" | "espalda" | "perfil"
+var _flip_perfil : bool   = false    # true = perfil mirando a la izquierda
 
 # ── Efectos cueva ────────────────────────────────────────────
 var cueva_overlay  : ColorRect   = null
@@ -210,9 +241,11 @@ func _ready() -> void:
 	$BtnInteractuar.pressed.connect(_on_btn_interactuar)
 
 	# Pausa
-	$UI/BtnPausa.pressed.connect(_toggle_pausa)
+	$UI/BtnAjustes.pressed.connect(_toggle_pausa)
 	$UI/PanelPausa/BtnContinuar.pressed.connect(_toggle_pausa)
 	$UI/PanelPausa/BtnSalir.pressed.connect(_ir_al_mapa)
+	$UI/PanelPausa/BtnVolumen.pressed.connect(_on_volumen_presionado)
+	_actualizar_icono_volumen()
 	$UI/PanelPausa.visible = false
 
 	# Panel de diálogo — se oculta permanentemente; usamos el sistema RPG
@@ -235,6 +268,26 @@ func _ready() -> void:
 	# Animación de entrada del cohete
 	_crear_animacion_entrada()
 	$AnimEntrada.play("entrada")
+
+	# Decoración ambiental: arbusto con mariposas animado
+	_crear_arbusto_mariposas()
+
+# ─────────────────────────────────────────────────────────────
+#  DECORACIÓN: ARBUSTO CON MARIPOSAS ANIMADO
+# ─────────────────────────────────────────────────────────────
+func _crear_arbusto_mariposas() -> void:
+	var frames : Array = []
+	for i in range(4):
+		frames.append("res://assets/animaciones/arbusto_mariposas_%d.png" % i)
+
+	var posiciones := [Vector2(-200, 1020), Vector2(1100, 980)]
+	for pos in posiciones:
+		var efecto = load("res://scripts/efecto_animado.gd").new()
+		add_child(efecto)
+		efecto.iniciar(frames, 5.0, true)
+		efecto.position = pos
+		efecto.scale    = Vector2(0.55, 0.55)
+		efecto.z_index  = -1
 
 # ─────────────────────────────────────────────────────────────
 #  CREAR NPCs EN EL MUNDO 2D
@@ -263,12 +316,7 @@ func _crear_npcs() -> void:
 				tex = load(npc_data["textura"])
 			npc.setup(tex)
 
-		# NPCs finales (Cosmo) siempre visibles — su "completado" depende de TODO el mundo
-		var completado : bool
-		if npc_data.get("es_final", false):
-			completado = false   # nunca se atenúa, Cosmo siempre luce bien
-		else:
-			completado = guardado_node.seccion_completada(npc_data["seccion"])
+		var completado : bool = guardado_node.seccion_completada(npc_data["seccion"])
 		npc.marcar_completado(completado)
 		npc_nodes.append(npc)
 		npc_base_pos.append(npc_data["pos"])
@@ -289,12 +337,7 @@ func _crear_npcs() -> void:
 
 func _actualizar_visual_npcs() -> void:
 	for i in range(npc_nodes.size()):
-		var completada : bool
-		if NPCS_DATA[i].get("es_final", false):
-			completada = false   # Cosmo nunca se atenúa
-		else:
-			completada = guardado_node.seccion_completada(NPCS_DATA[i]["seccion"])
-		npc_nodes[i].marcar_completado(completada)
+		npc_nodes[i].marcar_completado(guardado_node.seccion_completada(NPCS_DATA[i]["seccion"]))
 
 # ─────────────────────────────────────────────────────────────
 #  MUNDO COMPLETO (secciones 1–5)
@@ -444,7 +487,7 @@ func _mostrar_dialogo_npc(idx: int) -> void:
 		_rpg_npc_ret.texture = null
 
 	# Textura de Mati (skin activa)
-	_rpg_mati_ret.texture = $Mati/Sprite2D.texture
+	_rpg_mati_ret.texture = _skin_vistas.get("frente", $Mati/Sprite2D.texture)
 
 	# Nombre del NPC
 	_rpg_lbl_nom.text = "  " + npc_data["nombre"] + "  "
@@ -712,7 +755,7 @@ func _iniciar_desafio() -> void:
 	# Guardar la sección que va a jugarse
 	var datos = guardado_node.cargar()
 	datos["seccion_actual"] = seccion_id
-	var archivo = FileAccess.open(RUTA_SAVE, FileAccess.WRITE)
+	var archivo = FileAccess.open(guardado_node._ruta(), FileAccess.WRITE)
 	if archivo:
 		archivo.store_string(JSON.stringify(datos))
 		archivo.close()
@@ -765,32 +808,37 @@ func _physics_process(_delta: float) -> void:
 			var nx  : float = npc_base_pos[i].x
 			var ny  : float = npc_base_pos[i].y
 
+			var escala_npc : float = float(NPCS_DATA[i].get("escala", 1.0))
+			var blk_hw  : float = BLK_HW  * escala_npc
+			var blk_top : float = BLK_TOP * escala_npc
+			var blk_bot : float = BLK_BOT * escala_npc
+
 			var vis_x : float = mati.global_position.x + SPRITE_OX
 			var dx    : float = vis_x - nx
 			var dy    : float = mati.global_position.y - ny
 
-			if absf(dx) > BLK_HW or dy < -BLK_TOP or dy > BLK_BOT:
+			if absf(dx) > blk_hw or dy < -blk_top or dy > blk_bot:
 				continue
 
 			var por_x : bool
 			if move_dir.length_squared() < 0.01:
-				por_x = absf(dx) / BLK_HW >= absf(dy + (BLK_TOP - BLK_BOT) * 0.5) / ((BLK_TOP + BLK_BOT) * 0.5)
+				por_x = absf(dx) / blk_hw >= absf(dy + (blk_top - blk_bot) * 0.5) / ((blk_top + blk_bot) * 0.5)
 			else:
 				por_x = absf(move_dir.x) >= absf(move_dir.y)
 
 			if por_x:
 				if dx >= 0.0:
-					mati.global_position.x = nx + BLK_HW - SPRITE_OX + 0.5
+					mati.global_position.x = nx + blk_hw - SPRITE_OX + 0.5
 					if mati.velocity.x < 0.0: mati.velocity.x = 0.0
 				else:
-					mati.global_position.x = nx - BLK_HW - SPRITE_OX - 0.5
+					mati.global_position.x = nx - blk_hw - SPRITE_OX - 0.5
 					if mati.velocity.x > 0.0: mati.velocity.x = 0.0
 			else:
 				if dy >= 0.0:
-					mati.global_position.y = ny + BLK_BOT + 0.5
+					mati.global_position.y = ny + blk_bot + 0.5
 					if mati.velocity.y < 0.0: mati.velocity.y = 0.0
 				else:
-					mati.global_position.y = ny - BLK_TOP - 0.5
+					mati.global_position.y = ny - blk_top - 0.5
 					if mati.velocity.y > 0.0: mati.velocity.y = 0.0
 
 		# ── Bloqueo de obstáculos estáticos (cohete, etc.) ─────────
@@ -865,10 +913,20 @@ func _physics_process(_delta: float) -> void:
 		if cueva_overlay.size != vp:
 			cueva_overlay.size = vp
 
-	if dir_x < 0:
-		$Mati/Sprite2D.flip_h = true
-	elif dir_x > 0:
-		$Mati/Sprite2D.flip_h = false
+	# ── Vista direccional de Mati ─────────────────────────────────
+	var nueva_dir  : String = _dir_actual
+	var nuevo_flip : bool   = _flip_perfil
+	if dir_x != 0:
+		nueva_dir  = "perfil"
+		nuevo_flip = (dir_x > 0)
+	elif dir_y < 0:
+		nueva_dir = "espalda"
+	elif dir_y > 0:
+		nueva_dir = "frente"
+	if nueva_dir != _dir_actual or nuevo_flip != _flip_perfil:
+		_dir_actual  = nueva_dir
+		_flip_perfil = nuevo_flip
+		_actualizar_textura_mati()
 
 	_verificar_proximidad_npcs()
 
@@ -940,13 +998,25 @@ func _animar_npc_pop(idx: int) -> void:
 func _on_moneda_recolectada(moneda: Node) -> void:
 	if not moneda.visible:
 		return
+	var pos_burst : Vector2 = moneda.global_position
 	moneda.visible = false
 	monedas_sesion += 1
 	_actualizar_label_monedas()
 	guardado_node.sumar_monedas(1)
+	if get_node_or_null("/root/MusicaManager"):
+		MusicaManager.play_sfx("moneda")
+	var burst_script = load("res://scripts/moneda_burst.gd")
+	if burst_script:
+		burst_script.lanzar(self, pos_burst)
 
 func _actualizar_label_monedas() -> void:
 	_actualizar_indicador_estrella(monedas_sesion)
+	if indicador_wrap_node:
+		var tw := create_tween()
+		tw.set_ease(Tween.EASE_OUT)
+		tw.set_trans(Tween.TRANS_BACK)
+		tw.tween_property(indicador_wrap_node, "scale", Vector2(1.4, 1.4), 0.10)
+		tw.tween_property(indicador_wrap_node, "scale", Vector2(1.0, 1.0), 0.15)
 
 func _crear_indicador_estrella(parent: Node, pos: Vector2) -> void:
 	indicador_wrap_node = Control.new()
@@ -967,7 +1037,7 @@ func _crear_indicador_estrella(parent: Node, pos: Vector2) -> void:
 	indicador_label0.layout_mode          = 0
 	indicador_label0.position             = Vector2(0, 0)
 	indicador_label0.size                 = Vector2(90.0, 90.0)
-	indicador_label0.text                 = "⭐ 0"
+	indicador_label0.text                 = "★ 0"
 	indicador_label0.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	indicador_label0.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
 	indicador_label0.add_theme_font_size_override("font_size", 24)
@@ -1007,25 +1077,47 @@ func _actualizar_indicador_estrella(n: int) -> void:
 func _aplicar_skin(skin_id: String) -> void:
 	if not has_node("Mati/Sprite2D"):
 		return
-	var sprite  := $Mati/Sprite2D
-	var ruta    : String = SKINS_TEXTURA_EXPLORAR.get(skin_id, SKINS_TEXTURA_EXPLORAR["default"])
-	var tex     : Texture2D = load(ruta)
+	var vistas = SKINS_VISTAS.get(skin_id, SKINS_VISTAS["default"])
+	_skin_vistas = {}
+	for key in vistas:
+		var ruta : String = vistas[key]
+		if ResourceLoader.exists(ruta):
+			_skin_vistas[key] = load(ruta)
+	_actualizar_textura_mati()
+
+func _actualizar_textura_mati() -> void:
+	if not has_node("Mati/Sprite2D"):
+		return
+	var sprite := $Mati/Sprite2D
+	var tex : Texture2D = _skin_vistas.get(_dir_actual, _skin_vistas.get("frente"))
 	if tex == null:
 		return
-	const REF_W      : float = 872.0
-	const REF_H      : float = 1001.0
-	const BASE_SX    : float = 0.21421655   # escala X base (abs)
-	const BASE_SY    : float = 0.20117149   # escala Y base
+	const TARGET_W : float = 186.8
+	const TARGET_H : float = 201.4
 	sprite.texture = tex
 	sprite.scale   = Vector2(
-		-BASE_SX * (REF_W / float(tex.get_width())),   # negativo = volteado
-		 BASE_SY * (REF_H / float(tex.get_height()))
+		-TARGET_W / float(tex.get_width()),
+		 TARGET_H / float(tex.get_height())
 	)
+	# perfil → voltear según dirección; frente/espalda → sin volteo extra
+	sprite.flip_h = (_dir_actual == "perfil" and _flip_perfil)
 
 func _toggle_pausa() -> void:
 	var pausado = not $UI/PanelPausa.visible
 	$UI/PanelPausa.visible = pausado
 	get_tree().paused = pausado
+
+func _on_volumen_presionado() -> void:
+	var muteado = AudioServer.is_bus_mute(0)
+	AudioServer.set_bus_mute(0, not muteado)
+	_actualizar_icono_volumen()
+
+func _actualizar_icono_volumen() -> void:
+	if not has_node("UI/PanelPausa/BtnVolumen"): return
+	if AudioServer.is_bus_mute(0):
+		$UI/PanelPausa/BtnVolumen.modulate = Color(0.5, 0.5, 0.5, 1)
+	else:
+		$UI/PanelPausa/BtnVolumen.modulate = Color(1, 1, 1, 1)
 
 func _ir_al_mapa() -> void:
 	get_tree().paused = false
@@ -1123,11 +1215,11 @@ func _crear_rpg_layer() -> void:
 	_rpg_lbl_cls.visible = false
 	_rpg_layer.add_child(_rpg_lbl_cls)
 
-	# ── Estrellas decorativas (6 labels ⭐) ──────────────────
+	# ── Estrellas decorativas (6 labels ★) ──────────────────
 	var star_sizes := [32, 28, 36, 24, 30, 26]
 	for i in range(6):
 		var s := Label.new()
-		s.text = "⭐"
+		s.text = "★"
 		s.layout_mode  = 0
 		s.add_theme_font_size_override("font_size", star_sizes[i])
 		s.mouse_filter = Control.MOUSE_FILTER_IGNORE

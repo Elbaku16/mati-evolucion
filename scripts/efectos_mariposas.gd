@@ -1,4 +1,4 @@
-extends Node2D
+﻿extends Node2D
 
 # ═══════════════════════════════════════════════════════════════
 #  MARIPOSAS — Criaturas aladas que vuelan por el Planeta Verde.

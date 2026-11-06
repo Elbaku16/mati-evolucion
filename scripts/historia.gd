@@ -1,4 +1,4 @@
-extends Control
+﻿extends Control
 
 # ═══════════════════════════════════════════════════════════════
 #  VISOR DE HISTORIA — Libro de ilustraciones de Mati Evolución

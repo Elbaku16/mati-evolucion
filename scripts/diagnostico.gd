@@ -1,4 +1,4 @@
-extends Node
+﻿extends Node
 
 var preguntas: Array = []
 var indice_actual: int = 0
