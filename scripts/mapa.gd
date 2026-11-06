@@ -87,9 +87,6 @@ func _ready() -> void:
 	# Botón Historia (libro dorado)
 	_crear_btn_historia()
 
-	# Botón Habilidades
-	_crear_btn_habilidades()
-
 	# Llaves de progreso
 	_mostrar_llaves()
 
@@ -238,9 +235,6 @@ func _on_vol_mapa_presionado() -> void:
 
 func _ir_a_tienda() -> void:
 	TransitionManager.cambiar_escena("res://scenes/Tienda.tscn")
-
-func _ir_a_habilidades() -> void:
-	TransitionManager.cambiar_escena("res://scenes/PanelHabilidades.tscn")
 
 # ─────────────────────────────────────────────────────────────
 #  BOTÓN HISTORIA — libro dorado que abre las ilustraciones
@@ -419,24 +413,6 @@ func _mostrar_diploma(nombre: String) -> void:
 	var dip_script = load("res://scripts/diploma.gd")
 	if dip_script:
 		dip_script.mostrar(self, nombre)
-
-func _crear_btn_habilidades() -> void:
-	var btn := Button.new()
-	btn.text = "⚡ Habilidades"
-	btn.add_theme_font_size_override("font_size", 22)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.position = Vector2(16, 16)
-	btn.size     = Vector2(220, 56)
-	var sty := StyleBoxFlat.new()
-	sty.bg_color = Color(0.28, 0.08, 0.60)
-	sty.corner_radius_top_left = 14; sty.corner_radius_top_right = 14
-	sty.corner_radius_bottom_left = 14; sty.corner_radius_bottom_right = 14
-	btn.add_theme_stylebox_override("normal", sty)
-	var sty_h := sty.duplicate()
-	sty_h.bg_color = Color(0.40, 0.12, 0.80)
-	btn.add_theme_stylebox_override("hover", sty_h)
-	btn.pressed.connect(_ir_a_habilidades)
-	add_child(btn)
 
 func _actualizar_candados() -> void:
 	if has_node("CandadoPl2"):
