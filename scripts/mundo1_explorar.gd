@@ -277,9 +277,67 @@ func _ready() -> void:
 	# Decoración ambiental: arbusto con mariposas animado
 	_crear_arbusto_mariposas()
 
+	# Puertas matemáticas y dispositivo de memoria
+	_crear_puertas_y_dispositivos()
+
 # ─────────────────────────────────────────────────────────────
 #  DECORACIÓN: ARBUSTO CON MARIPOSAS ANIMADO
 # ─────────────────────────────────────────────────────────────
+func _crear_puertas_y_dispositivos() -> void:
+	var puerta_script = load("res://scripts/puerta_matematica.gd")
+	var puertas_cfg := [
+		{"id": 101, "tipo": "puerta",  "nivel": 1, "visual": "puerta",  "monedas": 5,  "pos": Vector2(-900, 820),  "tema": "mundo1"},
+		{"id": 102, "tipo": "cofre",   "nivel": 1, "visual": "cofre",   "monedas": 8,  "pos": Vector2( 800, 780),  "tema": "mundo1"},
+		{"id": 103, "tipo": "palanca", "nivel": 2, "visual": "palanca", "monedas": 10, "pos": Vector2(1900, 650),  "tema": "mundo1"},
+	]
+	for cfg in puertas_cfg:
+		var p := Node2D.new()
+		p.set_script(puerta_script)
+		p.position = Vector2(cfg["pos"])
+		add_child(p)
+		p.configurar({
+			"id":      cfg["id"],
+			"tipo":    cfg.get("tipo", "auto"),
+			"nivel":   cfg.get("nivel", 1),
+			"visual":  cfg.get("visual", "puerta"),
+			"monedas": cfg.get("monedas", 5),
+			"tema":    cfg.get("tema", "mundo1"),
+		})
+
+	# Dispositivo de memoria espacial — junto al Cosmo (extremo derecho)
+	var mem_script = load("res://scripts/minijuego_memoria.gd")
+	if mem_script:
+		var dispositivo := ColorRect.new()
+		dispositivo.color   = Color(0.1, 0.05, 0.3, 0.9)
+		dispositivo.size    = Vector2(60, 80)
+		dispositivo.position = Vector2(2200, 790)
+		dispositivo.z_index  = 2
+		add_child(dispositivo)
+
+		var lbl_d := Label.new()
+		lbl_d.text = "🛸"
+		lbl_d.add_theme_font_size_override("font_size", 36)
+		lbl_d.position = Vector2(5, 8)
+		dispositivo.add_child(lbl_d)
+
+		var btn_d := Button.new()
+		btn_d.text = "Jugar"
+		btn_d.position = Vector2(-10, 85)
+		btn_d.size     = Vector2(80, 34)
+		btn_d.add_theme_font_size_override("font_size", 15)
+		dispositivo.add_child(btn_d)
+		btn_d.pressed.connect(func():
+			mem_script.guardar_config({
+				"titulo":        "Dispositivo Alienígena",
+				"nivel_inicio":  2,
+				"rondas":        4,
+				"monedas":       12,
+				"seccion_id":    110,
+				"escena_origen": "res://scenes/Mundo1Explorar.tscn"
+			})
+			TransitionManager.cambiar_escena("res://scenes/MinijuegoMemoria.tscn")
+		)
+
 func _crear_arbusto_mariposas() -> void:
 	var frames : Array = []
 	for i in range(4):

@@ -248,6 +248,66 @@ func _ready() -> void:
 		$ZonaCohete.body_entered.connect(func(_b): pass)
 		$ZonaCohete.body_exited.connect(func(_b): pass)
 
+	# Puertas matemáticas y dispositivo de memoria
+	_crear_puertas_y_dispositivos()
+
+# ─────────────────────────────────────────────────────────────
+#  PUERTAS MATEMÁTICAS Y DISPOSITIVO DE MEMORIA
+# ─────────────────────────────────────────────────────────────
+func _crear_puertas_y_dispositivos() -> void:
+	var puerta_script = load("res://scripts/puerta_matematica.gd")
+	var puertas_cfg := [
+		{"id": 111, "tipo": "cofre",   "nivel": 2, "visual": "cofre",   "monedas": 8,  "pos": Vector2(-800, 780),  "tema": "mundo2"},
+		{"id": 112, "tipo": "puerta",  "nivel": 2, "visual": "puerta",  "monedas": 10, "pos": Vector2( 600, 740),  "tema": "mundo2"},
+		{"id": 113, "tipo": "palanca", "nivel": 3, "visual": "palanca", "monedas": 12, "pos": Vector2(1700, 700),  "tema": "mundo2"},
+	]
+	for cfg in puertas_cfg:
+		var p := Node2D.new()
+		p.set_script(puerta_script)
+		p.position = Vector2(cfg["pos"])
+		add_child(p)
+		p.configurar({
+			"id":      cfg["id"],
+			"tipo":    cfg.get("tipo", "auto"),
+			"nivel":   cfg.get("nivel", 2),
+			"visual":  cfg.get("visual", "puerta"),
+			"monedas": cfg.get("monedas", 8),
+			"tema":    cfg.get("tema", "mundo2"),
+		})
+
+	var mem_script = load("res://scripts/minijuego_memoria.gd")
+	if mem_script:
+		var dispositivo := ColorRect.new()
+		dispositivo.color    = Color(0.05, 0.08, 0.35, 0.9)
+		dispositivo.size     = Vector2(60, 80)
+		dispositivo.position = Vector2(2000, 750)
+		dispositivo.z_index  = 2
+		add_child(dispositivo)
+
+		var lbl_d := Label.new()
+		lbl_d.text = "🛸"
+		lbl_d.add_theme_font_size_override("font_size", 36)
+		lbl_d.position = Vector2(5, 8)
+		dispositivo.add_child(lbl_d)
+
+		var btn_d := Button.new()
+		btn_d.text = "Jugar"
+		btn_d.position = Vector2(-10, 85)
+		btn_d.size     = Vector2(80, 34)
+		btn_d.add_theme_font_size_override("font_size", 15)
+		dispositivo.add_child(btn_d)
+		btn_d.pressed.connect(func():
+			mem_script.guardar_config({
+				"titulo":        "Dispositivo Alienígena",
+				"nivel_inicio":  3,
+				"rondas":        4,
+				"monedas":       14,
+				"seccion_id":    120,
+				"escena_origen": "res://scenes/Mundo2Explorar.tscn"
+			})
+			TransitionManager.cambiar_escena("res://scenes/MinijuegoMemoria.tscn")
+		)
+
 # ─────────────────────────────────────────────────────────────
 #  CREAR NPCs EN EL MUNDO 2D
 # ─────────────────────────────────────────────────────────────
