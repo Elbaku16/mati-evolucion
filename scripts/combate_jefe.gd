@@ -36,6 +36,11 @@ var _config          : Dictionary = {}
 var _operaciones                  = null
 var _guardado                     = null
 var _animador                     = null
+var _habilidades                  = null
+
+# Efectos de habilidades activas
+var _escudo_activo   : bool = false   # bloquea primer daño si "escudo" equipado
+var _rayo_equipado   : bool = false   # duplica daño especial si "rayo" equipado
 
 var _vida_jefe       : int  = 0
 var _vida_jefe_max   : int  = 10
@@ -68,9 +73,13 @@ var _contenedor_raiz : Control
 
 # ─────────────────────────────────────────────────────────────
 func _ready() -> void:
-	_operaciones = load("res://scripts/operaciones.gd").new()
-	_guardado    = load("res://scripts/guardado.gd").new()
-	_animador    = load("res://scripts/animador_personaje.gd")
+	_operaciones  = load("res://scripts/operaciones.gd").new()
+	_guardado     = load("res://scripts/guardado.gd").new()
+	_animador     = load("res://scripts/animador_personaje.gd")
+	_habilidades  = load("res://scripts/habilidades.gd").new()
+
+	_rayo_equipado  = _habilidades.esta_activa("rayo")
+	_escudo_activo  = _habilidades.esta_activa("escudo")
 
 	# Leer configuración (pasada por TransitionManager o defaults)
 	_config = _leer_config()
@@ -486,7 +495,8 @@ func _usar_ataque_especial() -> void:
 		_animador.victoria(_img_mati)
 	await get_tree().create_timer(0.5).timeout
 
-	_dañar_jefe(3)
+	var dmg_especial := 6 if _rayo_equipado else 3
+	_dañar_jefe(dmg_especial)
 	await get_tree().create_timer(0.4).timeout
 	_turno_bloqueado = false
 
@@ -508,6 +518,10 @@ func _dañar_jefe(cantidad: int) -> void:
 	_mostrar_numero_daño(str(-cantidad), _img_jefe, Color(1, 0.3, 0.3))
 
 func _dañar_mati() -> void:
+	if _escudo_activo:
+		_escudo_activo = false
+		_feedback("🛡 ¡Escudo absorbió el golpe!", Color(0.3, 0.7, 1))
+		return
 	_vida_mati = max(0, _vida_mati - 1)
 	var pct := float(_vida_mati) / float(VIDA_MATI_MAX) * 100.0
 	var tw := create_tween()

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://minijuego_recoleccion_mati"]
+
+[ext_resource type="Script" path="res://scripts/minijuego_recoleccion.gd" id="1_minijuego"]
+
+[node name="MinijuegoRecoleccion" type="Node2D"]
+script = ExtResource("1_minijuego")
