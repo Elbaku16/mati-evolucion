@@ -58,19 +58,25 @@ var _pregs_respondidas: int = 0
 var _aciertos        : int  = 0
 
 # Nodos de UI (creados en _ready)
-var _lbl_jefe_nombre : Label
-var _lbl_mati_nombre : Label
-var _barra_jefe      : ProgressBar
-var _barra_mati      : ProgressBar
-var _barra_energia   : ProgressBar
-var _lbl_operacion   : Label
-var _botones         : Array = []
-var _img_jefe        : TextureRect
-var _img_mati        : TextureRect
-var _lbl_feedback    : Label
-var _btn_especial    : Button
-var _lbl_racha       : Label
-var _contenedor_raiz : Control
+var _lbl_jefe_nombre  : Label
+var _lbl_mati_nombre  : Label
+var _barra_jefe       : ProgressBar
+var _barra_mati       : ProgressBar
+var _lbl_operacion    : Label
+var _img_jefe         : TextureRect
+var _img_mati         : TextureRect
+var _lbl_feedback     : Label
+var _contenedor_raiz  : Control
+
+# Sistema de flechas — opciones flotantes
+var _opciones_nodos   : Array = []   # Array de Control (estrella + número)
+var _seleccion_actual : int   = 0    # índice 0-3 de la opción resaltada
+var _mati_y_origen    : float = 0.0  # posición y base de Mati
+var _alturas_opciones : Array = []   # posiciones y de cada opción
+
+# Bola verde del jefe (temporizador visual)
+var _bola_jefe        : Control = null
+var _tween_bola       : Tween   = null
 
 # ─────────────────────────────────────────────────────────────
 func _ready() -> void:
@@ -133,87 +139,41 @@ static func guardar_config(cfg: Dictionary) -> void:
 #  CONSTRUCCIÓN DE UI
 # ─────────────────────────────────────────────────────────────
 func _construir_ui() -> void:
-	# Fondo degradado
-	var fondo := ColorRect.new()
-	fondo.color = Color(0.04, 0.02, 0.12)
+	# Fondo bosque de hongos
+	var fondo := TextureRect.new()
+	var tex_path := "res://assets/fondos/fondo_mundo3.PNG"
+	if ResourceLoader.exists(tex_path):
+		fondo.texture = load(tex_path)
+	fondo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	fondo.set_anchors_preset(Control.PRESET_FULL_RECT)
 	fondo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(fondo)
 
 	_contenedor_raiz = self
 
-	# ── Área de combate (arriba) ──────────────────────────────
-	var zona_combate := HBoxContainer.new()
-	zona_combate.set_anchors_preset(Control.PRESET_FULL_RECT)
-	zona_combate.position = Vector2(0, 0)
-	zona_combate.size     = Vector2(1280, 380)
-	zona_combate.alignment = BoxContainer.ALIGNMENT_CENTER
-	zona_combate.add_theme_constant_override("separation", 60)
-	add_child(zona_combate)
-
-	# Panel Mati
-	var panel_mati := _crear_panel_luchador(true)
-	zona_combate.add_child(panel_mati)
-
-	# VS label
-	var lbl_vs := Label.new()
-	lbl_vs.text = "VS"
-	lbl_vs.add_theme_font_size_override("font_size", 48)
-	lbl_vs.add_theme_color_override("font_color", Color(1, 0.9, 0.2))
-	lbl_vs.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	lbl_vs.custom_minimum_size = Vector2(80, 380)
-	zona_combate.add_child(lbl_vs)
-
-	# Panel Jefe
-	var panel_jefe := _crear_panel_luchador(false)
-	zona_combate.add_child(panel_jefe)
+	# ── Sprites posicionados directo sobre el fondo ──────────────
+	_crear_panel_luchador(true)   # crea y posiciona _img_mati
+	_crear_panel_luchador(false)  # crea y posiciona _img_jefe
 
 	# ── Zona matemática (abajo) ───────────────────────────────
 	_construir_zona_math()
 
-func _crear_panel_luchador(es_mati: bool) -> VBoxContainer:
-	var panel := VBoxContainer.new()
-	panel.alignment = BoxContainer.ALIGNMENT_CENTER
-	panel.custom_minimum_size = Vector2(380, 380)
-	panel.add_theme_constant_override("separation", 8)
-
-	# Nombre
-	var lbl_nom := Label.new()
-	lbl_nom.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lbl_nom.add_theme_font_size_override("font_size", 22)
-	lbl_nom.add_theme_color_override("font_color", Color(1, 1, 1))
-	panel.add_child(lbl_nom)
-
-	# Barra de vida
-	var barra := ProgressBar.new()
-	barra.custom_minimum_size = Vector2(300, 22)
-	barra.max_value = 100
-	barra.value     = 100
-	barra.show_percentage = false
-	var sty := StyleBoxFlat.new()
-	sty.bg_color = Color(0.15, 0.80, 0.25) if es_mati else Color(0.80, 0.15, 0.15)
-	sty.corner_radius_top_left = 6; sty.corner_radius_top_right = 6
-	sty.corner_radius_bottom_left = 6; sty.corner_radius_bottom_right = 6
-	barra.add_theme_stylebox_override("fill", sty)
+func _crear_panel_luchador(es_mati: bool) -> void:
 	var sty_bg := StyleBoxFlat.new()
 	sty_bg.bg_color = Color(0.1, 0.1, 0.1)
-	barra.add_theme_stylebox_override("background", sty_bg)
-	panel.add_child(barra)
 
-	# Imagen
+	# Imagen del personaje — posición absoluta sobre el fondo
 	var img := TextureRect.new()
-	img.stretch_mode    = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	img.expand_mode     = TextureRect.EXPAND_IGNORE_SIZE
-	img.custom_minimum_size = Vector2(200, 240)
-	img.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	panel.add_child(img)
+	img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	img.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
 
 	if es_mati:
-		lbl_nom.text  = "MATI"
-		_lbl_mati_nombre = lbl_nom
-		_barra_mati      = barra
-		_img_mati        = img
-		# Cargar textura de Mati (skin activa)
+		img.position = Vector2(80, 160)
+		img.size     = Vector2(220, 280)
+		img.modulate = Color(1, 1, 1, 1)
+		add_child(img)
+		_img_mati = img
+
 		var datos: Dictionary = _guardado.cargar()
 		var skin  : String = datos.get("skin_activa", "clasica")
 		var rutas := {
@@ -226,119 +186,256 @@ func _crear_panel_luchador(es_mati: bool) -> VBoxContainer:
 		if ResourceLoader.exists(ruta):
 			img.texture = load(ruta)
 
-		# Barra energía debajo de Mati
-		var lbl_e := Label.new()
-		lbl_e.text = "⚡ ENERGÍA"
-		lbl_e.add_theme_font_size_override("font_size", 14)
-		lbl_e.add_theme_color_override("font_color", Color(1, 0.85, 0))
-		lbl_e.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		panel.add_child(lbl_e)
+		# Barra vida Mati — esquina superior izquierda
+		var lbl_nom := Label.new()
+		lbl_nom.text = "MATI"
+		lbl_nom.position = Vector2(20, 20)
+		lbl_nom.add_theme_font_size_override("font_size", 20)
+		lbl_nom.add_theme_color_override("font_color", Color(1, 1, 1))
+		add_child(lbl_nom)
+		_lbl_mati_nombre = lbl_nom
 
-		_barra_energia = ProgressBar.new()
-		_barra_energia.custom_minimum_size = Vector2(300, 16)
-		_barra_energia.max_value = ENERGIA_MAX
-		_barra_energia.value     = 0
-		_barra_energia.show_percentage = false
-		var sty_en := StyleBoxFlat.new()
-		sty_en.bg_color = Color(1.0, 0.75, 0.0)
-		sty_en.corner_radius_top_left = 4; sty_en.corner_radius_top_right = 4
-		sty_en.corner_radius_bottom_left = 4; sty_en.corner_radius_bottom_right = 4
-		_barra_energia.add_theme_stylebox_override("fill", sty_en)
-		_barra_energia.add_theme_stylebox_override("background", sty_bg)
-		panel.add_child(_barra_energia)
+		_barra_mati = ProgressBar.new()
+		_barra_mati.position = Vector2(20, 46)
+		_barra_mati.size     = Vector2(260, 20)
+		_barra_mati.max_value = 100
+		_barra_mati.value     = 100
+		_barra_mati.show_percentage = false
+		var sty_m := StyleBoxFlat.new()
+		sty_m.bg_color = Color(0.15, 0.80, 0.25)
+		sty_m.corner_radius_top_left = 6; sty_m.corner_radius_top_right = 6
+		sty_m.corner_radius_bottom_left = 6; sty_m.corner_radius_bottom_right = 6
+		_barra_mati.add_theme_stylebox_override("fill", sty_m)
+		_barra_mati.add_theme_stylebox_override("background", sty_bg)
+		add_child(_barra_mati)
+
+		# (sin barra de energía)
 
 	else:
-		lbl_nom.text = _config.get("jefe_nombre", "Jefe").to_upper()
-		_lbl_jefe_nombre = lbl_nom
-		_barra_jefe      = barra
-		_img_jefe        = img
-		var ruta_j : String = _config.get("jefe_textura", "")
-		if ruta_j != "" and ResourceLoader.exists(ruta_j):
+		img.position = Vector2(950, 80)
+		img.size     = Vector2(290, 370)
+		img.modulate = Color(1, 1, 1, 0)  # jefe_entrada lo hace aparecer
+		add_child(img)
+		_img_jefe = img
+
+		var ruta_j : String = _config.get("jefe_textura", "res://assets/npcs/Jefe hongo.PNG")
+		if ruta_j == "":
+			ruta_j = "res://assets/npcs/Jefe hongo.PNG"
+		if ResourceLoader.exists(ruta_j):
 			img.texture = load(ruta_j)
 
-	return panel
+		# Barra vida Jefe — esquina superior derecha
+		var lbl_nom := Label.new()
+		lbl_nom.text = _config.get("jefe_nombre", "Jefe").to_upper()
+		lbl_nom.position = Vector2(960, 20)
+		lbl_nom.size     = Vector2(300, 28)
+		lbl_nom.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		lbl_nom.add_theme_font_size_override("font_size", 20)
+		lbl_nom.add_theme_color_override("font_color", Color(1, 0.4, 0.4))
+		add_child(lbl_nom)
+		_lbl_jefe_nombre = lbl_nom
+
+		_barra_jefe = ProgressBar.new()
+		_barra_jefe.position = Vector2(960, 46)
+		_barra_jefe.size     = Vector2(300, 20)
+		_barra_jefe.max_value = 100
+		_barra_jefe.value     = 100
+		_barra_jefe.show_percentage = false
+		var sty_j := StyleBoxFlat.new()
+		sty_j.bg_color = Color(0.80, 0.15, 0.15)
+		sty_j.corner_radius_top_left = 6; sty_j.corner_radius_top_right = 6
+		sty_j.corner_radius_bottom_left = 6; sty_j.corner_radius_bottom_right = 6
+		_barra_jefe.add_theme_stylebox_override("fill", sty_j)
+		_barra_jefe.add_theme_stylebox_override("background", sty_bg)
+		add_child(_barra_jefe)
 
 func _construir_zona_math() -> void:
-	# Fondo panel matemático
-	var panel_math := ColorRect.new()
-	panel_math.color  = Color(0.08, 0.06, 0.20, 0.95)
-	panel_math.position = Vector2(0, 380)
-	panel_math.size     = Vector2(1280, 340)
-	add_child(panel_math)
-
-	# Label feedback (correcto/incorrecto)
-	_lbl_feedback = Label.new()
-	_lbl_feedback.position = Vector2(0, 385)
-	_lbl_feedback.size     = Vector2(1280, 36)
-	_lbl_feedback.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_lbl_feedback.add_theme_font_size_override("font_size", 24)
-	_lbl_feedback.add_theme_color_override("font_color", Color(1, 1, 0.3))
-	_lbl_feedback.visible = false
-	add_child(_lbl_feedback)
-
-	# Label racha
-	_lbl_racha = Label.new()
-	_lbl_racha.position = Vector2(1050, 390)
-	_lbl_racha.size     = Vector2(220, 30)
-	_lbl_racha.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_lbl_racha.add_theme_font_size_override("font_size", 18)
-	_lbl_racha.add_theme_color_override("font_color", Color(1, 0.85, 0))
-	_lbl_racha.visible = false
-	add_child(_lbl_racha)
-
-	# Operación matemática
+	# Operación matemática — arriba al centro
 	_lbl_operacion = Label.new()
-	_lbl_operacion.position = Vector2(0, 428)
+	_lbl_operacion.position = Vector2(0, 10)
 	_lbl_operacion.size     = Vector2(1280, 60)
 	_lbl_operacion.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_lbl_operacion.add_theme_font_size_override("font_size", 46)
+	_lbl_operacion.add_theme_font_size_override("font_size", 52)
 	_lbl_operacion.add_theme_color_override("font_color", Color(1, 1, 1))
 	_lbl_operacion.text = "?"
 	add_child(_lbl_operacion)
 
-	# Botones de respuesta (2×2)
-	var grid := GridContainer.new()
-	grid.columns  = 2
-	grid.position = Vector2(290, 500)
-	grid.size     = Vector2(700, 160)
-	grid.add_theme_constant_override("h_separation", 20)
-	grid.add_theme_constant_override("v_separation", 14)
-	add_child(grid)
+	# Label feedback
+	_lbl_feedback = Label.new()
+	_lbl_feedback.position = Vector2(0, 395)
+	_lbl_feedback.size     = Vector2(1280, 40)
+	_lbl_feedback.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_lbl_feedback.add_theme_font_size_override("font_size", 26)
+	_lbl_feedback.add_theme_color_override("font_color", Color(1, 1, 0.3))
+	_lbl_feedback.visible = false
+	add_child(_lbl_feedback)
+
+# ─────────────────────────────────────────────────────────────
+#  ESTRELLAS FLOTANTES — opciones con flechas
+# ─────────────────────────────────────────────────────────────
+func _crear_opciones_estrellas() -> void:
+	for n in _opciones_nodos:
+		if is_instance_valid(n):
+			n.queue_free()
+	_opciones_nodos.clear()
+	_alturas_opciones.clear()
+
+	var tex_estrella = null
+	const RUTAS_ESTRELLA := [
+		"res://assets/ui/Estrella Amarilla.PNG",
+		"res://assets/ui/estrella_respuesta.png",
+	]
+	for ruta in RUTAS_ESTRELLA:
+		if ResourceLoader.exists(ruta):
+			tex_estrella = load(ruta)
+			break
+
+	# 4 estrellas verticales, centradas, bien por debajo de la ecuación (y≥90)
+	const W      : float = 160.0
+	const H      : float = 130.0
+	const GAP    : float = 12.0
+	const STAR_X : float = (1280.0 - W) / 2.0
+	const TOP_MIN: float = 90.0   # nunca sobre la ecuación (y=0–70)
+	var total_h  : float = TOTAL_OPCIONES * H + (TOTAL_OPCIONES - 1) * GAP
+	# Centrar en la zona 90–700 de la pantalla
+	var zona_h   : float = 700.0 - TOP_MIN
+	var start_y  : float = TOP_MIN + (zona_h - total_h) / 2.0
 
 	for i in TOTAL_OPCIONES:
-		var btn := Button.new()
-		btn.custom_minimum_size = Vector2(330, 64)
-		btn.add_theme_font_size_override("font_size", 28)
-		btn.add_theme_color_override("font_color", Color(1, 1, 1))
-		var sty := StyleBoxFlat.new()
-		sty.bg_color = COL_NORMAL
-		sty.corner_radius_top_left = 12; sty.corner_radius_top_right = 12
-		sty.corner_radius_bottom_left = 12; sty.corner_radius_bottom_right = 12
-		btn.add_theme_stylebox_override("normal",  sty)
-		btn.add_theme_stylebox_override("hover",   sty)
-		btn.add_theme_stylebox_override("pressed", sty)
-		btn.pressed.connect(_on_respuesta.bind(i))
-		_botones.append(btn)
-		grid.add_child(btn)
+		var contenedor := Control.new()
+		contenedor.position    = Vector2(STAR_X, start_y + i * (H + GAP))
+		contenedor.size        = Vector2(W, H)
+		contenedor.mouse_filter = Control.MOUSE_FILTER_STOP
+		add_child(contenedor)
 
-	# Botón ataque especial
-	_btn_especial = Button.new()
-	_btn_especial.text = "⚡ ATAQUE ESPECIAL"
-	_btn_especial.position = Vector2(490, 672)
-	_btn_especial.size     = Vector2(300, 46)
-	_btn_especial.add_theme_font_size_override("font_size", 20)
-	_btn_especial.add_theme_color_override("font_color", Color(0.1, 0.05, 0))
-	var sty_esp := StyleBoxFlat.new()
-	sty_esp.bg_color = Color(1.0, 0.70, 0.0)
-	sty_esp.corner_radius_top_left = 10; sty_esp.corner_radius_top_right = 10
-	sty_esp.corner_radius_bottom_left = 10; sty_esp.corner_radius_bottom_right = 10
-	_btn_especial.add_theme_stylebox_override("normal",  sty_esp)
-	_btn_especial.add_theme_stylebox_override("hover",   sty_esp)
-	_btn_especial.add_theme_stylebox_override("pressed", sty_esp)
-	_btn_especial.disabled = true
-	_btn_especial.modulate.a = 0.4
-	_btn_especial.pressed.connect(_usar_ataque_especial)
-	add_child(_btn_especial)
+		if tex_estrella:
+			var img := TextureRect.new()
+			img.texture      = tex_estrella
+			img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			img.expand_mode  = TextureRect.EXPAND_IGNORE_SIZE
+			img.set_anchors_preset(Control.PRESET_FULL_RECT)
+			img.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			contenedor.add_child(img)
+
+		var lbl := Label.new()
+		lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
+		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lbl.vertical_alignment   = VERTICAL_ALIGNMENT_CENTER
+		lbl.add_theme_font_size_override("font_size", 30)
+		lbl.add_theme_color_override("font_color", Color(0.1, 0.05, 0.0))
+		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		lbl.text = "?"
+		contenedor.add_child(lbl)
+
+		# Clic con mouse
+		var idx_captura := i
+		contenedor.gui_input.connect(func(event: InputEvent) -> void:
+			if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+				_seleccion_actual = idx_captura
+				_actualizar_seleccion_visual()
+				_confirmar_seleccion()
+		)
+
+		_opciones_nodos.append(contenedor)
+		_alturas_opciones.append(start_y + i * (H + GAP) + H / 2.0)
+
+	_seleccion_actual = 0
+	_actualizar_seleccion_visual()
+
+func _actualizar_seleccion_visual() -> void:
+	for i in _opciones_nodos.size():
+		var c := _opciones_nodos[i] as Control
+		if i == _seleccion_actual:
+			c.modulate = Color(1.4, 1.4, 0.3)
+			c.scale    = Vector2(1.2, 1.2)
+		else:
+			c.modulate = Color(1, 1, 1)
+			c.scale    = Vector2(1.0, 1.0)
+
+func _process(_delta: float) -> void:
+	if _turno_bloqueado or _opciones_nodos.is_empty():
+		return
+	if Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_up"):
+		_seleccion_actual = max(0, _seleccion_actual - 1)
+		_actualizar_seleccion_visual()
+	elif Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_down"):
+		_seleccion_actual = min(TOTAL_OPCIONES - 1, _seleccion_actual + 1)
+		_actualizar_seleccion_visual()
+	elif Input.is_action_just_pressed("ui_accept"):
+		_confirmar_seleccion()
+
+func _confirmar_seleccion() -> void:
+	if _turno_bloqueado or _opciones_nodos.is_empty():
+		return
+	_on_respuesta(_seleccion_actual)
+
+# ─────────────────────────────────────────────────────────────
+#  BOLA VERDE — temporizador visual del jefe
+# ─────────────────────────────────────────────────────────────
+func _lanzar_bola_jefe() -> void:
+	_cancelar_bola_jefe()
+
+	# Panel redondo (Panel soporta StyleBoxFlat con esquinas redondeadas)
+	var bola := Panel.new()
+	bola.size         = Vector2(38, 38)
+	bola.position     = Vector2(1000.0, 250.0)
+	bola.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var sty := StyleBoxFlat.new()
+	sty.bg_color = Color(0.05, 0.85, 0.15)
+	# Radio = mitad del tamaño → círculo perfecto
+	sty.corner_radius_top_left     = 19
+	sty.corner_radius_top_right    = 19
+	sty.corner_radius_bottom_left  = 19
+	sty.corner_radius_bottom_right = 19
+	# Borde brillante efecto bola de mago
+	sty.border_width_top    = 3
+	sty.border_width_bottom = 3
+	sty.border_width_left   = 3
+	sty.border_width_right  = 3
+	sty.border_color        = Color(0.6, 1.0, 0.3)
+	# Resplandor interno
+	sty.shadow_color  = Color(0.2, 1.0, 0.3, 0.6)
+	sty.shadow_size   = 8
+	sty.shadow_offset = Vector2(0, 0)
+	bola.add_theme_stylebox_override("panel", sty)
+
+	add_child(bola)
+	_bola_jefe = bola
+
+	# La bola tarda 4 segundos en llegar a Mati (un poco más rápido)
+	var dest_x : float = 170.0
+	var dest_y : float = 250.0
+	_tween_bola = create_tween()
+	_tween_bola.tween_property(bola, "position", Vector2(dest_x, dest_y), 3.2)\
+		.set_trans(Tween.TRANS_LINEAR)
+	_tween_bola.tween_callback(_bola_llego_a_mati)
+
+func _cancelar_bola_jefe() -> void:
+	if _tween_bola != null and is_instance_valid(_tween_bola):
+		_tween_bola.kill()
+		_tween_bola = null
+	if _bola_jefe != null and is_instance_valid(_bola_jefe):
+		_bola_jefe.queue_free()
+		_bola_jefe = null
+
+func _bola_llego_a_mati() -> void:
+	# La bola llegó → Mati recibe daño y se lanza nueva pregunta
+	_cancelar_bola_jefe()
+	if _turno_bloqueado:
+		return
+	_turno_bloqueado = true
+	_feedback("¡Te dio la bola!", Color(1.0, 0.4, 0.2))
+	if _img_jefe:
+		_animador.jefe_ataca(_img_jefe, -1.0)
+	await get_tree().create_timer(0.2).timeout
+	_dañar_mati()
+	await get_tree().create_timer(0.4).timeout
+	_turno_bloqueado = false
+	if _vida_mati <= 0:
+		_derrota()
+		return
+	_nueva_pregunta()
 
 # ─────────────────────────────────────────────────────────────
 #  ENTRADA DEL JEFE (animación dramática)
@@ -382,11 +479,19 @@ func _nueva_pregunta() -> void:
 	opciones.shuffle()
 	_botones_vals = opciones
 
-	for i in TOTAL_OPCIONES:
-		if i < _botones.size() and i < opciones.size():
-			_botones[i].text     = str(opciones[i])
-			_botones[i].disabled = false
-			_restablecer_color_btn(i)
+	# Actualizar textos de las estrellas flotantes
+	_crear_opciones_estrellas()
+	for i in _opciones_nodos.size():
+		var c := _opciones_nodos[i] as Control
+		# El Label es el último hijo
+		var lbl := c.get_child(c.get_child_count() - 1) as Label
+		if lbl:
+			lbl.text = str(opciones[i])
+	_seleccion_actual = 0
+	_actualizar_seleccion_visual()
+
+	# Jefe lanza bola — el tiempo de viaje es el tiempo para contestar
+	_lanzar_bola_jefe()
 
 func _generar_op_tipo(nivel: int, tipo: String) -> Dictionary:
 	match tipo:
@@ -416,8 +521,13 @@ func _on_respuesta(idx: int) -> void:
 	if _turno_bloqueado:
 		return
 	_turno_bloqueado = true
-	for btn in _botones:
-		btn.disabled = true
+
+	# El jugador respondió — cancelar bola en vuelo
+	_cancelar_bola_jefe()
+
+	# Deshabilitar visualmente las estrellas durante la respuesta
+	for n in _opciones_nodos:
+		(n as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	var val_elegido: int = int(_botones_vals[idx])
 	var correcto: bool = val_elegido == _respuesta_ok
@@ -425,36 +535,24 @@ func _on_respuesta(idx: int) -> void:
 
 	if correcto:
 		_aciertos += 1
-		_racha_correctas += 1
-		_energia = min(_energia + 1, ENERGIA_MAX)
-		_barra_energia.value = _energia
-
-		if _racha_correctas >= 2:
-			_lbl_racha.text    = "🔥 RACHA x%d" % _racha_correctas
-			_lbl_racha.visible = true
-
-		_especial_listo = (_energia >= ENERGIA_MAX)
-		_btn_especial.disabled  = not _especial_listo
-		_btn_especial.modulate.a = 1.0 if _especial_listo else 0.4
-
-		_colorear_btn(idx, COL_CORRECTO)
-		_feedback("¡Correcto! +⚡", Color(0.3, 1.0, 0.4))
+		# Resaltar estrella correcta en verde
+		if idx < _opciones_nodos.size():
+			(_opciones_nodos[idx] as Control).modulate = Color(0.3, 1.2, 0.3)
+		_feedback("¡Correcto!", Color(0.3, 1.0, 0.4))
 		if _efectos:
 			_efectos.flash_correcto(get_tree().root)
 		MusicaManager.play_sfx("correcto")
 		await get_tree().create_timer(0.35).timeout
 
-		# Mati ataca
 		if _img_mati:
 			_animador.interaccion(_img_mati)
 		await get_tree().create_timer(0.3).timeout
 
 		_dañar_jefe(1)
 	else:
-		_racha_correctas = 0
-		_lbl_racha.visible = false
-
-		_colorear_btn(idx, COL_INCORRECTO)
+		# Resaltar estrella incorrecta en rojo
+		if idx < _opciones_nodos.size():
+			(_opciones_nodos[idx] as Control).modulate = Color(1.2, 0.3, 0.3)
 		_feedback("¡Incorrecto!", Color(1.0, 0.3, 0.3))
 		if _efectos:
 			_efectos.flash_incorrecto(get_tree().root)
@@ -465,7 +563,6 @@ func _on_respuesta(idx: int) -> void:
 			_animador.error_respuesta(_img_mati)
 		await get_tree().create_timer(0.3).timeout
 
-		# Jefe contraataca
 		if _img_jefe:
 			_animador.jefe_ataca(_img_jefe, -1.0)
 		await get_tree().create_timer(0.25).timeout
@@ -490,37 +587,6 @@ func _on_respuesta(idx: int) -> void:
 
 # ─────────────────────────────────────────────────────────────
 #  ATAQUE ESPECIAL
-# ─────────────────────────────────────────────────────────────
-func _usar_ataque_especial() -> void:
-	if _turno_bloqueado or not _especial_listo:
-		return
-	_turno_bloqueado = true
-	_energia = 0
-	_especial_listo = false
-	_barra_energia.value = 0
-	_btn_especial.disabled  = true
-	_btn_especial.modulate.a = 0.4
-
-	_feedback("⚡ ¡ATAQUE ESPECIAL!", COL_ESPECIAL)
-	if _img_mati:
-		_animador.victoria(_img_mati)
-	if _efectos:
-		_efectos.flash_dorado(get_tree().root)
-	await get_tree().create_timer(0.5).timeout
-
-	var dmg_especial := 6 if _rayo_equipado else 3
-	if _efectos and _img_jefe:
-		var pos_jefe := _img_jefe.get_global_rect().get_center()
-		_efectos.explosion(get_tree().root, pos_jefe, Color(1.0, 0.65, 0.1))
-	_dañar_jefe(dmg_especial)
-	await get_tree().create_timer(0.4).timeout
-	_turno_bloqueado = false
-
-	if _vida_jefe <= 0:
-		_victoria()
-		return
-	_nueva_pregunta()
-
 # ─────────────────────────────────────────────────────────────
 #  DAÑO AL JEFE
 # ─────────────────────────────────────────────────────────────
@@ -564,10 +630,11 @@ func _mostrar_numero_daño(texto: String, cerca_de: Control, color: Color) -> vo
 # ─────────────────────────────────────────────────────────────
 func _victoria() -> void:
 	_turno_bloqueado = true
+	_cancelar_bola_jefe()
 	_lbl_operacion.text = ""
-	for btn in _botones:
-		btn.visible = false
-	_btn_especial.visible = false
+	for n in _opciones_nodos:
+		if is_instance_valid(n):
+			(n as Control).visible = false
 
 	# Animación de derrota del jefe
 	if _img_jefe:
@@ -691,9 +758,10 @@ func _mostrar_panel_victoria(monedas: int, perfecta: bool) -> void:
 # ─────────────────────────────────────────────────────────────
 func _derrota() -> void:
 	_turno_bloqueado = true
-	for btn in _botones:
-		btn.visible = false
-	_btn_especial.visible = false
+	_cancelar_bola_jefe()
+	for n in _opciones_nodos:
+		if is_instance_valid(n):
+			(n as Control).visible = false
 
 	_feedback("¡El jefe te venció!", Color(1, 0.4, 0.4))
 
@@ -774,22 +842,8 @@ func _feedback(texto: String, color: Color) -> void:
 	tw.tween_interval(0.8)
 	tw.tween_property(_lbl_feedback, "modulate:a", 0.0, 0.3)
 
-func _colorear_btn(idx: int, color: Color) -> void:
-	if idx >= _botones.size():
-		return
-	var sty := StyleBoxFlat.new()
-	sty.bg_color = color
-	sty.corner_radius_top_left = 12; sty.corner_radius_top_right = 12
-	sty.corner_radius_bottom_left = 12; sty.corner_radius_bottom_right = 12
-	_botones[idx].add_theme_stylebox_override("normal", sty)
+func _colorear_btn(_idx: int, _color: Color) -> void:
+	pass  # ya no se usa con el sistema de estrellas
 
-func _restablecer_color_btn(idx: int) -> void:
-	if idx >= _botones.size():
-		return
-	var sty := StyleBoxFlat.new()
-	sty.bg_color = COL_NORMAL
-	sty.corner_radius_top_left = 12; sty.corner_radius_top_right = 12
-	sty.corner_radius_bottom_left = 12; sty.corner_radius_bottom_right = 12
-	_botones[idx].add_theme_stylebox_override("normal",  sty)
-	_botones[idx].add_theme_stylebox_override("hover",   sty)
-	_botones[idx].add_theme_stylebox_override("pressed", sty)
+func _restablecer_color_btn(_idx: int) -> void:
+	pass  # ya no se usa con el sistema de estrellas

@@ -28,8 +28,10 @@ static var _tweens : Dictionary = {}
 # ─────────────────────────────────────────────────────────────
 #  MATI — IDLE (bob suave en loop)
 # ─────────────────────────────────────────────────────────────
-static func idle(nodo: Node2D) -> void:
+static func idle(nodo) -> void:
 	detener(nodo)
+	if nodo is Control:
+		return
 	var origen: Vector2 = nodo.position
 	var tw: Tween = nodo.create_tween()
 	tw.set_loops()
@@ -42,7 +44,7 @@ static func idle(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  MATI — CAMINAR (leve rotación de balanceo)
 # ─────────────────────────────────────────────────────────────
-static func caminar(nodo: Node2D, dir_x: float) -> void:
+static func caminar(nodo, dir_x: float) -> void:
 	# Llama cada frame mientras se mueve
 	var angulo_obj: float = 0.03 * sign(dir_x) if dir_x != 0 else 0.0
 	var tw: Tween = nodo.create_tween()
@@ -52,7 +54,7 @@ static func caminar(nodo: Node2D, dir_x: float) -> void:
 # ─────────────────────────────────────────────────────────────
 #  MATI — INTERACCIÓN al acercarse a NPC
 # ─────────────────────────────────────────────────────────────
-static func interaccion(nodo: Node2D) -> void:
+static func interaccion(nodo) -> void:
 	detener(nodo)
 	var origen: Vector2 = nodo.position
 	var tw: Tween = nodo.create_tween()
@@ -65,7 +67,7 @@ static func interaccion(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  MATI — VICTORIA (salto + escala pulsante)
 # ─────────────────────────────────────────────────────────────
-static func victoria(nodo: Node2D) -> void:
+static func victoria(nodo) -> void:
 	detener(nodo)
 	_sfx("fanfare")
 	var origen_y: float = nodo.position.y
@@ -86,7 +88,7 @@ static func victoria(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  MATI — ERROR (shake horizontal)
 # ─────────────────────────────────────────────────────────────
-static func error_respuesta(nodo: Node2D) -> void:
+static func error_respuesta(nodo) -> void:
 	detener(nodo)
 	_sfx("incorrecto")
 	var ox: float = nodo.position.x
@@ -102,7 +104,7 @@ static func error_respuesta(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  MATI — DAÑO (flash + retroceso)
 # ─────────────────────────────────────────────────────────────
-static func daño(nodo: Node2D) -> void:
+static func daño(nodo) -> void:
 	detener(nodo)
 	_sfx("golpe")
 	var ox: float = nodo.position.x
@@ -117,8 +119,11 @@ static func daño(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  NPC — IDLE (bob lento en loop)
 # ─────────────────────────────────────────────────────────────
-static func npc_idle(nodo: Node2D) -> void:
+static func npc_idle(nodo) -> void:
 	detener(nodo)
+	# Skip bobbing for Control nodes inside Containers (position is managed by layout)
+	if nodo is Control:
+		return
 	var origen: Vector2 = nodo.position
 	var tw: Tween = nodo.create_tween()
 	tw.set_loops()
@@ -131,7 +136,7 @@ static func npc_idle(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  NPC — REACCIÓN al hablar con Mati (scale pulse)
 # ─────────────────────────────────────────────────────────────
-static func npc_reaccion(nodo: Node2D) -> void:
+static func npc_reaccion(nodo) -> void:
 	detener(nodo)
 	var tw: Tween = nodo.create_tween()
 	tw.tween_property(nodo, "scale", Vector2(1.08, 1.08), 0.15)\
@@ -144,7 +149,7 @@ static func npc_reaccion(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  NPC — ALEGRÍA al completar su desafío
 # ─────────────────────────────────────────────────────────────
-static func npc_alegria(nodo: Node2D) -> void:
+static func npc_alegria(nodo) -> void:
 	detener(nodo)
 	var origen_y: float = nodo.position.y
 	var tw: Tween = nodo.create_tween()
@@ -158,20 +163,18 @@ static func npc_alegria(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  JEFE — ENTRADA DRAMÁTICA (aparece desde arriba)
 # ─────────────────────────────────────────────────────────────
-static func jefe_entrada(nodo: Node2D, posicion_final: Vector2) -> void:
+static func jefe_entrada(nodo, posicion_final: Vector2) -> void:
 	detener(nodo)
-	nodo.position = Vector2(posicion_final.x, posicion_final.y - 200)
 	nodo.modulate.a = 0.0
 	var tw: Tween = nodo.create_tween()
-	tw.tween_property(nodo, "modulate:a", 1.0, 0.3)
-	tw.parallel().tween_property(nodo, "position:y", posicion_final.y, 0.5)\
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(nodo, "modulate:a", 1.0, 0.5)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tw.tween_callback(func(): npc_idle(nodo))
 
 # ─────────────────────────────────────────────────────────────
 #  JEFE — RECIBE DAÑO (shake + flash)
 # ─────────────────────name———————————————————————————————————
-static func jefe_daño(nodo: Node2D) -> void:
+static func jefe_daño(nodo) -> void:
 	var tw: Tween = nodo.create_tween()
 	var ox: float = nodo.position.x
 	for offset in [12.0, -12.0, 8.0, -8.0, 0.0]:
@@ -182,7 +185,7 @@ static func jefe_daño(nodo: Node2D) -> void:
 # ─────────────────────────────────────────────────────────────
 #  JEFE — ATACA (avanza hacia Mati y regresa)
 # ─────────────────────────────────────────────────────────────
-static func jefe_ataca(nodo: Node2D, dir_hacia_mati: float) -> void:
+static func jefe_ataca(nodo, dir_hacia_mati: float) -> void:
 	var tw: Tween = nodo.create_tween()
 	var ox: float = nodo.position.x
 	tw.tween_property(nodo, "position:x", ox + dir_hacia_mati * 40, 0.15)\
@@ -193,7 +196,7 @@ static func jefe_ataca(nodo: Node2D, dir_hacia_mati: float) -> void:
 # ─────────────────────────────────────────────────────────────
 #  JEFE — DERROTA (encoge y desaparece)
 # ─────────────────────────────————————————————————————————————
-static func jefe_derrota(nodo: Node2D, callback: Callable = Callable()) -> void:
+static func jefe_derrota(nodo, callback: Callable = Callable()) -> void:
 	detener(nodo)
 	var tw: Tween = nodo.create_tween()
 	tw.tween_property(nodo, "scale", Vector2(0.0, 0.0), 0.6)\
@@ -205,7 +208,7 @@ static func jefe_derrota(nodo: Node2D, callback: Callable = Callable()) -> void:
 # ─────────────────────────────────────────────────────────────
 #  DETENER animación activa de un nodo
 # ─────────────────────────────────────────────────────────────
-static func detener(nodo: Node2D) -> void:
+static func detener(nodo) -> void:
 	if nodo in _tweens:
 		if is_instance_valid(_tweens[nodo]):
 			_tweens[nodo].kill()

@@ -473,7 +473,7 @@ class _Estrellas extends Node2D:
 	func _draw() -> void:
 		for p in _pts:
 			draw_circle(Vector2(p["x"], p["y"]), p["r"],
-			            Color(1, 1, 1, p["a"]))
+						Color(1, 1, 1, p["a"]))
 
 class _Nave extends Node2D:
 	var piezas_ok : Array = [false, false, false, false]
@@ -499,15 +499,15 @@ class _Nave extends Node2D:
 		# Cuerpo central
 		var col_cuerpo := Color(0.4, 0.5, 0.7)
 		draw_rect(Rect2(base + Vector2(-55, -50), Vector2(110, 100)),
-		          col_cuerpo, true)
+				  col_cuerpo, true)
 		draw_rect(Rect2(base + Vector2(-55, -50), Vector2(110, 100)),
-		          Color(0.6, 0.7, 1.0, 0.8), false, 2.0)
+				  Color(0.6, 0.7, 1.0, 0.8), false, 2.0)
 
 		# Cúpula
 		draw_arc(base + Vector2(0, -50), 42.0, PI, TAU, 32,
-		         Color(0.6, 0.85, 1.0, 0.9), 3.0)
+				 Color(0.6, 0.85, 1.0, 0.9), 3.0)
 		draw_circle(base + Vector2(0, -50), 38.0,
-		            Color(0.5, 0.75, 0.95, 0.4))
+					Color(0.5, 0.75, 0.95, 0.4))
 
 		# Ventana
 		draw_circle(base + Vector2(0, -55), 16.0, Color(0.2, 0.6, 0.9, 0.9))
@@ -518,16 +518,16 @@ class _Nave extends Node2D:
 			var mc := Color(0.9, 0.5, 0.1)
 			draw_rect(Rect2(base + Vector2(-25, -90), Vector2(50, 42)), mc, true)
 			draw_rect(Rect2(base + Vector2(-25, -90), Vector2(50, 42)),
-			          mc.lightened(0.4), false, 2.0)
+					  mc.lightened(0.4), false, 2.0)
 			# Llama del motor
 			var flame := Color(1.0, 0.6, 0.1,
-			                   0.6 + 0.3 * sin(t * 8.0))
+							   0.6 + 0.3 * sin(t * 8.0))
 			draw_circle(base + Vector2(0, -105), 12.0 + sin(t * 10) * 2, flame)
 		else:
 			draw_rect(Rect2(base + Vector2(-25, -90), Vector2(50, 42)),
-			          Color(0.3, 0.3, 0.4, 0.5), true)
+					  Color(0.3, 0.3, 0.4, 0.5), true)
 			draw_arc(base + Vector2(0, -69), 14, 0, TAU, 16,
-			         Color(0.5, 0.5, 0.6, 0.6), 1.5)
+					 Color(0.5, 0.5, 0.6, 0.6), 1.5)
 
 		# Ala izquierda — slot 1
 		if piezas_ok[1]:
@@ -570,19 +570,19 @@ class _Nave extends Node2D:
 		# Núcleo de energía — slot 3
 		if piezas_ok[3]:
 			var nc := Color(0.3, 1.0, 0.5,
-			                0.8 + 0.15 * sin(t * 6.0))
+							0.8 + 0.15 * sin(t * 6.0))
 			draw_circle(base + Vector2(0, 70), 20.0, nc)
 			draw_arc(base + Vector2(0, 70), 26.0, 0, TAU, 32,
-			         nc.lightened(0.3), 3.0)
+					 nc.lightened(0.3), 3.0)
 		else:
 			draw_circle(base + Vector2(0, 70), 20.0,
-			            Color(0.3, 0.4, 0.3, 0.4))
+						Color(0.3, 0.4, 0.3, 0.4))
 			draw_arc(base + Vector2(0, 70), 26.0, 0, TAU, 16,
-			         Color(0.4, 0.5, 0.4, 0.4), 1.5)
+					 Color(0.4, 0.5, 0.4, 0.4), 1.5)
 
 		# Tobera de escape
 		draw_rect(Rect2(base + Vector2(-30, 50), Vector2(60, 20)),
-		          Color(0.5, 0.5, 0.6), true)
+				  Color(0.5, 0.5, 0.6), true)
 		# Llama tobera (siempre animada)
 		var fl := Color(1.0, 0.4, 0.1, 0.5 + 0.3 * sin(t * 9.0))
 		draw_circle(base + Vector2(-15, 78 + sin(t * 11) * 3), 7.0, fl)
@@ -613,30 +613,30 @@ class _Slot extends Control:
 			var sty_col := col.lerp(Color.WHITE, 0.25)
 			draw_rect(Rect2(2, 2, w - 4, h - 4), sty_col, true)
 			draw_rect(Rect2(2, 2, w - 4, h - 4),
-			          Color(1, 1, 1, 0.9), false, 3.0)
+					  Color(1, 1, 1, 0.9), false, 3.0)
 			# Icono
 			var icono : String = pieza_data.get("icono", "✓")
 			# No podemos draw_string fácilmente para emojis; usamos "✓"
 			# (el icono emoji puede no renderizar en _draw; label sería mejor)
 			draw_arc(Vector2(w * 0.5, h * 0.5), min(w, h) * 0.3, 0, TAU, 32,
-			         Color(1, 1, 1, 0.5), 2.0)
+					 Color(1, 1, 1, 0.5), 2.0)
 		else:
 			# Pulsante vacío
 			var alpha := 0.3 + 0.2 * sin(_tiempo * 3.0)
 			var hover_extra := 0.2 if _hover else 0.0
 			draw_rect(Rect2(2, 2, w - 4, h - 4),
-			          Color(col.r, col.g, col.b, alpha + hover_extra), true)
+					  Color(col.r, col.g, col.b, alpha + hover_extra), true)
 			draw_rect(Rect2(2, 2, w - 4, h - 4),
-			          Color(col.r, col.g, col.b,
-			                0.7 + hover_extra), false, 2.0)
+					  Color(col.r, col.g, col.b,
+							0.7 + hover_extra), false, 2.0)
 			# Cruz de "faltante"
 			var c := Vector2(w * 0.5, h * 0.5)
 			var r: float = min(w, h) * 0.22
 			draw_line(c - Vector2(r, 0), c + Vector2(r, 0),
-			          Color(col.r, col.g, col.b, 0.6 + hover_extra), 2.5)
+					  Color(col.r, col.g, col.b, 0.6 + hover_extra), 2.5)
 			draw_line(c - Vector2(0, r), c + Vector2(0, r),
-			          Color(col.r, col.g, col.b, 0.6 + hover_extra), 2.5)
+					  Color(col.r, col.g, col.b, 0.6 + hover_extra), 2.5)
 			# Nombre
 			# (draw_string omite soporte emoji; sería mejor Label hijo; usamos círculo indicador)
 			draw_arc(c, r * 1.6, 0, TAU * (0.4 + 0.1 * sin(_tiempo * 2.0)), 32,
-			         Color(col.r, col.g, col.b, 0.35 + hover_extra), 1.5)
+					 Color(col.r, col.g, col.b, 0.35 + hover_extra), 1.5)

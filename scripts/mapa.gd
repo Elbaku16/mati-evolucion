@@ -112,6 +112,19 @@ func _ready() -> void:
 	_btn_vol_mapa.pressed.connect(_on_vol_mapa_presionado)
 	add_child(_btn_vol_mapa)
 
+	# ── BOTÓN DEV ── solo para pruebas, desbloquea todos los mundos
+	var btn_dev := Button.new()
+	btn_dev.text = "🔓 DEV"
+	btn_dev.layout_mode = 1
+	btn_dev.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	btn_dev.offset_left   = 10.0
+	btn_dev.offset_bottom = -10.0
+	btn_dev.offset_right  = 110.0
+	btn_dev.offset_top    = -44.0
+	btn_dev.add_theme_color_override("font_color", Color(1, 1, 0))
+	btn_dev.pressed.connect(_dev_desbloquear_todo)
+	add_child(btn_dev)
+
 # ─────────────────────────────────────────────────────────────
 #  DETECCIÓN DE CLIC POR POSICIÓN
 # ─────────────────────────────────────────────────────────────
@@ -419,3 +432,19 @@ func _actualizar_candados() -> void:
 		$CandadoPl2.visible = not mundo1_completado
 	if has_node("CandadoPl3"):
 		$CandadoPl3.visible = not mundo2_completado
+
+# ── DEV: desbloquea todas las secciones de todos los mundos ──
+func _dev_desbloquear_todo() -> void:
+	var g = load("res://scripts/guardado.gd").new()
+	var datos : Dictionary = g.cargar()
+	var secciones : Dictionary = datos.get("secciones", {})
+	# Mundos 1-3: secciones 1-20 (incluye todas las conocidas)
+	for id in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20]:
+		secciones[str(id)] = {"completada": true, "perfecta": false, "intentos": 1}
+	datos["secciones"]         = secciones
+	datos["mundo1_completado"] = true
+	var archivo := FileAccess.open(g._ruta(), FileAccess.WRITE)
+	if archivo:
+		archivo.store_string(JSON.stringify(datos))
+		archivo.close()
+	get_tree().reload_current_scene()

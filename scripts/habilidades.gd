@@ -49,10 +49,7 @@ const HABILIDADES_CONFIG : Dictionary = {
 
 const ORDEN : Array = ["turbo", "iman", "rayo", "escudo"]
 
-var _guardado = null
-
-func _ready() -> void:
-	_guardado = load("res://scripts/guardado.gd").new()
+var _guardado = load("res://scripts/guardado.gd").new()
 
 # ─────────────────────────────────────────────────────────────
 #  CONSULTAS
